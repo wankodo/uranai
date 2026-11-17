@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ペンデュラム占い｜占いツール集</title>
+<meta name="description" content="はい・いいえで答える振り子（ペンデュラム）占い。質問を思い浮かべてボタンを押すと、振り子の揺れ方で答えを示します。何度でも占い直せます。">
+<style>
+:root{
+  --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1d2733; --mut:#68707c;
+  --line:#ddd6c8; --red:#b03a2e; --green:#1e7d46; --soft:#fdf6e0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:22px 16px 18px;border-bottom:4px solid var(--amber)}
+header .wrap{max-width:980px;margin:0 auto}
+header h1{margin:0;font-size:24px;letter-spacing:.04em}
+header h1 .accent{color:var(--amber)}
+header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
+.wrap{max-width:980px;margin:0 auto;padding:0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 1px 3px rgba(18,40,63,.06)}
+.card h2{margin:0 0 10px;font-size:17px;color:var(--navy);border-left:5px solid var(--amber);padding-left:9px}
+.note{font-size:12.5px;color:var(--mut)}
+label.flabel{display:block;font-size:12.5px;color:var(--mut);margin:10px 0 3px}
+input[type="text"]{width:100%;padding:9px 10px;border:1px solid #c9c2b2;border-radius:7px;font-size:15px;background:#fff;color:var(--ink)}
+input:focus{outline:2px solid var(--amber);outline-offset:0;border-color:var(--amber)}
+footer{margin:26px 0 40px}
+footer .card{font-size:12.5px;color:var(--mut)}
+.credit{text-align:center;color:var(--mut);font-size:12px;margin:10px 0 30px}
+a{color:var(--navy)}
+.sitebar{background:var(--navy2);border-bottom:2px solid var(--amber)}
+.sitebar .sb-in{max-width:980px;margin:0 auto;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sitebar a{color:#fff;text-decoration:none;font-size:13px}
+.sitebar a:hover{color:var(--amber)}
+.sitebar .sb-name{font-weight:700;letter-spacing:.03em}
+.sitebar .sb-tool{color:#b9c8d8;font-size:13px}
+button.ask{display:block;margin:12px auto 2px;padding:11px 34px;border:none;border-radius:999px;background:var(--amber);color:#3a2703;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 2px 6px rgba(18,40,63,.25);font-family:inherit}
+button.ask:hover{background:var(--amber-d);color:#fff}
+button.ask:disabled{opacity:.55;cursor:wait}
+.stage{background:linear-gradient(180deg,var(--navy2),var(--navy));border-radius:10px;padding:14px 10px 20px;overflow:hidden}
+.pend{position:relative;height:238px}
+.pend-inner{position:absolute;inset:0}
+.pivot{position:absolute;top:4px;left:50%;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 3px rgba(242,160,7,.3);z-index:2}
+.arm{position:absolute;top:10px;left:50%;width:2px;height:172px;margin-left:-1px;background:linear-gradient(180deg,#cfd9e4,#8fa3b8);transform-origin:top center}
+.bob{position:absolute;bottom:-19px;left:50%;transform:translateX(-50%);width:38px;height:38px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffe1a1,var(--amber) 55%,var(--amber-d));box-shadow:0 4px 14px rgba(0,0,0,.45)}
+.arm.idle{animation:idleSwing 2.6s ease-in-out infinite}
+.arm.asking{animation:askSwing .7s ease-in-out infinite}
+.arm.yes{animation:yesSwing 1.15s ease-in-out infinite}
+.arm.no{animation:noSwing 1.05s ease-in-out infinite}
+.pend-inner.circle{animation:circleMove 2.4s linear infinite}
+@keyframes idleSwing{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+@keyframes askSwing{0%,100%{transform:rotate(-11deg)}50%{transform:rotate(11deg)}}
+@keyframes noSwing{0%,100%{transform:rotate(-25deg)}50%{transform:rotate(25deg)}}
+@keyframes yesSwing{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.09)}}
+@keyframes circleMove{0%{transform:translate(0,-11px)}25%{transform:translate(11px,0)}50%{transform:translate(0,11px)}75%{transform:translate(-11px,0)}100%{transform:translate(0,-11px)}}
+.stage-cap{text-align:center;color:#cfd9e4;font-size:12.5px;margin-top:8px;min-height:1.4em}
+.result-word{font-size:34px;font-weight:800;color:var(--navy);text-align:center;line-height:1.3}
+.result-word .strength{font-size:19px;color:var(--amber-d)}
+.qecho{text-align:center;font-size:13.5px;color:var(--mut);margin-top:2px}
+.swing-note{text-align:center;margin-top:8px}
+.swing-note span{display:inline-block;background:var(--soft);border:1px solid #ecd27a;border-radius:999px;padding:2px 12px;font-size:12.5px}
+.result-msg{font-size:14.5px;margin:10px 0 0}
+</style>
+</head>
+<body>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span class="sb-tool">ペンデュラム占い</span></div></div>
+
+<header>
+  <div class="wrap">
+    <h1>ペンデュラム <span class="accent">振り子占い</span></h1>
+    <p>「はい／いいえ」で答えられる質問を思い浮かべてください。振り子の揺れ方が、答えを示します。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>振り子に聞く</h2>
+    <label class="flabel" for="question">質問（任意）</label>
+    <input type="text" id="question" placeholder="例：今日、思い切って告白してもいい？" maxlength="80">
+    <p class="note">質問は「はい／いいえ」で答えられる形が向いています。入力しなくても占えます。</p>
+    <div class="stage" style="margin-top:12px">
+      <div class="pend">
+        <div class="pend-inner" id="pendInner">
+          <div class="pivot"></div>
+          <div class="arm idle" id="pendArm"><div class="bob"></div></div>
+        </div>
+      </div>
+      <div class="stage-cap" id="stageCap">振り子は静かに揺れています</div>
+    </div>
+    <button class="ask" id="askBtn" type="button">振り子に聞く</button>
+  </div>
+
+  <div class="card" id="resultCard" hidden>
+    <h2>振り子の答え</h2>
+    <div class="result-word" id="resultWord">—</div>
+    <div class="qecho" id="qEcho"></div>
+    <div class="swing-note"><span id="swingNote"></span></div>
+    <p class="result-msg" id="resultMsg"></p>
+    <p class="note" style="margin-top:10px">答えはその場の振り子の動きで決まります。同じ質問でも、もう一度聞くと違う答えになることがあります。</p>
+  </div>
+
+  <div class="card">
+    <h2>揺れ方の読み方</h2>
+    <p class="note" style="font-size:13px;color:var(--ink)">
+      ペンデュラム（ダウジング）では、振り子の揺れ方に意味を割り当てて読みます。このツールでは、縦の揺れ（前後への動き）を「はい」、横の揺れを「いいえ」、円を描く動きを「今はまだ分からない」としています。
+      実際のダウジングでも、最初に自分の「はい／いいえ」の揺れ方を確認してから使うのが習わしです。
+    </p>
+  </div>
+
+  <footer>
+    <div class="card">
+      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。
+    </div>
+    <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var RESULTS = {
+  yesStrong:{word:"はい", strength:"はっきり", swing:"縦の揺れ ＝ はい", msg:"振り子は力強く縦に揺れて、「はい」と示しました。今の方向に自信を持って大丈夫です。迷いを捨てて、一歩進んでみてください。"},
+  yesWeak:{word:"はい", strength:"弱く", swing:"小さな縦の揺れ ＝ はい", msg:"振り子は小さく縦に傾いて、「はい」と示しました。方向は合っていますが、勢い任せは禁物です。条件を整えながら、静かに進めるのが良さそうです。"},
+  noStrong:{word:"いいえ", strength:"はっきり", swing:"横の揺れ ＝ いいえ", msg:"振り子ははっきりと横に揺れて、「いいえ」を示しました。今は止まる勇気が正解です。別の方法にするか、時期を変えることを考えてみてください。"},
+  noWeak:{word:"いいえ", strength:"弱く", swing:"小さな横の揺れ ＝ いいえ", msg:"振り子は弱く横に傾いて、「いいえ」と示しました。完全にダメというより、今のやり方のままでは難しいという合図です。条件を見直せば、道は変わります。"},
+  unknown:{word:"今はまだ分からない", strength:"", swing:"円の動き ＝ 保留", msg:"振り子は円を描いて、答えを保留しました。情報が足りないか、まだ時期が来ていないようです。質問をもっと具体的にして、時間を置いてもう一度聞いてみてください。"}
+};
+
+// pick a result key from two random values: r1 -> category, r2 -> strength
+function pickResult(r1, r2){
+  if(r1 < 0.42) return r2 < 0.5 ? "yesStrong" : "yesWeak";
+  if(r1 < 0.84) return r2 < 0.5 ? "noStrong" : "noWeak";
+  return "unknown";
+}
+
+var askBtn = document.getElementById("askBtn");
+var arm = document.getElementById("pendArm");
+var inner = document.getElementById("pendInner");
+var stageCap = document.getElementById("stageCap");
+var resultCard = document.getElementById("resultCard");
+var resultWord = document.getElementById("resultWord");
+var qEcho = document.getElementById("qEcho");
+var swingNote = document.getElementById("swingNote");
+var resultMsg = document.getElementById("resultMsg");
+var questionEl = document.getElementById("question");
+var asking = false;
+
+function setArm(cls){
+  arm.className = "arm " + cls;
+}
+
+function ask(){
+  if(asking) return;
+  asking = true;
+  askBtn.disabled = true;
+  resultCard.hidden = true;
+  inner.classList.remove("circle");
+  setArm("asking");
+  stageCap.textContent = "振り子に聞いています…";
+  var key = pickResult(Math.random(), Math.random());
+  window.PENDULUM_LAST = key;
+  setTimeout(function(){
+    var r = RESULTS[key];
+    if(key === "unknown"){
+      setArm("idle");
+      inner.classList.add("circle");
+    } else if(key === "yesStrong" || key === "yesWeak"){
+      setArm("yes");
+    } else {
+      setArm("no");
+    }
+    stageCap.textContent = r.swing;
+    resultWord.innerHTML = "";
+    resultWord.appendChild(document.createTextNode(r.word));
+    if(r.strength){
+      var s = document.createElement("span");
+      s.className = "strength";
+      s.textContent = "（" + r.strength + "）";
+      resultWord.appendChild(s);
+    }
+    var q = questionEl.value.trim();
+    qEcho.textContent = q ? "質問：" + q : "";
+    swingNote.textContent = r.swing;
+    resultMsg.textContent = r.msg;
+    resultCard.hidden = false;
+    askBtn.textContent = "もう一度聞く";
+    askBtn.disabled = false;
+    asking = false;
+  }, 1800);
+}
+askBtn.addEventListener("click", ask);
+window.PENDULUM_RESULTS = RESULTS;
+window.PENDULUM_PICK = pickResult;
+})();
+</script>
+</body>
+</html>

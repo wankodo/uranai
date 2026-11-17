@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>今日のタロット1枚引き｜占いツール集</title>
-<meta name="description" content="大アルカナ22枚から、今日のあなたへの1枚を引く無料タロット占い。生年月日を入れると、あなた専用の今日のカードになります。結果は1日固定です。">
+<title>タロット占い（今日の1枚引き・ケルト十字）｜占いツール集</title>
+<meta name="description" content="大アルカナ22枚の無料タロット占い。日替わりの「今日の1枚引き」と、10枚でじっくり読む本格スプレッド「ケルト十字」を切り替えて使えます。">
 <style>
 :root{
   --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
@@ -50,20 +50,59 @@ a{color:var(--navy)}
 .meaning{font-size:15px;margin:8px 0}
 .advice{background:var(--soft);border:1px solid #ecd27a;border-radius:8px;padding:10px 12px;font-size:14.5px;margin:10px 0 0}
 .advice b{color:var(--amber-d)}
+.seg{display:flex;gap:8px;flex-wrap:wrap}
+.seg button{flex:1 1 150px;padding:10px 12px;border:2px solid var(--navy);border-radius:999px;background:#fff;color:var(--navy);font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.seg button.active{background:var(--navy);color:#fff}
+button.cast{display:block;margin:10px auto 2px;padding:11px 34px;border:none;border-radius:999px;background:var(--amber);color:#3a2703;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 2px 6px rgba(18,40,63,.25);font-family:inherit}
+button.cast:hover{background:var(--amber-d);color:#fff}
+button.cast:disabled{opacity:.55;cursor:wait}
+.cross{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;max-width:660px;margin:10px auto 4px}
+.cell{display:flex;flex-direction:column;align-items:center;gap:4px}
+.plabel{font-size:11.5px;font-weight:700;color:var(--navy);background:var(--soft);border:1px solid #ecd27a;border-radius:999px;padding:1px 9px;white-space:nowrap}
+.mcard{width:100%;max-width:104px;aspect-ratio:5/8;background:linear-gradient(160deg,#1d4568,#071827);border:2px solid var(--amber);border-radius:8px;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:7px 4px;box-shadow:0 3px 10px rgba(7,24,39,.3);transition:transform .5s ease}
+.mcard .roman{font-size:9.5px;letter-spacing:.25em;color:var(--amber);font-weight:700}
+.mcard .symbol{font-size:30px;line-height:1.1}
+.mcard .cname{font-size:11.5px;font-weight:800;text-align:center}
+.mcard.rev{transform:rotate(180deg)}
+.center-wrap{position:relative;width:100%;max-width:104px;aspect-ratio:5/8}
+.center-wrap .mcard{height:100%}
+.mcard.cross2{position:absolute;top:50%;left:50%;width:70%;transform:translate(-50%,-50%) rotate(90deg);z-index:2}
+.mcard.cross2.revline{outline:3px solid var(--red);outline-offset:1px}
+.read{border-top:1px solid var(--line);padding:12px 0}
+.read:first-child{border-top:none;padding-top:2px}
+.read-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.read-head .pname{font-weight:800;color:var(--navy);font-size:15.5px}
+.read-head .rcname{font-weight:700}
+.read-one{font-size:13.5px;background:var(--soft);border:1px solid #ecd27a;border-radius:8px;padding:8px 10px;margin:8px 0 0}
+.read-mean{font-size:13.5px;margin:8px 0 0}
+.read-adv{font-size:13px;color:var(--mut);margin:6px 0 0}
+.read-adv b{color:var(--amber-d)}
+.total{background:var(--soft);border:1px solid #ecd27a;border-radius:8px;padding:12px 14px;font-size:15px;margin:4px 0 0}
+.total b{color:var(--amber-d)}
 </style>
 </head>
 <body>
-<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span style="color:#cfd9e4;font-size:13px">今日のタロット1枚引き</span></div></div>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span style="color:#cfd9e4;font-size:13px">タロット</span></div></div>
 
 <header>
   <div class="wrap">
-    <h1>今日のタロット <span class="accent">1枚引き</span></h1>
-    <p>大アルカナ22枚の中から、今日のあなたへのメッセージを1枚引きます。</p>
+    <h1>タロット <span class="accent">1枚引き＆ケルト十字</span></h1>
+    <p>大アルカナ22枚で占います。日替わりの「今日の1枚引き」と、10枚でじっくり読む「ケルト十字」を切り替えて使えます。</p>
   </div>
 </header>
 
 <div class="wrap">
 
+  <div class="card">
+    <h2>スプレッドを選ぶ</h2>
+    <div class="seg">
+      <button type="button" id="segOne" class="active">今日の1枚引き</button>
+      <button type="button" id="segCeltic">ケルト十字（10枚）</button>
+    </div>
+    <p class="note" style="margin-top:8px">1枚引きは、その日のあなたへの1枚を引く軽い占いです（結果は1日固定）。ケルト十字は10枚でじっくり読む本格スプレッドで、引くたびに結果が変わります。</p>
+  </div>
+
+  <div id="oneMode">
   <div class="card">
     <h2>あなたの今日のカード</h2>
     <p class="date-line" id="todayLine"></p>
@@ -87,10 +126,26 @@ a{color:var(--navy)}
     <div class="advice"><b>今日のアドバイス：</b><span id="cAdvice"></span></div>
     <p class="note" style="margin-top:10px">結果はその日1日固定です。明日になると、また新しいカードが出ます。</p>
   </div>
+  </div>
+
+  <div id="celticMode" hidden>
+    <div class="card">
+      <h2>ケルト十字（10枚引き）</h2>
+      <p style="font-size:13.5px;margin:0 0 4px">大アルカナ22枚から重複なく10枚を引き、十字の配置で読みます。気になるテーマを思い浮かべてから、ボタンを押してください。結果は引くたびに変わります。</p>
+      <button class="cast" id="celticBtn" type="button">カードを引く</button>
+    </div>
+    <div class="card" id="celticResult" hidden>
+      <div class="cross" id="crossLayout"></div>
+      <p class="note">中央に重なった横向きのカードが「2 課題」です。各カードの詳しい読みは下に並んでいます。</p>
+      <div id="readList"></div>
+      <h2 style="margin-top:16px">全体の流れ</h2>
+      <div class="total" id="celticTotal"></div>
+    </div>
+  </div>
 
   <footer>
     <div class="card">
-      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。カードの意味は一般的なタロット解釈をもとにしたもので、結果は日付（と任意入力の生年月日）から自動で決まります。
+      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。カードの意味は一般的なタロット解釈をもとにしたもので、1枚引きの結果は日付（と任意入力の生年月日）から自動で決まり、ケルト十字は引くたびの抽選で決まります。
     </div>
     <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
   </footer>
@@ -252,6 +307,144 @@ function render(){
 birthEl.addEventListener("change", render);
 birthEl.addEventListener("input", render);
 render();
+
+// ---- spread switch ----
+var segOne = document.getElementById("segOne");
+var segCeltic = document.getElementById("segCeltic");
+var oneMode = document.getElementById("oneMode");
+var celticMode = document.getElementById("celticMode");
+function setMode(celtic){
+  segOne.classList.toggle("active", !celtic);
+  segCeltic.classList.toggle("active", celtic);
+  oneMode.hidden = celtic;
+  celticMode.hidden = !celtic;
+}
+segOne.addEventListener("click", function(){ setMode(false); });
+segCeltic.addEventListener("click", function(){ setMode(true); });
+
+// ---- celtic cross ----
+var CPOS = [
+  {label:"現状", sub:"今の状況"},
+  {label:"課題", sub:"立ちはだかるもの"},
+  {label:"顕在意識", sub:"頭で考えていること"},
+  {label:"潜在意識", sub:"心の奥にあるもの"},
+  {label:"過去", sub:"これまでの流れ"},
+  {label:"未来", sub:"近い未来の兆し"},
+  {label:"自分", sub:"あなたの立ち位置"},
+  {label:"環境", sub:"周りの状況"},
+  {label:"願望と恐れ", sub:"望みと怖れ"},
+  {label:"結果", sub:"流れの行き着く先"}
+];
+// one-line reading per position; {kw} is filled with the card's first keyword
+var CPOS_ONE = [
+  {up:"今の状況は「{kw}」が中心にあります。まず現在地をそのまま認めることが、読み解きの出発点です。",
+   rv:"今の状況では「{kw}」が裏目に出ています。足元の滞りを認めることが先決です。"},
+  {up:"立ちはだかる課題は「{kw}」です。避けるより正面から扱うことで、道が開けていきます。",
+   rv:"課題は「{kw}」の滞りとして現れています。無理に押し切らず、迂回路も検討してください。"},
+  {up:"頭では「{kw}」を意識しています。自覚できているテーマなので、扱い方を選びやすいはずです。",
+   rv:"頭では「{kw}」を意識していますが、少し捉え違いがあるかもしれません。思い込みを一度点検して。"},
+  {up:"心の奥では「{kw}」が静かに働いています。無意識の願いが、あなたの行動を後押ししています。",
+   rv:"心の奥に「{kw}」への引っかかりがあります。気づいて言葉にすることが第一歩です。"},
+  {up:"過去の「{kw}」が今につながっています。積み重ねてきた経験は、ちゃんと財産になっています。",
+   rv:"過去の「{kw}」のつまずきが、今も影を落としています。学びに変えて手放していきましょう。"},
+  {up:"近い未来は「{kw}」が追い風になる兆しです。今の流れを大切に進めてください。",
+   rv:"近い未来は「{kw}」に注意が必要な兆しです。早めに備えておけば、慌てずに済みます。"},
+  {up:"あなた自身は「{kw}」の力を発揮できる立ち位置にいます。主導権はあなたにあります。",
+   rv:"あなた自身は「{kw}」が少し不安定な状態です。無理のない姿勢に戻すことが大切です。"},
+  {up:"周りの環境は「{kw}」に象徴されます。味方につけられる要素として働いています。",
+   rv:"周りの環境は「{kw}」の面で味方しきれていません。人との距離感を調整してみてください。"},
+  {up:"願望と恐れの中心は「{kw}」です。望む気持ちの裏側に、同じテーマへの怖れも隠れています。",
+   rv:"「{kw}」への恐れが、願望よりも前に出ています。怖れの中身を言葉にすると、輪郭が見えてきます。"},
+  {up:"結果は「{kw}」に象徴されます。この流れの先にある実りを受け取る準備をしてください。",
+   rv:"結果は「{kw}」に注意を促しています。ただし結果は固定ではありません。今の選択で変えていけます。"}
+];
+var CTOTALS = [
+  "中心にある「{now}」の状況が、やがて「{result}」へとつながっていく配置です。途中のカードは、その道のりの段取りを示しています。特に「6 未来」と「10 結果」の流れを比べてみてください。",
+  "今の「{now}」から「{result}」へ向かう物語が、10枚に広がっています。鍵になるのは「7 自分」のカードです。あなたの立ち位置しだいで、結果の色は変わっていきます。",
+  "「{now}」を起点に、「{result}」が締めくくりを示しています。「9 願望と恐れ」が表す気持ちと向き合うことが、このスプレッドの核心です。"
+];
+// grid placement [column, row] per position number (1 and 2 share the center cell)
+var CGRID = {3:[2,1], 10:[5,1], 5:[1,2], 6:[3,2], 9:[5,2], 4:[2,3], 8:[5,3], 7:[5,4]};
+
+var celticBtn = document.getElementById("celticBtn");
+var celticResult = document.getElementById("celticResult");
+var crossLayout = document.getElementById("crossLayout");
+var readList = document.getElementById("readList");
+var celticTotal = document.getElementById("celticTotal");
+
+function miniCard(c, reversed, extra){
+  return '<div class="mcard ' + (extra || "") + (reversed ? " rev" : "") + '">' +
+    '<div class="roman">' + c.roman + '</div>' +
+    '<div class="symbol">' + c.sym + '</div>' +
+    '<div class="cname">' + c.name + '</div></div>';
+}
+
+function renderCeltic(drawn){
+  var html = "";
+  // center cell: position 1 with position 2 laid across it
+  html += '<div class="cell" style="grid-column:2;grid-row:2">' +
+    '<span class="plabel">1 現状・2 課題</span>' +
+    '<div class="center-wrap">' +
+      miniCard(drawn[0].card, drawn[0].reversed, "") +
+      miniCard(drawn[1].card, false, "cross2" + (drawn[1].reversed ? " revline" : "")) +
+    '</div></div>';
+  for(var p = 3; p <= 10; p++){
+    var d = drawn[p - 1];
+    var g = CGRID[p];
+    html += '<div class="cell" style="grid-column:' + g[0] + ';grid-row:' + g[1] + '">' +
+      '<span class="plabel">' + p + ' ' + CPOS[p - 1].label + '</span>' +
+      miniCard(d.card, d.reversed, "") +
+    '</div>';
+  }
+  crossLayout.innerHTML = html;
+
+  readList.innerHTML = "";
+  drawn.forEach(function(d, i){
+    var pos = CPOS[i];
+    var one = (d.reversed ? CPOS_ONE[i].rv : CPOS_ONE[i].up).replace("{kw}", d.card.kw[0]);
+    var block = document.createElement("div");
+    block.className = "read";
+    block.setAttribute("data-pos", pos.label);
+    block.innerHTML =
+      '<div class="read-head"><span class="pname">' + (i + 1) + '. ' + pos.label + '</span>' +
+      '<span class="rcname">' + d.card.name + '</span>' +
+      '<span class="badge ' + (d.reversed ? "rv" : "up") + '" style="margin-top:0">' + (d.reversed ? "逆位置" : "正位置") + '</span></div>' +
+      '<p class="read-one">' + one + '</p>' +
+      '<p class="read-mean">' + (d.reversed ? d.card.rv : d.card.up) + '</p>' +
+      '<p class="read-adv"><b>アドバイス：</b>' + d.card.ad + '</p>';
+    readList.appendChild(block);
+  });
+
+  var total = CTOTALS[Math.floor(Math.random() * CTOTALS.length)]
+    .replace("{now}", drawn[0].card.name)
+    .replace("{result}", drawn[9].card.name);
+  var revCount = drawn.filter(function(x){ return x.reversed; }).length;
+  if(revCount >= 7){
+    total += " 逆位置が多めの配置です。外へ進むより、内側の整理と立て直しがテーマになっています。";
+  } else if(revCount === 0){
+    total += " 10枚すべて正位置の配置です。流れは素直に前向きに出ています。";
+  }
+  celticTotal.textContent = total;
+  celticResult.hidden = false;
+}
+
+function drawCeltic(){
+  // draw 10 distinct cards with live randomness (partial Fisher-Yates)
+  var pool = CARDS.map(function(_, i){ return i; });
+  for(var k = 0; k < 10; k++){
+    var j = k + Math.floor(Math.random() * (pool.length - k));
+    var tmp = pool[k]; pool[k] = pool[j]; pool[j] = tmp;
+  }
+  var drawn = [];
+  for(var p = 0; p < 10; p++){
+    drawn.push({card: CARDS[pool[p]], reversed: Math.random() < 0.3});
+  }
+  window.CELTIC_LAST = drawn;
+  renderCeltic(drawn);
+  celticBtn.textContent = "もう一度引く";
+}
+celticBtn.addEventListener("click", drawCeltic);
+window.CELTIC_POSITIONS = CPOS;
 </script>
 </body>
 </html>
