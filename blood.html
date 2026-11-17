@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>今日の血液型占い｜占いツール集</title>
+<meta name="description" content="A型・B型・O型・AB型の今日の運勢と、4つの血液型の今日のランキングを出す無料の血液型占い。結果は1日固定です。">
+<style>
+:root{
+  --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1d2733; --mut:#68707c;
+  --line:#ddd6c8; --red:#b03a2e; --green:#1e7d46; --soft:#fdf6e0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:22px 16px 18px;border-bottom:4px solid var(--amber)}
+header .wrap{max-width:980px;margin:0 auto}
+header h1{margin:0;font-size:24px;letter-spacing:.04em}
+header h1 .accent{color:var(--amber)}
+header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
+.wrap{max-width:980px;margin:0 auto;padding:0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 1px 3px rgba(18,40,63,.06)}
+.card h2{margin:0 0 10px;font-size:17px;color:var(--navy);border-left:5px solid var(--amber);padding-left:9px}
+.note{font-size:12.5px;color:var(--mut)}
+footer{margin:26px 0 40px}
+footer .card{font-size:12.5px;color:var(--mut)}
+.credit{text-align:center;color:var(--mut);font-size:12px;margin:10px 0 30px}
+a{color:var(--navy)}
+.sitebar{background:var(--navy2);border-bottom:2px solid var(--amber)}
+.sitebar .sb-in{max-width:980px;margin:0 auto;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sitebar a{color:#fff;text-decoration:none;font-size:13px}
+.sitebar a:hover{color:var(--amber)}
+.sitebar .sb-name{font-weight:700;letter-spacing:.03em}
+.date-line{font-size:14px;color:var(--navy);font-weight:700}
+.seg{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px}
+.seg button{flex:1 1 70px;padding:12px 6px;font-size:17px;font-weight:800;border:2px solid var(--line);border-radius:9px;background:#fff;color:var(--navy);cursor:pointer}
+.seg button small{display:block;font-size:11px;font-weight:400;color:var(--mut)}
+.seg button.on{background:var(--navy);color:#fff;border-color:var(--amber)}
+.seg button.on small{color:#cfd9e4}
+.stars{font-size:30px;letter-spacing:.12em;color:var(--amber);text-align:center;margin:6px 0 0}
+.stars .off{color:#ddd6c8}
+.fortune-name{text-align:center;font-size:19px;font-weight:800;color:var(--navy);margin-top:2px}
+.cat{margin:12px 0 0}
+.cat b{display:inline-block;min-width:52px;color:var(--amber-d)}
+.advice{background:var(--soft);border:1px solid #ecd27a;border-radius:8px;padding:10px 12px;font-size:14.5px;margin:12px 0 0}
+.advice b{color:var(--amber-d)}
+.person{font-size:14.5px;margin:8px 0 0}
+.rank{list-style:none;margin:6px 0 0;padding:0}
+.rank li{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:9px;margin:8px 0;background:#fff;cursor:pointer}
+.rank li.hl{border:2px solid var(--amber);background:var(--soft)}
+.rank .rk{font-size:19px;font-weight:800;color:var(--amber-d);min-width:44px;text-align:center}
+.rank .bt{font-size:17px;font-weight:800;color:var(--navy);min-width:52px}
+.rank .st{color:var(--amber);letter-spacing:.08em;font-size:14px}
+.rank .cm{font-size:12.5px;color:var(--mut);margin-left:auto;text-align:right}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span style="color:#cfd9e4;font-size:13px">血液型占い</span></div></div>
+
+<header>
+  <div class="wrap">
+    <h1>今日の <span class="accent">血液型占い</span></h1>
+    <p>あなたの血液型の今日の運勢と、4つの血液型の今日のランキングです。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>あなたの血液型は？</h2>
+    <p class="date-line" id="todayLine"></p>
+    <div class="seg" id="seg">
+      <button type="button" data-type="A">A型<small>きっちり・慎重</small></button>
+      <button type="button" data-type="B">B型<small>自由・マイペース</small></button>
+      <button type="button" data-type="O">O型<small>大らか・行動派</small></button>
+      <button type="button" data-type="AB">AB型<small>二面性・冷静</small></button>
+    </div>
+    <p class="note">血液型を選ぶと、今日の運勢が表示されます。結果はその日1日固定です。</p>
+  </div>
+
+  <div class="card hidden" id="resultCard">
+    <div class="fortune-name" id="fName">A型の今日の運勢</div>
+    <div class="stars" id="fStars"></div>
+    <p class="cat"><b>恋愛</b><span id="fLove"></span></p>
+    <p class="cat"><b>仕事</b><span id="fWork"></span></p>
+    <p class="cat"><b>金運</b><span id="fMoney"></span></p>
+    <div class="advice"><b>ラッキーアイテム：</b><span id="fLucky"></span></div>
+    <h2 style="margin-top:16px">この血液型の基本性格</h2>
+    <p class="person" id="fPerson"></p>
+  </div>
+
+  <div class="card">
+    <h2>今日の血液型ランキング</h2>
+    <ul class="rank" id="rankList"></ul>
+    <p class="note">ランキングは日付から決まります。その日は何度開いても同じ順位です。行をタップすると、その血液型の運勢が見られます。</p>
+  </div>
+
+  <footer>
+    <div class="card">
+      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。血液型と性格の関係に科学的な根拠はなく、結果は日付と血液型から自動で決まります。
+    </div>
+    <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
+  </footer>
+
+</div>
+
+<script>
+"use strict";
+// xmur3-style string hash -> seed for mulberry32
+function hashSeed(str){
+  let h = 1779033703 ^ str.length;
+  for(let i=0;i<str.length;i++){
+    h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+    h = (h << 13) | (h >>> 19);
+  }
+  return h >>> 0;
+}
+function mulberry32(a){
+  return function(){
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function todayStr(){
+  const d = new Date();
+  const m = String(d.getMonth()+1).padStart(2,"0");
+  const day = String(d.getDate()).padStart(2,"0");
+  return d.getFullYear() + "-" + m + "-" + day;
+}
+
+var TYPES = ["A", "B", "O", "AB"];
+var PERSONALITY = {
+  A:"几帳面で責任感が強く、周りへの気配りを忘れないタイプ。決めたルールをきっちり守る真面目さが信頼を集めます。一方で、考えすぎて疲れてしまうことも。力を抜く時間を意識的に作ると、良さが長続きします。",
+  B:"好奇心が旺盛で、興味を持ったことには一直線なタイプ。自由な発想と行動力が魅力で、場の空気を明るくします。気分に波はありますが、それも含めて個性。好きなことを続けることが、そのまま運を育てます。",
+  O:"大らかで面倒見がよく、目標を決めたら粘り強く進むタイプ。人の輪の中心にいることが多く、頼られる場面も多めです。おおざっぱに見えて、ここぞという時の集中力は抜群。勝負どころを見極める目を持っています。",
+  AB:"冷静な判断力と独特の感性をあわせ持つタイプ。合理的に考える一方で、芸術的なひらめきも大切にします。気分や距離感に波があると言われますが、それは相手に合わせすぎない賢さでもあります。自分のペースを守るほど輝きます。"
+};
+var LOVE = [
+  "素直な一言が、相手の心に届きやすい日です。照れずに気持ちを言葉にしてみて。",
+  "相手の話をよく聞くことで、距離がぐっと縮まりそうです。聞き役が今日の吉です。",
+  "小さな気配りが効く日です。何気ない優しさが、好印象につながります。",
+  "今日は受け身くらいでちょうどいい日。誘いがあれば、乗ってみると楽しい展開に。",
+  "気持ちが揺れやすい日です。大事な告白や決断は、今日は様子見が無難です。",
+  "懐かしい人との縁が動くかもしれません。連絡が来たら、丁寧に返してみて。"
+];
+var WORK = [
+  "段取りの良さが光る日です。先回りの準備が、周りからの信頼につながります。",
+  "集中力が高まる日です。手強い用事ほど、今日のうちに片付けてしまいましょう。",
+  "確認不足のミスに注意したい日です。送信・提出の前の見直しを丁寧に。",
+  "人との連携が鍵になる日です。報連相をこまめにすると、物事が速く進みます。",
+  "新しいやり方を試すのに良い日です。小さな改善が、大きな効率化の種になります。",
+  "今日は守りの日。無理な引き受けはせず、今ある仕事をきっちり仕上げましょう。"
+];
+var MONEY = [
+  "思わぬ臨時収入や、お得な情報に縁がある日です。ただし浮かれての散財は控えめに。",
+  "堅実な日です。貯める・見直すに向いています。固定費のチェックが吉です。",
+  "衝動買いに注意したい日です。欲しい物は一晩置いてから判断して。",
+  "人へのご馳走や贈り物が、巡り巡って返ってくる日です。出し惜しみは損です。",
+  "細かい出費がかさみやすい日です。レシートや明細を確認する習慣が助けになります。",
+  "金運は安定しています。大きな買い物より、長く使える物への投資が向く日です。"
+];
+var LUCKY = ["ハンカチ","青い小物","温かい飲み物","新しいノート","観葉植物","銀色のアクセサリー","柑橘系の香り","革の財布","栞（しおり）","白い靴下","木の櫛","星のモチーフ"];
+var RANK_COMMENT = ["絶好調。攻めの一手が決まる日です。","好調。流れに乗って進めます。","穏やか。堅実な行動が実を結びます。","控えめに。今日は整える日に。"];
+
+function starStr(n){
+  var s = "";
+  for(var i = 0; i < 5; i++){ s += (i < n) ? "★" : "☆"; }
+  return s;
+}
+function starHtml(n){
+  var s = "";
+  for(var i = 0; i < 5; i++){ s += (i < n) ? "★" : '<span class="off">★</span>'; }
+  return s;
+}
+// per-type fortune for a date string; deterministic
+function fortuneFor(type, t){
+  var rng = mulberry32(hashSeed("blood|" + t + "|" + type));
+  var stars = 1 + Math.floor(rng() * 5);
+  var love = LOVE[Math.floor(rng() * LOVE.length)];
+  var work = WORK[Math.floor(rng() * WORK.length)];
+  var money = MONEY[Math.floor(rng() * MONEY.length)];
+  var lucky = LUCKY[Math.floor(rng() * LUCKY.length)];
+  return {stars: stars, love: love, work: work, money: money, lucky: lucky};
+}
+// daily ranking of the 4 types; deterministic by date only
+function rankingFor(t){
+  var rng = mulberry32(hashSeed("bloodrank|" + t));
+  var arr = TYPES.slice();
+  for(var i = arr.length - 1; i > 0; i--){
+    var j = Math.floor(rng() * (i + 1));
+    var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+  }
+  return arr;
+}
+
+var todayLine = document.getElementById("todayLine");
+var segEl = document.getElementById("seg");
+var resultCard = document.getElementById("resultCard");
+var rankList = document.getElementById("rankList");
+var selected = "";
+
+function renderRanking(){
+  var t = todayStr();
+  var rank = rankingFor(t);
+  rankList.innerHTML = "";
+  rank.forEach(function(type, i){
+    var f = fortuneFor(type, t);
+    var li = document.createElement("li");
+    li.setAttribute("data-type", type);
+    if(type === selected){ li.className = "hl"; }
+    li.innerHTML = '<span class="rk">' + (i + 1) + '位</span>' +
+      '<span class="bt">' + type + '型</span>' +
+      '<span class="st">' + starStr(f.stars) + '</span>' +
+      '<span class="cm">' + RANK_COMMENT[i] + '</span>';
+    li.addEventListener("click", function(){ selectType(type); });
+    rankList.appendChild(li);
+  });
+}
+
+function selectType(type){
+  selected = type;
+  var t = todayStr();
+  var f = fortuneFor(type, t);
+  var buttons = segEl.querySelectorAll("button");
+  buttons.forEach(function(b){ b.classList.toggle("on", b.getAttribute("data-type") === type); });
+  document.getElementById("fName").textContent = type + "型の今日の運勢";
+  document.getElementById("fStars").innerHTML = starHtml(f.stars);
+  document.getElementById("fLove").textContent = f.love;
+  document.getElementById("fWork").textContent = f.work;
+  document.getElementById("fMoney").textContent = f.money;
+  document.getElementById("fLucky").textContent = f.lucky;
+  document.getElementById("fPerson").textContent = PERSONALITY[type];
+  resultCard.classList.remove("hidden");
+  renderRanking();
+}
+
+var d = new Date();
+todayLine.textContent = d.getFullYear() + "年" + (d.getMonth()+1) + "月" + d.getDate() + "日の運勢";
+segEl.querySelectorAll("button").forEach(function(b){
+  b.addEventListener("click", function(){ selectType(b.getAttribute("data-type")); });
+});
+renderRanking();
+</script>
+</body>
+</html>

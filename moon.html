@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>月齢占い｜占いツール集</title>
+<meta name="description" content="今日の月齢・月の形と、今の月に沿った運勢を出す無料の月齢占いツール。前日・翌日の月も見られます。">
+<style>
+:root{
+  --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1d2733; --mut:#68707c;
+  --line:#ddd6c8; --red:#b03a2e; --green:#1e7d46; --soft:#fdf6e0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:22px 16px 18px;border-bottom:4px solid var(--amber)}
+header .wrap{max-width:980px;margin:0 auto}
+header h1{margin:0;font-size:24px;letter-spacing:.04em}
+header h1 .accent{color:var(--amber)}
+header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
+.wrap{max-width:980px;margin:0 auto;padding:0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 1px 3px rgba(18,40,63,.06)}
+.card h2{margin:0 0 10px;font-size:17px;color:var(--navy);border-left:5px solid var(--amber);padding-left:9px}
+.note{font-size:12.5px;color:var(--mut)}
+.dnav{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.dnav .dlabel{font-size:19px;font-weight:800;color:var(--navy)}
+.dnav .dbtns{display:flex;gap:8px}
+button.dbtn{
+  padding:8px 14px;border:1px solid #c9c2b2;border-radius:7px;background:#fff;color:var(--ink);
+  font-size:14px;cursor:pointer;
+}
+button.dbtn:hover{border-color:var(--amber);color:var(--amber-d)}
+button.dbtn.today{border-color:var(--amber);background:var(--soft);font-weight:700}
+.moonpanel{background:var(--navy);color:#fff;border-radius:10px;padding:18px 16px;margin:14px 0;display:flex;gap:20px;flex-wrap:wrap;align-items:center}
+.moonvis{flex:0 0 auto;text-align:center}
+.moonvis .emoji{font-size:30px;margin-top:2px}
+.mooninfo{flex:1 1 260px}
+.mooninfo .pname{font-size:30px;font-weight:800;color:var(--amber);line-height:1.25}
+.mooninfo .psub{font-size:13px;color:#b9c8d8;margin-bottom:10px}
+.mstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.mstat{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:9px 12px}
+.mstat .lab{font-size:11.5px;color:#b9c8d8}
+.mstat .val{font-size:21px;font-weight:800;font-variant-numeric:tabular-nums}
+.today{background:var(--soft);border:1px solid #ecd27a;border-radius:10px;padding:14px 16px;margin:14px 0}
+.today .lab{font-size:12.5px;color:var(--mut)}
+.today .word{font-size:19px;font-weight:800;color:var(--navy)}
+.today .desc{font-size:13.5px;margin-top:4px}
+footer{margin:26px 0 40px}
+footer .card{font-size:12.5px;color:var(--mut)}
+.credit{text-align:center;color:var(--mut);font-size:12px;margin:10px 0 30px}
+a{color:var(--navy)}
+.sitebar{background:var(--navy2);border-bottom:2px solid var(--amber)}
+.sitebar .sb-in{max-width:980px;margin:0 auto;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sitebar a{color:#fff;text-decoration:none;font-size:13px}
+.sitebar a:hover{color:var(--amber)}
+.sitebar .sb-name{font-weight:700;letter-spacing:.03em}
+.sitebar .sb-tool{color:#b9c8d8;font-size:13px}
+</style>
+</head>
+<body>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span class="sb-tool">月齢占い</span></div></div>
+
+<header>
+  <div class="wrap">
+    <h1>月齢占い <span class="accent">ムーンリーディング</span></h1>
+    <p>今日の月齢と月の形から、今の時期の運勢を読みます。前日・翌日の月も見られます。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <div class="dnav">
+      <div class="dlabel" id="dateLabel">—</div>
+      <div class="dbtns">
+        <button class="dbtn" id="prevBtn" type="button">← 前日</button>
+        <button class="dbtn today" id="todayBtn" type="button">今日</button>
+        <button class="dbtn" id="nextBtn" type="button">翌日 →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="moonpanel">
+    <div class="moonvis">
+      <svg id="moonSvg" width="180" height="180" viewBox="0 0 200 200" role="img" aria-label="月の形">
+        <circle cx="100" cy="100" r="84" fill="#2c4258"/>
+        <path id="moonLit" d="" fill="#f5c65c"/>
+        <circle cx="100" cy="100" r="84" fill="none" stroke="#f2a007" stroke-width="2"/>
+      </svg>
+      <div class="emoji" id="moonEmoji">🌑</div>
+    </div>
+    <div class="mooninfo">
+      <div class="pname" id="phaseName">—</div>
+      <div class="psub" id="phaseSub">—</div>
+      <div class="mstats">
+        <div class="mstat"><div class="lab">月齢</div><div class="val" id="ageVal">—</div></div>
+        <div class="mstat"><div class="lab">照度（輝いている割合）</div><div class="val" id="illumVal">—</div></div>
+        <div class="mstat"><div class="lab">次の満月まで</div><div class="val" id="toFullVal">—</div></div>
+        <div class="mstat"><div class="lab">次の新月まで</div><div class="val" id="toNewVal">—</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="today">
+    <div class="lab">今の月の運勢</div>
+    <div class="word" id="fortuneWord">—</div>
+    <div class="desc" id="fortuneDesc">—</div>
+  </div>
+
+  <div class="card">
+    <h2>月齢の見方</h2>
+    <p class="note" style="font-size:13px;color:var(--ink)">
+      月齢は、新月（朔）の瞬間から数えた経過日数です。新月が 0、上弦が約 7.4、満月が約 14.8、下弦が約 22.1 で、約 29.5 日でひと回りします。
+      このページの月齢は、日本の暦で慣用される「その日の正午（日本時間）」の値です。既知の新月（2026年11月9日 16:02）を基準に、平均朔望月 29.530589 日で計算しているため、実際の朔望とは最大で半日ほどずれることがあります。
+      月のリズムは「始める→育てる→実らせる→手放す」の繰り返し。今の月がどの位置かを知ることが、月齢占いの入口です。
+    </p>
+  </div>
+
+  <footer>
+    <div class="card">
+      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。
+    </div>
+    <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var SYNODIC = 29.530588853;
+// Known new moon used as the epoch: 2026-11-09 16:02 JST (= 07:02 UTC).
+var EPOCH_MS = Date.UTC(2026, 10, 9, 7, 2);
+
+// Moon age at noon JST of the given date (Japanese calendar convention).
+function moonAge(y, m, d){
+  var noonMs = Date.UTC(y, m - 1, d, 3, 0); // 12:00 JST = 03:00 UTC
+  var days = (noonMs - EPOCH_MS) / 86400000;
+  var age = days % SYNODIC;
+  if(age < 0) age += SYNODIC;
+  return age;
+}
+
+function illumination(age){
+  var phi = 2 * Math.PI * age / SYNODIC;
+  return (1 - Math.cos(phi)) / 2 * 100;
+}
+
+// 8 phase categories by moon age.
+var PHASES = [
+  {name:"新月", emoji:"🌑", sub:"始まりの月。姿は見えなくても、種はもう蒔かれています。",
+   word:"種まきと願いの日",
+   desc:"新月は、月のサイクルの出発点。新しい目標を立てたり、願いを言葉にして書き出したりするのに最適な時期です。まだ形は見えなくて当然で、焦らず「何を育てたいか」を決めることが実りへの第一歩になります。"},
+  {name:"三日月", emoji:"🌒", sub:"細い月が空に戻り、芽が動き出す頃です。",
+   word:"芽吹きと最初の一歩",
+   desc:"蒔いた種が芽を出し始める時期。小さくても具体的な一歩を踏み出すことで、月の満ちる力が後押ししてくれます。迷いがあるのは自然なこと。完璧を目指さず、まず始めてみることが大切です。"},
+  {name:"上弦の月", emoji:"🌓", sub:"半分の月。行動と決断の節目です。",
+   word:"決断と行動の日",
+   desc:"上弦は、進むか引くかを決める節目の月。途中で出てきた障害や迷いは、方向を整えるためのサインです。ここで決断したことが、満月に向けて大きく育っていきます。優先順位をはっきりさせましょう。"},
+  {name:"十三夜月", emoji:"🌔", sub:"満月へ向けて、月が大きく満ちていく頃です。",
+   word:"充実と調整の日",
+   desc:"満月に近づき、物事が充実していく時期。進めてきたことの手直しや調整をするのに向いています。あと一歩の詰めを丁寧にすることで、満月の実りが確かなものになります。人との協力も実を結びやすい頃です。"},
+  {name:"満月", emoji:"🌕", sub:"月が満ちきる、実りと感謝の頂点です。",
+   word:"実りと感謝の日",
+   desc:"満月は、蒔いた種が実る頂点の月。成果を受け取り、支えてくれた人へ感謝を伝えるのに良い時期です。同時に、満ちたものは手放す準備も始まります。達成感を味わいながら、不要になったものは感謝とともに手放しましょう。"},
+  {name:"寝待月", emoji:"🌖", sub:"満月を過ぎ、月が静かに欠け始める頃です。",
+   word:"内省と分かち合いの日",
+   desc:"満月の実りを味わったあと、少しずつ内向きになる時期。得たものを周りと分かち合い、経験を振り返ることで学びが深まります。新しいことを増やすより、実りを整理して次につなげるのが向いています。"},
+  {name:"下弦の月", emoji:"🌗", sub:"半分に戻る月。見直しと浄化の節目です。",
+   word:"見直しと浄化の日",
+   desc:"下弦は、サイクルの後半の節目。うまくいかなかったことを責めるのではなく、静かに見直して手放すものを決める時期です。片付けや整理、習慣の見直しがはかどります。身軽になることが次の始まりへの準備になります。"},
+  {name:"有明の月", emoji:"🌘", sub:"夜明け前に残る細い月。静けさと準備の頃です。",
+   word:"静けさと準備の日",
+   desc:"新月を目前にした、静かな仕上げの時期。無理に動くより、休んで英気を養い、次に蒔く種を選ぶ時間にあてましょう。終わらせるべきことを静かに終えることで、新しいサイクルを清々しく迎えられます。"}
+];
+
+function phaseIndex(age){
+  if(age < 1.2) return 0;          // new moon
+  if(age < 4.9) return 1;          // crescent
+  if(age < 9.8) return 2;          // first quarter
+  if(age < 13.9) return 3;         // waxing gibbous
+  if(age < 15.7) return 4;         // full moon
+  if(age < 20.3) return 5;         // waning gibbous
+  if(age < 24.7) return 6;         // last quarter
+  return 7;                        // waning crescent
+}
+
+function moonCalc(y, m, d){
+  var age = moonAge(y, m, d);
+  var idx = phaseIndex(age);
+  return {age:age, illum:illumination(age), idx:idx, phase:PHASES[idx]};
+}
+
+// Build the lit-region path of the moon disc (center 100,100, r 84).
+function litPath(age){
+  var r = 84, cx = 100, cy = 100;
+  var phi = 2 * Math.PI * age / SYNODIC;
+  var rx = Math.max(0.01, Math.abs(Math.cos(phi)) * r);
+  var waxing = age < SYNODIC / 2;
+  var limbSweep = waxing ? 1 : 0;
+  var termSweep;
+  if(waxing) termSweep = Math.cos(phi) > 0 ? 0 : 1;
+  else termSweep = Math.cos(phi) > 0 ? 1 : 0;
+  return "M " + cx + " " + (cy - r) +
+    " A " + r + " " + r + " 0 0 " + limbSweep + " " + cx + " " + (cy + r) +
+    " A " + rx.toFixed(2) + " " + r + " 0 0 " + termSweep + " " + cx + " " + (cy - r) + " Z";
+}
+
+var WEEKDAYS = ["日","月","火","水","木","金","土"];
+
+function jstToday(){
+  var now = new Date(Date.now() + 9 * 3600000);
+  return {y: now.getUTCFullYear(), m: now.getUTCMonth() + 1, d: now.getUTCDate()};
+}
+
+var cur = jstToday();
+
+function shift(days){
+  var t = new Date(Date.UTC(cur.y, cur.m - 1, cur.d + days));
+  cur = {y: t.getUTCFullYear(), m: t.getUTCMonth() + 1, d: t.getUTCDate()};
+  render();
+}
+
+function render(){
+  var r = moonCalc(cur.y, cur.m, cur.d);
+  var wd = WEEKDAYS[new Date(Date.UTC(cur.y, cur.m - 1, cur.d)).getUTCDay()];
+  var today = jstToday();
+  var isToday = cur.y === today.y && cur.m === today.m && cur.d === today.d;
+  document.getElementById("dateLabel").textContent =
+    cur.y + "年" + cur.m + "月" + cur.d + "日（" + wd + "）" + (isToday ? "・今日" : "");
+  document.getElementById("moonLit").setAttribute("d", litPath(r.age));
+  document.getElementById("moonEmoji").textContent = r.phase.emoji;
+  document.getElementById("phaseName").textContent = r.phase.name;
+  document.getElementById("phaseSub").textContent = r.phase.sub;
+  document.getElementById("ageVal").textContent = r.age.toFixed(1);
+  document.getElementById("illumVal").textContent = Math.round(r.illum) + "%";
+  var toFull = (SYNODIC / 2 - r.age + SYNODIC) % SYNODIC;
+  var toNew = (SYNODIC - r.age) % SYNODIC;
+  document.getElementById("toFullVal").textContent = "約" + toFull.toFixed(0) + "日";
+  document.getElementById("toNewVal").textContent = "約" + toNew.toFixed(0) + "日";
+  document.getElementById("fortuneWord").textContent = r.phase.word;
+  document.getElementById("fortuneDesc").textContent = r.phase.desc;
+}
+
+document.getElementById("prevBtn").addEventListener("click", function(){ shift(-1); });
+document.getElementById("nextBtn").addEventListener("click", function(){ shift(1); });
+document.getElementById("todayBtn").addEventListener("click", function(){ cur = jstToday(); render(); });
+
+render();
+
+// Exposed for verification.
+window.MOON = {calc: moonCalc, phases: PHASES, synodic: SYNODIC};
+})();
+</script>
+</body>
+</html>

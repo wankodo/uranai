@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>今日のタロット3枚引き（過去・現在・未来）｜占いツール集</title>
+<meta name="description" content="大アルカナ22枚から重複なく3枚を引き、過去・現在・未来の流れを読む無料タロット占い。生年月日を入れると、あなた専用の今日の3枚になります。結果は1日固定です。">
+<style>
+:root{
+  --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1d2733; --mut:#68707c;
+  --line:#ddd6c8; --red:#b03a2e; --green:#1e7d46; --soft:#fdf6e0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:22px 16px 18px;border-bottom:4px solid var(--amber)}
+header .wrap{max-width:980px;margin:0 auto}
+header h1{margin:0;font-size:24px;letter-spacing:.04em}
+header h1 .accent{color:var(--amber)}
+header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
+.wrap{max-width:980px;margin:0 auto;padding:0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 1px 3px rgba(18,40,63,.06)}
+.card h2{margin:0 0 10px;font-size:17px;color:var(--navy);border-left:5px solid var(--amber);padding-left:9px}
+.note{font-size:12.5px;color:var(--mut)}
+label.flabel{display:block;font-size:12.5px;color:var(--mut);margin:10px 0 3px}
+input[type="date"]{width:100%;padding:9px 10px;border:1px solid #c9c2b2;border-radius:7px;font-size:15px;background:#fff;color:var(--ink)}
+input:focus{outline:2px solid var(--amber);outline-offset:0;border-color:var(--amber)}
+footer{margin:26px 0 40px}
+footer .card{font-size:12.5px;color:var(--mut)}
+.credit{text-align:center;color:var(--mut);font-size:12px;margin:10px 0 30px}
+a{color:var(--navy)}
+.sitebar{background:var(--navy2);border-bottom:2px solid var(--amber)}
+.sitebar .sb-in{max-width:980px;margin:0 auto;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sitebar a{color:#fff;text-decoration:none;font-size:13px}
+.sitebar a:hover{color:var(--amber)}
+.sitebar .sb-name{font-weight:700;letter-spacing:.03em}
+.date-line{font-size:14px;color:var(--navy);font-weight:700}
+.trio{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.pos{flex:1 1 210px;max-width:300px;text-align:center}
+.pos-label{display:inline-block;background:var(--navy);color:#fff;border-radius:999px;padding:3px 18px;font-size:14px;font-weight:700;letter-spacing:.15em;margin-bottom:10px}
+.pos-label small{display:block;font-size:11px;font-weight:400;letter-spacing:.05em;color:#cfd9e4}
+.tcard-wrap{display:flex;justify-content:center;margin:4px 0}
+.tcard{width:168px;max-width:60vw;aspect-ratio:5/8;background:linear-gradient(160deg,#1d4568,#071827);border:3px solid var(--amber);border-radius:12px;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:14px 10px;box-shadow:0 6px 18px rgba(7,24,39,.35);transition:transform .6s ease}
+.tcard.rev{transform:rotate(180deg)}
+.tcard .roman{font-size:13px;letter-spacing:.35em;color:var(--amber);font-weight:700}
+.tcard .symbol{font-size:56px;line-height:1.15}
+.tcard .cname{font-size:17px;font-weight:800;letter-spacing:.06em;text-align:center}
+.badge{display:inline-block;border-radius:999px;padding:2px 12px;font-size:12.5px;font-weight:700;margin-top:8px}
+.badge.up{background:var(--green);color:#fff}
+.badge.rv{background:var(--red);color:#fff}
+.pos-name{font-size:16px;font-weight:800;color:var(--navy);margin-top:6px}
+.pos-one{font-size:13.5px;background:var(--soft);border:1px solid #ecd27a;border-radius:8px;padding:8px 10px;margin:10px 0 0;text-align:left}
+.pos-mean{font-size:13.5px;color:var(--ink);text-align:left;margin:8px 0 0}
+.total{background:var(--soft);border:1px solid #ecd27a;border-radius:8px;padding:12px 14px;font-size:15px;margin:4px 0 0}
+.total b{color:var(--amber-d)}
+</style>
+</head>
+<body>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span style="color:#cfd9e4;font-size:13px">タロット3枚引き</span></div></div>
+
+<header>
+  <div class="wrap">
+    <h1>今日のタロット <span class="accent">3枚引き</span></h1>
+    <p>過去・現在・未来の3枚から、今日のあなたの流れを読みます。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>あなたの今日の3枚</h2>
+    <p class="date-line" id="todayLine"></p>
+    <label class="flabel" for="birth">生年月日（任意）</label>
+    <input type="date" id="birth" value="">
+    <p class="note">生年月日を入れると、あなた専用の今日の3枚になります。未入力の場合は、その日みんなに共通の3枚です。結果はその日1日固定です（何度開いても同じ結果になります）。</p>
+  </div>
+
+  <div class="card">
+    <div class="trio" id="trio"></div>
+  </div>
+
+  <div class="card">
+    <h2>3枚を通した総合メッセージ</h2>
+    <div class="total" id="totalMsg"></div>
+    <p class="note" style="margin-top:10px">結果はその日1日固定です。明日になると、また新しい3枚が出ます。</p>
+  </div>
+
+  <footer>
+    <div class="card">
+      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。カードの意味は一般的なタロット解釈をもとにしたもので、結果は日付（と任意入力の生年月日）から自動で決まります。
+    </div>
+    <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
+  </footer>
+
+</div>
+
+<script>
+"use strict";
+// xmur3-style string hash -> seed for mulberry32
+function hashSeed(str){
+  let h = 1779033703 ^ str.length;
+  for(let i=0;i<str.length;i++){
+    h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+    h = (h << 13) | (h >>> 19);
+  }
+  return h >>> 0;
+}
+function mulberry32(a){
+  return function(){
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function todayStr(){
+  const d = new Date();
+  const m = String(d.getMonth()+1).padStart(2,"0");
+  const day = String(d.getDate()).padStart(2,"0");
+  return d.getFullYear() + "-" + m + "-" + day;
+}
+
+var CARDS = [
+ {roman:"0", name:"愚者", sym:"🃏", kw:["自由","始まり","冒険"],
+  up:"新しい一歩を踏み出すのに良い日です。計画を完璧に整えるより、まずは動いてみることで道が開けます。周りの目を気にしすぎず、自分の直感を信じてみてください。",
+  rv:"勢いだけで進むと足元をすくわれやすい日です。軽はずみな約束や衝動的な買い物は控えめに。始める前に、最低限の準備だけは確認しておきましょう。",
+  ad:"小さな冒険をひとつだけ。初めての店や道を選んでみてください。"},
+ {roman:"I", name:"魔術師", sym:"🪄", kw:["創造","行動力","才能"],
+  up:"手持ちの道具や経験を活かして、物事を動かせる日です。アイデアを言葉にして人に伝えると、協力者が現れやすいでしょう。自信を持って主役を務めてください。",
+  rv:"実力が発揮しきれず、空回りしやすい日です。口先だけの話や見栄に注意。まずは基本に立ち返り、できることから丁寧に片付けましょう。",
+  ad:"今日やることを3つだけ決めて、上から順に手をつけてください。"},
+ {roman:"II", name:"女教皇", sym:"📖", kw:["直感","知性","静けさ"],
+  up:"静かに考える時間が実を結ぶ日です。情報収集や勉強に集中すると、大事な気づきが得られます。感情に流されず、冷静な判断が吉と出ます。",
+  rv:"考えすぎて動けなくなったり、人の言葉に過敏になったりしやすい日です。秘密や噂話には距離を置いて。心の声より、事実を確認する姿勢が助けになります。",
+  ad:"スマホを置いて、10分だけ静かに考える時間を作ってください。"},
+ {roman:"III", name:"女帝", sym:"👑", kw:["豊かさ","愛情","実り"],
+  up:"これまでの努力が実を結びやすい日です。美味しいものを食べたり、好きなものに囲まれたりと、豊かさを味わう時間を大切に。人への優しさが、そのまま自分に返ってきます。",
+  rv:"甘やかしすぎや浪費に注意したい日です。人に尽くしすぎて疲れてしまうことも。自分のための休息を、罪悪感なく取ってください。",
+  ad:"今日は自分にもご褒美を。好きな食べ物で英気を養ってください。"},
+ {roman:"IV", name:"皇帝", sym:"🏰", kw:["安定","責任","リーダーシップ"],
+  up:"計画的に物事を進めることで、確かな成果が得られる日です。責任ある立場を任されたら、堂々と引き受けて大丈夫。ルールを守る姿勢が信頼につながります。",
+  rv:"頑固さや力任せが裏目に出やすい日です。自分のやり方に固執せず、周りの意見にも耳を傾けて。完璧を求めすぎると、かえって進みが遅くなります。",
+  ad:"優先順位を書き出して、土台の固いものから進めてください。"},
+ {roman:"V", name:"法王", sym:"⛩️", kw:["信頼","伝統","助言"],
+  up:"年長者や経験者の助言が役に立つ日です。困ったことがあれば、一人で抱えず相談してみてください。約束や礼儀を大切にする行動が、良い縁を引き寄せます。",
+  rv:"常識や周りの意見に縛られすぎているかもしれません。形式だけの付き合いには距離を置いても大丈夫。自分の価値観で選び直すことが大切です。",
+  ad:"信頼できる人に、ひと言相談してみてください。"},
+ {roman:"VI", name:"恋人", sym:"💞", kw:["愛","選択","調和"],
+  up:"人との調和が心地よく感じられる日です。大切な人との時間を優先すると、心が満たされます。迷っている選択があれば、心が惹かれる方を選んで吉です。",
+  rv:"気持ちのすれ違いや、優柔不断さが出やすい日です。相手の顔色をうかがいすぎず、自分の本音も言葉にしてみて。誘惑的な話には一晩置いてから返事を。",
+  ad:"大切な人に、感謝の言葉をひとつ伝えてください。"},
+ {roman:"VII", name:"戦車", sym:"🏇", kw:["前進","勝利","意志"],
+  up:"目標に向かって一気に進める日です。迷いを断ち切って行動すれば、良い結果がついてきます。スピード感を大切に、勢いのあるうちに片付けてしまいましょう。",
+  rv:"焦りや無理な突進が空回りしやすい日です。方向が定まっていないなら、一度止まって地図を確認して。感情のハンドルは、しっかり握り直しましょう。",
+  ad:"一番大事な用事を、午前中のうちに終わらせてください。"},
+ {roman:"VIII", name:"力", sym:"🦁", kw:["忍耐","優しさ","自制心"],
+  up:"穏やかな強さが発揮できる日です。難しい相手や面倒な用事も、力任せではなく根気よく向き合えば道が開けます。自分を信じる気持ちが何よりの武器です。",
+  rv:"我慢のしすぎや、感情の爆発に注意したい日です。疲れを感じたら無理をせず、早めに休んで。弱さを見せることも、今日は大切な強さです。",
+  ad:"深呼吸を3回。急かされても、自分のペースを守ってください。"},
+ {roman:"IX", name:"隠者", sym:"🏮", kw:["内省","探求","一人の時間"],
+  up:"一人の時間が充実する日です。趣味や調べものに没頭すると、深い理解が得られます。外の喧騒から少し離れて、自分の内側の声を聞いてみてください。",
+  rv:"殻に閉じこもりすぎて、良い知らせを聞き逃すかもしれません。助けが必要なら、素直に声をかけて。人との小さな接点が、気分をほぐしてくれます。",
+  ad:"夜は早めに画面を閉じて、静かな時間を過ごしてください。"},
+ {roman:"X", name:"運命の輪", sym:"🎡", kw:["転機","チャンス","流れ"],
+  up:"物事の流れが良い方向へ回り始める日です。思いがけない知らせや偶然が、追い風になるでしょう。変化を恐れず、来た波に乗ってみてください。",
+  rv:"タイミングが合わず、もどかしさを感じやすい日です。無理に流れを変えようとせず、今は準備の時期と割り切って。次の波は必ず来ます。",
+  ad:"予定が変わっても慌てずに。その変更が吉と出るかもしれません。"},
+ {roman:"XI", name:"正義", sym:"⚖️", kw:["公平","決断","誠実"],
+  up:"物事を公平に見て、正しい判断ができる日です。契約や手続き、清算ごとに適しています。筋を通した行動が、周りからの信頼を集めるでしょう。",
+  rv:"判断が偏ったり、感情で決めてしまったりしやすい日です。大事な決断は、条件を紙に書き出してから。貸し借りの約束は、今日は慎重に。",
+  ad:"迷ったら「後で胸を張れる方」を選んでください。"},
+ {roman:"XII", name:"吊るされた男", sym:"🧘", kw:["忍耐","視点の転換","停滞"],
+  up:"今は動くより待つことが実を結ぶ日です。見方を変えれば、行き詰まりの中にも意味が見えてきます。焦らず静観することで、次の手が自然と浮かんできます。",
+  rv:"我慢が長引いて、疲れが出やすい日です。犠牲になっていると感じるなら、やり方を見直す合図かもしれません。無理な継続より、潔い区切りを。",
+  ad:"今日は結論を出さない勇気を。寝かせるのも立派な選択です。"},
+ {roman:"XIII", name:"死神", sym:"🌑", kw:["終わりと始まり","手放す","再生"],
+  up:"一区切りつけるのに良い日です。終わるものがあるからこそ、新しいものが入ってきます。不要な物や古い習慣を手放すと、気持ちが軽くなるでしょう。",
+  rv:"変化を先延ばしにして、停滞が続いているかもしれません。怖くても、終わらせるべきものに目を向けて。小さな手放しから始めてみてください。",
+  ad:"引き出しひとつでいいので、不要なものを捨ててください。"},
+ {roman:"XIV", name:"節制", sym:"🏺", kw:["調和","バランス","穏やかさ"],
+  up:"心と体のバランスが整いやすい日です。無理のないペースで過ごせば、一日が心地よく流れます。異なる意見の間を取り持つ役割も、今日は上手にこなせます。",
+  rv:"生活リズムの乱れや、やりすぎ・やらなさすぎが出やすい日です。食事や睡眠の基本を整えることから。極端な判断は避け、中庸を意識してください。",
+  ad:"水分をしっかり取って、食事は腹八分目にしてください。"},
+ {roman:"XV", name:"悪魔", sym:"😈", kw:["誘惑","執着","欲望"],
+  up:"欲望や楽しみに素直になれる日です。ただし、のめり込みすぎには注意。好きなことに熱中する力は、使い方次第で大きな成果にもなります。",
+  rv:"悪い習慣や依存から抜け出すチャンスの日です。惰性で続けていることを見直してみて。断る勇気が、明日の自分を楽にします。",
+  ad:"つい手が伸びるものを、今日はひとつだけ我慢してみてください。"},
+ {roman:"XVI", name:"塔", sym:"⚡", kw:["急変","気づき","立て直し"],
+  up:"思いがけない出来事が、停滞を打ち破る日かもしれません。驚くような知らせも、長い目で見れば必要な変化です。壊れたところから、正直な土台を築き直せます。",
+  rv:"小さなほころびを放置すると、後で大きくなるかもしれません。違和感のあることは早めに確認を。無理に現状を守ろうとせず、柔軟に対応してください。",
+  ad:"大事なデータや予定は、今日のうちに控えを取っておいてください。"},
+ {roman:"XVII", name:"星", sym:"⭐", kw:["希望","癒し","願い"],
+  up:"希望の光が見えてくる日です。将来の目標や夢について考えると、良いひらめきが得られます。素直な気持ちで願いを言葉にしてみてください。",
+  rv:"理想と現実の差に、少し落ち込みやすい日です。夢を諦める必要はありません。今日はまず体を休めて、星を見る余裕を取り戻しましょう。",
+  ad:"夜空を見上げる時間を作って、願いをひとつ思い描いてください。"},
+ {roman:"XVIII", name:"月", sym:"🌙", kw:["不安","直感","曖昧さ"],
+  up:"直感が冴える日ですが、物事がはっきりしない面もあります。大事な判断は急がず、夢やひらめきをメモに残しておくと後で役立ちます。想像力を活かす作業には吉です。",
+  rv:"不安や誤解が晴れてくる兆しの日です。曖昧だったことが少しずつ見えてきます。人の言葉を悪く受け取りすぎず、事実を確かめてから動きましょう。",
+  ad:"大事な返事は一晩寝かせてから。朝の頭で読み直してください。"},
+ {roman:"XIX", name:"太陽", sym:"☀️", kw:["成功","喜び","活力"],
+  up:"明るく前向きなエネルギーが満ちる日です。素直に喜びを表すことで、周りにも良い空気が広がります。子供のような好奇心で過ごすと、思わぬ発見があります。",
+  rv:"元気が出にくかったり、楽しみに水を差されたりしやすい日です。無理に明るく振る舞わなくて大丈夫。日光を浴びて、体を動かすと回復します。",
+  ad:"外に出て日を浴びてください。それだけで運が向いてきます。"},
+ {roman:"XX", name:"審判", sym:"📯", kw:["復活","再挑戦","知らせ"],
+  up:"過去の経験が活きてくる日です。諦めていたことに再挑戦するチャンスが巡ってくるかもしれません。懐かしい人からの連絡にも、良い知らせが含まれていそうです。",
+  rv:"過去を引きずって、前へ進みにくい日かもしれません。自分を責めすぎず、学んだことだけを持って行きましょう。再出発の準備は、許すことから始まります。",
+  ad:"昔のメモや写真を見返してみて。ヒントが眠っています。"},
+ {roman:"XXI", name:"世界", sym:"🌏", kw:["完成","達成","統合"],
+  up:"一つのサイクルが完成する、充実感のある日です。続けてきたことが形になったり、認められたりするでしょう。区切りをつけて、次の景色へ進む準備が整います。",
+  rv:"完成まであと一歩、というところで足踏みしやすい日です。最後の詰めを焦らず丁寧に。ゴールは逃げません。足りないピースを落ち着いて探してください。",
+  ad:"今日できたことを、3つ数えて自分を褒めてください。"}
+];
+
+var POSITIONS = [
+  {label:"過去", sub:"これまでの流れ"},
+  {label:"現在", sub:"今のあなた"},
+  {label:"未来", sub:"これからの兆し"}
+];
+// one-line reading per position, keyed by orientation; {kw} and {name} are filled in
+var POS_ONE = [
+  { up:"これまでの流れは「{kw}」に象徴されます。積み重ねてきたことが、今のあなたの土台になっています。",
+    rv:"これまでの流れには「{kw}」のつまずきがありました。でも、その経験が今の判断材料になっています。" },
+  { up:"今のあなたは「{kw}」の力を発揮できる状態です。今日の主役はこのカードです。",
+    rv:"今のあなたは「{kw}」が少し裏目に出やすい状態です。無理に進めず、整えることを優先して。" },
+  { up:"この先は「{kw}」が追い風になる兆しです。今日の小さな一歩が、その流れを作ります。",
+    rv:"この先は「{kw}」に注意が必要な兆しです。慌てて決めず、備えをしておくと安心です。" }
+];
+var TOTALS = [
+  "「{past}」で築いた土台の上に、「{present}」の今日があります。その先に待つ「{future}」へ向けて、今日できる小さな一歩を大切にしてください。流れは、ちゃんとつながっています。",
+  "過去の「{past}」から現在の「{present}」へ、物語は静かに進んでいます。締めくくりは「{future}」。今日は結論を急がず、流れの変化を観察する日にすると良さそうです。",
+  "「{past}」→「{present}」→「{future}」と、3枚は一本の線でつながっています。特に今日意識したいのは真ん中の「{present}」。ここを丁寧に扱うことが、未来のカードを良い向きに変えていきます。",
+  "今日の鍵は「{future}」の示す方向です。「{past}」の経験と「{present}」の持ち札をどう使うかで、その未来の色は変わります。焦らず、でも止まらずに進んでください。"
+];
+
+var birthEl = document.getElementById("birth");
+var todayLine = document.getElementById("todayLine");
+var trioEl = document.getElementById("trio");
+var totalEl = document.getElementById("totalMsg");
+
+function esc(s){
+  return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+function render(){
+  var t = todayStr();
+  var birth = birthEl.value || "";
+  var d = new Date();
+  todayLine.textContent = d.getFullYear() + "年" + (d.getMonth()+1) + "月" + d.getDate() + "日の3枚" + (birth ? "（あなた専用）" : "（みんなの3枚）");
+  var rng = mulberry32(hashSeed("tarot3|" + t + "|" + birth));
+  // draw 3 distinct cards (partial Fisher-Yates)
+  var pool = CARDS.map(function(_, i){ return i; });
+  for(var k = 0; k < 3; k++){
+    var j = k + Math.floor(rng() * (pool.length - k));
+    var tmp = pool[k]; pool[k] = pool[j]; pool[j] = tmp;
+  }
+  var drawn = [];
+  trioEl.innerHTML = "";
+  for(var p = 0; p < 3; p++){
+    var c = CARDS[pool[p]];
+    var reversed = rng() < 0.3;
+    drawn.push({card: c, reversed: reversed});
+    var pos = POSITIONS[p];
+    var one = (reversed ? POS_ONE[p].rv : POS_ONE[p].up)
+      .replace("{kw}", c.kw[0]).replace("{name}", c.name);
+    var block = document.createElement("div");
+    block.className = "pos";
+    block.setAttribute("data-pos", pos.label);
+    block.innerHTML =
+      '<span class="pos-label">' + pos.label + '<small>' + pos.sub + '</small></span>' +
+      '<div class="tcard-wrap"><div class="tcard' + (reversed ? " rev" : "") + '">' +
+        '<div class="roman">' + esc(c.roman) + '</div>' +
+        '<div class="symbol">' + esc(c.sym) + '</div>' +
+        '<div class="cname">' + esc(c.name) + '</div>' +
+      '</div></div>' +
+      '<span class="badge ' + (reversed ? "rv" : "up") + '">' + (reversed ? "逆位置" : "正位置") + '</span>' +
+      '<div class="pos-name">' + esc(c.name) + '</div>' +
+      '<p class="pos-one">' + esc(one) + '</p>' +
+      '<p class="pos-mean">' + esc(reversed ? c.rv : c.up) + '</p>';
+    trioEl.appendChild(block);
+  }
+  var total = TOTALS[Math.floor(rng() * TOTALS.length)]
+    .replace("{past}", drawn[0].card.name)
+    .replace("{present}", drawn[1].card.name)
+    .replace("{future}", drawn[2].card.name);
+  var revCount = drawn.filter(function(x){ return x.reversed; }).length;
+  if(revCount === 3){
+    total += " 3枚すべて逆位置の日です。無理に前へ進むより、立て直しと休息に充てるのが吉と出ています。";
+  } else if(revCount === 0){
+    total += " 3枚すべて正位置の日です。流れは素直に前向き。迷ったら「進む方」を選んで大丈夫です。";
+  }
+  totalEl.textContent = total;
+}
+birthEl.addEventListener("change", render);
+birthEl.addEventListener("input", render);
+render();
+</script>
+</body>
+</html>

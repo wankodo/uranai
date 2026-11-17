@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>星座占い｜占いツール集</title>
+<meta name="description" content="12星座の今日の運勢ランキング。総合運の星、一言コメント、ラッキーカラーとラッキーナンバーが毎日0時に切り替わります。">
+<style>
+:root{
+  --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1d2733; --mut:#68707c;
+  --line:#ddd6c8; --red:#b03a2e; --green:#1e7d46; --soft:#fdf6e0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:22px 16px 18px;border-bottom:4px solid var(--amber)}
+header .wrap{max-width:980px;margin:0 auto}
+header h1{margin:0;font-size:24px;letter-spacing:.04em}
+header h1 .accent{color:var(--amber)}
+header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
+.wrap{max-width:980px;margin:0 auto;padding:0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 1px 3px rgba(18,40,63,.06)}
+.card h2{margin:0 0 10px;font-size:17px;color:var(--navy);border-left:5px solid var(--amber);padding-left:9px}
+.note{font-size:12.5px;color:var(--mut)}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{flex:1 1 22%;background:#e9e4d8;border:1px solid var(--line);border-radius:8px;padding:9px 6px;font-size:14px;cursor:pointer;color:var(--ink)}
+.seg button.on{background:var(--navy);color:#fff;font-weight:700;border-color:var(--navy)}
+.detail{background:var(--navy);color:#fff;border-radius:10px;padding:18px 16px;margin:14px 0}
+.detail .d-rank{font-size:13px;color:var(--amber);font-weight:700;letter-spacing:.06em}
+.detail .d-name{font-size:26px;font-weight:800;margin:2px 0}
+.detail .d-period{font-size:12.5px;color:#b9c8d8}
+.detail .d-stars{font-size:22px;color:var(--amber);letter-spacing:.15em;margin:8px 0 4px}
+.detail .d-comment{font-size:15.5px;margin:6px 0 12px}
+.detail .d-lucky{display:flex;gap:10px;flex-wrap:wrap}
+.detail .d-lucky div{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:8px 12px;font-size:13px}
+.detail .d-lucky b{color:var(--amber);font-size:15px}
+.rank-row{display:flex;align-items:center;gap:12px;padding:10px 8px;border-bottom:1px solid var(--line);cursor:pointer;border-radius:6px}
+.rank-row:last-child{border-bottom:none}
+.rank-row:hover{background:var(--soft)}
+.rank-row.sel{background:var(--soft);outline:2px solid var(--amber)}
+.rank-num{flex:0 0 40px;height:40px;border-radius:50%;background:#e9e4d8;color:var(--navy);font-weight:800;font-size:17px;display:flex;align-items:center;justify-content:center}
+.rank-num.top{background:var(--amber);color:#fff}
+.rank-main{flex:1;min-width:0}
+.rank-name{font-weight:700;font-size:15.5px}
+.rank-name .period{font-weight:400;font-size:12px;color:var(--mut);margin-left:6px}
+.rank-comment{font-size:13px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rank-side{text-align:right;flex:0 0 auto}
+.rank-stars{color:var(--amber-d);font-size:14px;letter-spacing:.08em}
+.rank-lucky{font-size:11.5px;color:var(--mut)}
+footer{margin:26px 0 40px}
+footer .card{font-size:12.5px;color:var(--mut)}
+.credit{text-align:center;color:var(--mut);font-size:12px;margin:10px 0 30px}
+a{color:var(--navy)}
+.sitebar{background:var(--navy2);border-bottom:2px solid var(--amber)}
+.sitebar .sb-in{max-width:980px;margin:0 auto;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sitebar a{color:#fff;text-decoration:none;font-size:13px}
+.sitebar a:hover{color:var(--amber)}
+.sitebar .sb-name{font-weight:700;letter-spacing:.03em}
+.sitebar .sb-tool{color:#cfd9e4;font-size:13px}
+</style>
+</head>
+<body>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span class="sb-tool">星座占い</span></div></div>
+
+<header>
+  <div class="wrap">
+    <h1>星座 <span class="accent">占い</span></h1>
+    <p id="todayLine">今日の12星座の運勢ランキングです。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>あなたの星座を選ぶ</h2>
+    <div class="seg" id="signSeg"></div>
+    <p class="note">選ぶと、その星座の今日の運勢が大きく表示されます。ランキングの行をタップしても選べます。</p>
+  </div>
+
+  <div class="detail" id="detailBox" hidden>
+    <div class="d-rank" id="dRank"></div>
+    <div class="d-name" id="dName"></div>
+    <div class="d-period" id="dPeriod"></div>
+    <div class="d-stars" id="dStars"></div>
+    <p class="d-comment" id="dComment"></p>
+    <div class="d-lucky">
+      <div>ラッキーカラー<br><b id="dColor"></b></div>
+      <div>ラッキーナンバー<br><b id="dNumber"></b></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>今日の運勢ランキング</h2>
+    <div id="rankList"></div>
+    <p class="note">結果は毎日0時に切り替わります。その日であれば、何度開いても同じ結果です。</p>
+  </div>
+
+  <footer>
+    <div class="card">
+      <p>星座占いは、その日の日付をもとに結果が決まる日替わり占いです。順位・星の数・コメント・ラッキーカラー・ラッキーナンバーは日付から機械的に決まるため、その日は何度開いても同じ結果になります。</p>
+      <p>本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。</p>
+    </div>
+    <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+var SIGNS=[
+  {name:"牡羊座",period:"3月21日〜4月19日"},
+  {name:"牡牛座",period:"4月20日〜5月20日"},
+  {name:"双子座",period:"5月21日〜6月21日"},
+  {name:"蟹座",period:"6月22日〜7月22日"},
+  {name:"獅子座",period:"7月23日〜8月22日"},
+  {name:"乙女座",period:"8月23日〜9月22日"},
+  {name:"天秤座",period:"9月23日〜10月23日"},
+  {name:"蠍座",period:"10月24日〜11月22日"},
+  {name:"射手座",period:"11月23日〜12月21日"},
+  {name:"山羊座",period:"12月22日〜1月19日"},
+  {name:"水瓶座",period:"1月20日〜2月18日"},
+  {name:"魚座",period:"2月19日〜3月20日"}
+];
+var COMMENTS=[
+  ["勢いのある一日。思いついたらすぐ動くと運が開けます","今日は主役級の輝き。自信を持って前に出て吉","小さな挑戦が大きな成果に。迷ったらGOのサイン","頼まれごとは快く引き受けて。評価が上がる日","直感が冴える日。最初のひらめきを信じて"],
+  ["堅実さが光る一日。コツコツ進めた分だけ実ります","おいしいものにツキあり。食事の時間を大切に","金運が安定。無駄遣いを控えると余裕が生まれます","五感が冴える日。好きな香りや音楽で気分転換を","焦らずマイペースで。丁寧な仕事が信頼を呼びます"],
+  ["情報運が好調。気になる話題は深掘りしてみて","会話の中にヒントあり。聞き役に回ると得をする日","好奇心のままに動いて正解。寄り道に発見あり","連絡は早めが吉。返信ひとつで流れが変わります","学び運アップ。短い勉強でも身につく一日"],
+  ["身近な人との時間が力になる日。感謝を言葉に","家まわりを整えると運気も整います","懐かしい連絡があるかも。旧友との縁が温まる日","無理せず休む勇気も大切。心の充電日","家族や仲間の相談に乗ると、自分にも気づきあり"],
+  ["表現力が高まる日。SNSや発信に追い風","注目を集めやすい一日。堂々と振る舞って吉","遊び心が運を呼ぶ日。楽しむ姿勢が一番の魅力","褒め言葉は素直に受け取って。自信につながります","イベントや誘いは積極参加が正解"],
+  ["細部への気づきが冴える日。チェック作業に最適","整理整頓が運気アップの鍵。机の上から始めて","健康運が上昇。軽い運動と早めの就寝を","分析力が光る日。数字やデータと相性よし","丁寧な言葉づかいが好印象を残す一日"],
+  ["バランス感覚が冴える日。迷ったら真ん中の選択を","人との調整役がハマる日。板挟みでも上手く運びます","センスが評価される日。身だしなみにも気を配って","公平な判断が信頼を集める一日","おしゃれ運アップ。新しい小物にツキあり"],
+  ["集中力が持続する日。ひとつのことに深く潜って","秘密の楽しみにツキあり。ひとり時間が充実します","本音の会話が関係を深める日","粘り強さが実を結ぶ日。あと一押しが効きます","観察眼が冴える日。人の本心に気づけそう"],
+  ["行動範囲が広がる日。少し遠出すると発見あり","新しい学びにツキ。気になる分野をのぞいてみて","楽観ムードが運を呼ぶ日。笑顔を忘れずに","スポーツや体を動かすことに吉","率直な言葉が相手の心に響く一日"],
+  ["努力が形になる日。地道な積み重ねが評価されます","計画通りに進みやすい一日。段取り上手が光ります","責任ある仕事ほどやりがいあり。任せて正解の日","目上の人との縁にツキ。挨拶は丁寧に","長期戦に強い日。今日の一歩が来月の差に"],
+  ["ひらめきが冴える日。メモを手放さずに","仲間との連携にツキ。情報共有が鍵になります","変化を楽しめる日。いつもと違う選択が新鮮","未来の計画を立てるのに向く一日","独自のアイデアが評価されやすい日"],
+  ["感性が豊かになる日。音楽や映像に心が動きます","優しさが運を呼ぶ日。困っている人への一声を","夢からのメッセージがあるかも。朝のうちにメモを","創作活動にツキ。手を動かすと心が整います","水辺や温泉など、水のある場所でリフレッシュ"]
+];
+var COLORS=["赤","青","黄色","緑","ピンク","紫","オレンジ","水色","白","黒","金色","銀色","茶色","ベージュ","ラベンダー","ミントグリーン"];
+function hashStr(s){
+  var h=2166136261;
+  for(var i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619); }
+  return h>>>0;
+}
+function mulberry32(a){
+  return function(){
+    a|=0; a=(a+0x6D2B79F5)|0;
+    var t=Math.imul(a^(a>>>15),1|a);
+    t=(t+Math.imul(t^(t>>>7),61|t))^t;
+    return ((t^(t>>>14))>>>0)/4294967296;
+  };
+}
+function dateStrOf(d){
+  var m=("0"+(d.getMonth()+1)).slice(-2), day=("0"+d.getDate()).slice(-2);
+  return d.getFullYear()+"-"+m+"-"+day;
+}
+// Ranking for a date string "YYYY-MM-DD". Deterministic: same date, same result.
+function rankingFor(ds){
+  var rng=mulberry32(hashStr("zodiac-rank:"+ds));
+  var order=[];
+  for(var i=0;i<12;i++) order.push(i);
+  for(var j=order.length-1;j>0;j--){
+    var k=Math.floor(rng()*(j+1));
+    var tmp=order[j]; order[j]=order[k]; order[k]=tmp;
+  }
+  return order.map(function(signIdx,idx){
+    var r=mulberry32(hashStr("zodiac-sign:"+ds+":"+signIdx));
+    var stars=1+Math.floor(r()*5);
+    var comment=COMMENTS[signIdx][Math.floor(r()*COMMENTS[signIdx].length)];
+    var color=COLORS[Math.floor(r()*COLORS.length)];
+    var number=1+Math.floor(r()*99);
+    return {rank:idx+1, sign:signIdx, stars:stars, comment:comment, color:color, number:number};
+  });
+}
+function starText(n){
+  var s="";
+  for(var i=0;i<5;i++) s+=(i<n?"★":"☆");
+  return s;
+}
+var today=new Date();
+var todayStr=dateStrOf(today);
+var ranking=rankingFor(todayStr);
+var bySign={};
+ranking.forEach(function(e){ bySign[e.sign]=e; });
+var WDAY=["日","月","火","水","木","金","土"];
+document.getElementById("todayLine").textContent=
+  today.getFullYear()+"年"+(today.getMonth()+1)+"月"+today.getDate()+"日（"+WDAY[today.getDay()]+"）の12星座の運勢ランキングです。結果は毎日0時に切り替わります。";
+var seg=document.getElementById("signSeg");
+var rankList=document.getElementById("rankList");
+var detailBox=document.getElementById("detailBox");
+var selected=-1;
+function selectSign(signIdx){
+  selected=signIdx;
+  var e=bySign[signIdx];
+  var btns=seg.querySelectorAll("button");
+  btns.forEach(function(b,i){ b.classList.toggle("on", i===signIdx); });
+  var rows=rankList.querySelectorAll(".rank-row");
+  rows.forEach(function(row){ row.classList.toggle("sel", Number(row.getAttribute("data-sign"))===signIdx); });
+  document.getElementById("dRank").textContent="今日の運勢 第"+e.rank+"位";
+  document.getElementById("dName").textContent=SIGNS[signIdx].name;
+  document.getElementById("dPeriod").textContent=SIGNS[signIdx].period+"生まれ";
+  document.getElementById("dStars").textContent=starText(e.stars);
+  document.getElementById("dComment").textContent=e.comment;
+  document.getElementById("dColor").textContent=e.color;
+  document.getElementById("dNumber").textContent=e.number;
+  detailBox.hidden=false;
+  detailBox.scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+SIGNS.forEach(function(s,i){
+  var b=document.createElement("button");
+  b.type="button"; b.textContent=s.name;
+  b.addEventListener("click", function(){ selectSign(i); });
+  seg.appendChild(b);
+});
+ranking.forEach(function(e){
+  var s=SIGNS[e.sign];
+  var row=document.createElement("div");
+  row.className="rank-row"; row.setAttribute("data-sign", e.sign);
+  row.innerHTML="";
+  var num=document.createElement("div");
+  num.className="rank-num"+(e.rank<=3?" top":""); num.textContent=e.rank;
+  var main=document.createElement("div"); main.className="rank-main";
+  var nm=document.createElement("div"); nm.className="rank-name";
+  nm.textContent=s.name;
+  var per=document.createElement("span"); per.className="period"; per.textContent=s.period;
+  nm.appendChild(per);
+  var cm=document.createElement("div"); cm.className="rank-comment"; cm.textContent=e.comment;
+  main.appendChild(nm); main.appendChild(cm);
+  var side=document.createElement("div"); side.className="rank-side";
+  var st=document.createElement("div"); st.className="rank-stars"; st.textContent=starText(e.stars);
+  var lk=document.createElement("div"); lk.className="rank-lucky";
+  lk.textContent="色："+e.color+" ／ 数："+e.number;
+  side.appendChild(st); side.appendChild(lk);
+  row.appendChild(num); row.appendChild(main); row.appendChild(side);
+  row.addEventListener("click", function(){ selectSign(e.sign); });
+  rankList.appendChild(row);
+});
+window.Zodiac={ rankingFor: rankingFor, dateStrOf: dateStrOf };
+})();
+</script>
+</body>
+</html>

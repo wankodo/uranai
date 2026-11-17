@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>今日のルーン占い｜占いツール集</title>
+<meta name="description" content="エルダー・フサルク24ルーンから、今日のあなたへの1文字を引く無料ルーン占い。結果は1日固定です。">
+<style>
+:root{
+  --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1d2733; --mut:#68707c;
+  --line:#ddd6c8; --red:#b03a2e; --green:#1e7d46; --soft:#fdf6e0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:22px 16px 18px;border-bottom:4px solid var(--amber)}
+header .wrap{max-width:980px;margin:0 auto}
+header h1{margin:0;font-size:24px;letter-spacing:.04em}
+header h1 .accent{color:var(--amber)}
+header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
+.wrap{max-width:980px;margin:0 auto;padding:0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 1px 3px rgba(18,40,63,.06)}
+.card h2{margin:0 0 10px;font-size:17px;color:var(--navy);border-left:5px solid var(--amber);padding-left:9px}
+.note{font-size:12.5px;color:var(--mut)}
+label.flabel{display:block;font-size:12.5px;color:var(--mut);margin:10px 0 3px}
+input[type="date"]{width:100%;padding:9px 10px;border:1px solid #c9c2b2;border-radius:7px;font-size:15px;background:#fff;color:var(--ink)}
+input:focus{outline:2px solid var(--amber);outline-offset:0;border-color:var(--amber)}
+button.draw{display:block;width:100%;margin:14px 0 4px;padding:13px;background:linear-gradient(135deg,var(--amber),var(--amber-d));color:#fff;border:none;border-radius:9px;font-size:16px;font-weight:800;letter-spacing:.08em;cursor:pointer;box-shadow:0 3px 10px rgba(199,127,2,.35)}
+button.draw:active{transform:translateY(1px)}
+footer{margin:26px 0 40px}
+footer .card{font-size:12.5px;color:var(--mut)}
+.credit{text-align:center;color:var(--mut);font-size:12px;margin:10px 0 30px}
+a{color:var(--navy)}
+.sitebar{background:var(--navy2);border-bottom:2px solid var(--amber)}
+.sitebar .sb-in{max-width:980px;margin:0 auto;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sitebar a{color:#fff;text-decoration:none;font-size:13px}
+.sitebar a:hover{color:var(--amber)}
+.sitebar .sb-name{font-weight:700;letter-spacing:.03em}
+.date-line{font-size:14px;color:var(--navy);font-weight:700}
+.stone-wrap{display:flex;justify-content:center;margin:10px 0 4px}
+.stone{width:190px;height:190px;border-radius:50%;background:radial-gradient(circle at 35% 30%, #2c587f, #12283f 62%, #071827);border:3px solid var(--amber);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(7,24,39,.4), inset 0 0 34px rgba(0,0,0,.45)}
+.stone .glyph{font-size:104px;line-height:1;color:#ffd97a;text-shadow:0 0 18px rgba(242,160,7,.55);transition:transform .6s ease}
+.stone .glyph.rev{transform:rotate(180deg)}
+.rname{text-align:center;font-size:22px;font-weight:800;color:var(--navy);margin-top:10px}
+.rname .romaji{font-size:14px;color:var(--mut);font-weight:700;letter-spacing:.12em;margin-left:8px}
+.badge{display:inline-block;border-radius:999px;padding:3px 14px;font-size:13px;font-weight:700;margin-top:8px}
+.badge.up{background:var(--green);color:#fff}
+.badge.rv{background:var(--red);color:#fff}
+.badge.na{background:var(--navy);color:#fff}
+.kw{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:10px 0 2px}
+.kw span{background:var(--soft);border:1px solid #ecd27a;border-radius:999px;padding:2px 10px;font-size:12.5px}
+.meaning{font-size:15px;margin:8px 0}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span style="color:#cfd9e4;font-size:13px">ルーン占い</span></div></div>
+
+<header>
+  <div class="wrap">
+    <h1>今日の <span class="accent">ルーン占い</span></h1>
+    <p>北欧の古い文字「ルーン」24文字の中から、今日のあなたへの1文字を引きます。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>今日のルーンを引く</h2>
+    <p class="date-line" id="todayLine"></p>
+    <label class="flabel" for="birth">生年月日（任意）</label>
+    <input type="date" id="birth" value="">
+    <p class="note">生年月日を入れると、あなた専用の今日のルーンになります。未入力の場合は、その日みんなに共通のルーンです。</p>
+    <button class="draw" id="drawBtn" type="button">ルーンを引く</button>
+    <p class="note">結果はその日1日固定です。何度引いても、同じ日・同じ条件では同じルーンが出ます。</p>
+  </div>
+
+  <div class="card hidden" id="resultCard">
+    <div class="stone-wrap">
+      <div class="stone"><div class="glyph" id="rGlyph">ᚠ</div></div>
+    </div>
+    <div class="rname"><span id="rJp">-</span><span class="romaji" id="rRomaji">-</span></div>
+    <div style="text-align:center"><span class="badge up" id="rBadge">正位置</span></div>
+    <div class="kw" id="rKw"></div>
+    <h2 style="margin-top:14px">今日の意味</h2>
+    <p class="meaning" id="rMeaning"></p>
+    <p class="note" style="margin-top:10px">結果はその日1日固定です。明日になると、また新しいルーンが出ます。</p>
+  </div>
+
+  <footer>
+    <div class="card">
+      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。ルーンの意味は一般的な解釈をもとにしたもので、結果は日付（と任意入力の生年月日）から自動で決まります。形が上下対称なルーンには逆位置がありません。
+    </div>
+    <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
+  </footer>
+
+</div>
+
+<script>
+"use strict";
+// xmur3-style string hash -> seed for mulberry32
+function hashSeed(str){
+  let h = 1779033703 ^ str.length;
+  for(let i=0;i<str.length;i++){
+    h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+    h = (h << 13) | (h >>> 19);
+  }
+  return h >>> 0;
+}
+function mulberry32(a){
+  return function(){
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function todayStr(){
+  const d = new Date();
+  const m = String(d.getMonth()+1).padStart(2,"0");
+  const day = String(d.getDate()).padStart(2,"0");
+  return d.getFullYear() + "-" + m + "-" + day;
+}
+
+// Elder Futhark, 24 runes. rv is null for runes whose shape is symmetric (no reversed position).
+var RUNES = [
+ {ch:"ᚠ", romaji:"FEHU", jp:"フェフ", kw:["富","豊かさ","新しい始まり"],
+  up:"財産や豊かさの流れが動き出すルーンです。仕事の成果や思いがけない収入など、手に入れたものをどう活かすかが今日のテーマ。大切なのは、独り占めせず巡らせることです。",
+  rv:"お金や物の流れが滞りやすい日です。衝動買いや貸し借りの約束は慎重に。失うことへの恐れが判断を鈍らせるので、まずは手元にあるものを数え直してみてください。"},
+ {ch:"ᚢ", romaji:"URUZ", jp:"ウルズ", kw:["力","健康","活力"],
+  up:"原始的な生命力を表すルーンです。体力も気力も充実しやすく、多少の無理がきく日。体を動かすことや、力の要る用事に取り組むと良い流れがつかめます。",
+  rv:"体力の低下や、押しの弱さが出やすい日です。無理を重ねると回復に時間がかかります。今日は回復を優先し、助けを借りることをためらわないでください。"},
+ {ch:"ᚦ", romaji:"THURISAZ", jp:"スリサズ", kw:["棘","防御","慎重"],
+  up:"棘は身を守るためのものです。今日は即断即決より、一呼吸おいて周囲をよく見ることが身を守ります。攻撃ではなく防御に徹すると、結果的に良い位置に立てます。",
+  rv:"刺のある言葉や、とげとげしい態度に注意したい日です。反応する前に一晩置くくらいでちょうどいいかもしれません。守るべき境界線は、静かに引き直してください。"},
+ {ch:"ᚨ", romaji:"ANSUZ", jp:"アンスズ", kw:["言葉","知恵","知らせ"],
+  up:"言葉と知恵のルーンです。大切な知らせが届いたり、会話の中に答えが見つかったりしやすい日。聞く耳を持つことと、自分の考えを言葉にすることの両方が吉です。",
+  rv:"誤解や伝言ミスが起きやすい日です。大事な連絡は文面で残し、聞いた話は鵜呑みにしないで。言葉が足りないと感じるなら、急がず補って伝えてください。"},
+ {ch:"ᚱ", romaji:"RAIDHO", jp:"ライド", kw:["旅","移動","リズム"],
+  up:"車輪と旅のルーンです。移動や外出にツキがあり、物事が良いリズムで進みやすい日。予定の変更も、流れに乗るための調整だと考えてみてください。",
+  rv:"移動の遅れや、計画の足踏みがありそうな日です。焦って無理に進めるより、足元を整える時間に。道順や時間には余裕を持って出発してください。"},
+ {ch:"ᚲ", romaji:"KENAZ", jp:"ケナズ", kw:["松明","ひらめき","学び"],
+  up:"暗闇を照らす松明のルーンです。分からなかったことの仕組みが見えたり、学びが急に腑に落ちたりする日。好奇心のままに調べものを進めてみてください。",
+  rv:"見えているつもりで見落としがあるかもしれません。分かった気になっている部分ほど、今日は確認を。焦って答えを出すより、灯りを近づけてよく見ることです。"},
+ {ch:"ᚷ", romaji:"GEBO", jp:"ギューフ", kw:["贈り物","縁","交換"], rv:null,
+  up:"贈り物と交換のルーンです。与えることと受け取ることのバランスが、良い縁を育てる日。小さな好意のやり取りが、思わぬ形で返ってきそうです。"},
+ {ch:"ᚹ", romaji:"WUNJO", jp:"ウンジョー", kw:["喜び","調和","仲間"],
+  up:"喜びと調和のルーンです。仲間との一体感や、頑張ってきたことへの手応えを感じやすい日。笑顔で過ごすことが、さらに良い流れを呼び込みます。今日は素直に喜んで大丈夫です。",
+  rv:"喜びが足りないと感じやすい日です。周りと比べて落ち込んだり、輪に入りにくく感じたりするかも。無理に盛り上げず、気の合う一人との時間を大切にしてください。"},
+ {ch:"ᚺ", romaji:"HAGALAZ", jp:"ハガラズ", kw:["雹","試練","リセット"], rv:null,
+  up:"雹は畑を打つけれど、やがて恵みの水になります。予定外の出来事や中断があっても、それは仕切り直しの合図かもしれません。抗わずに受け止めると、被害は小さく済みます。"},
+ {ch:"ᚾ", romaji:"NAUTHIZ", jp:"ナウシズ", kw:["必要","忍耐","備え"], rv:null,
+  up:"不足と必要のルーンです。不便さの中から、本当に必要なものが見えてくる日。我慢比べではなく、備えを見直す機会と捉えて。節約や点検ごとは今日が適期です。"},
+ {ch:"ᛁ", romaji:"ISA", jp:"イーサ", kw:["氷","静止","待つ"], rv:null,
+  up:"氷のルーンです。今は動く時期ではなく、凍らせて保存する時期。焦って溶かそうとせず、状況が動くのを静かに待つことが、今日は一番の前進です。"},
+ {ch:"ᛃ", romaji:"JERA", jp:"イェラ", kw:["収穫","実り","周期"], rv:null,
+  up:"収穫のルーンです。続けてきたことが、ちょうど実を結ぶ頃合い。蒔いた種にふさわしい実りが返ってきます。次の種まきの計画も、今日立てると良い形になります。"},
+ {ch:"ᛇ", romaji:"EIHWAZ", jp:"エイワズ", kw:["イチイの木","忍耐","守り"], rv:null,
+  up:"しなやかで折れないイチイの木のルーンです。障害があっても、回り道をしながら目標に近づける日。柔軟さと粘り強さが、今日のあなたの武器になります。"},
+ {ch:"ᛈ", romaji:"PERTHRO", jp:"ペルソ", kw:["運命","秘密","賭け"],
+  up:"サイコロのカップを表す、運命と秘密のルーンです。偶然に見える出来事に、実は意味が隠れている日。少しの冒険心は吉ですが、賭けごとの深入りは控えめに。",
+  rv:"見通しの立たないことに手を出しやすい日です。秘密が漏れたり、思惑と違う結果になったりするかも。分からないものには、今日は賭けないのが正解です。"},
+ {ch:"ᛉ", romaji:"ALGIZ", jp:"アルギズ", kw:["守護","直感","警告"],
+  up:"身を守る角のような形の、守護のルーンです。直感が危険や好機を早めに知らせてくれる日。違和感を覚えたら、その感覚を信じて距離を取ってください。",
+  rv:"守りが薄くなりやすい日です。うまい話や、近づきすぎる人には注意。自分の弱い部分を安易に見せず、境界線をはっきりさせることが大切です。"},
+ {ch:"ᛋ", romaji:"SOWILO", jp:"ソウィロ", kw:["太陽","勝利","成功"], rv:null,
+  up:"太陽のルーンです。物事が明るい方向へ進み、努力が認められやすい日。自信を持って表に出ることで、運の流れはさらに強まります。今日は攻め時です。"},
+ {ch:"ᛏ", romaji:"TIWAZ", jp:"ティール", kw:["正義","勇気","名誉"],
+  up:"戦いの神の名を持つ、正義と勇気のルーンです。筋を通す行動や、覚悟の要る決断に追い風が吹く日。自分の利益より大義を選ぶ姿勢が、信頼を集めます。",
+  rv:"正しさへのこだわりが、争いの種になりやすい日です。勝ち負けにこだわりすぎると、大切なものを失うかも。譲れる部分は譲る強さも、今日は必要です。"},
+ {ch:"ᛒ", romaji:"BERKANA", jp:"ベルカナ", kw:["白樺","成長","芽吹き"],
+  up:"白樺の芽吹きを表す、成長のルーンです。新しいことを始めたり、家族や身近な人との関係を育てたりするのに良い日。小さな芽は、丁寧に扱えば大きく育ちます。",
+  rv:"成長が足踏みしやすい日です。新しく始めたことが思うように育たなくても、焦らないで。土台の手入れ不足が原因かもしれません。基本に立ち返ってみてください。"},
+ {ch:"ᛖ", romaji:"EHWAZ", jp:"エワズ", kw:["馬","信頼","前進"],
+  up:"馬のルーンです。信頼できる相方との呼吸が合えば、物事は速く遠くまで進みます。一人で抱えず、誰かと組んで動くことが今日の開運の鍵です。",
+  rv:"相方との呼吸のずれが出やすい日です。信頼が揺らぐ出来事があっても、結論を急がないで。歩調を合わせ直す話し合いが、今日は必要かもしれません。"},
+ {ch:"ᛗ", romaji:"MANNAZ", jp:"マンナズ", kw:["人","仲間","知性"],
+  up:"人と社会を表すルーンです。仲間の助けや、人の輪の中で得られる知恵が今日の財産。自分の弱みを認めて助けを求めることが、良い結果につながります。",
+  rv:"人間関係の行き違いが起きやすい日です。期待しすぎや、腹の探り合いは疲れのもと。今日は人の評価より、自分の基準で判断することを大切に。"},
+ {ch:"ᛚ", romaji:"LAGUZ", jp:"ラグズ", kw:["水","流れ","直感"],
+  up:"水と流れのルーンです。頭で考えるより、感覚の流れに任せた方がうまくいく日。夢やひらめき、ふとした感情の中に、大切な手がかりが隠れています。",
+  rv:"感情の波に飲まれやすい日です。不安や思い込みが大きくなったら、一度流れから上がって休んで。今日の判断は、波が静まるまで待つのが賢明です。"},
+ {ch:"ᛜ", romaji:"INGWAZ", jp:"イングワズ", kw:["種","内なる成長","休息"], rv:null,
+  up:"種のルーンです。外からは見えなくても、内側では確かな成長が進んでいる日。今は表に出る時期ではなく、力を蓄える時期。焦らず、種を信じて待ってください。"},
+ {ch:"ᛞ", romaji:"DAGAZ", jp:"ダガズ", kw:["夜明け","転機","明瞭"], rv:null,
+  up:"夜明けのルーンです。長く続いた停滞や迷いに、光が差し込む転機の日。新しい視点で物事が見え始めます。今日の気づきは、大切に書き留めておいてください。"},
+ {ch:"ᛟ", romaji:"OTHALA", jp:"オサラ", kw:["遺産","家","受け継ぐ"],
+  up:"受け継ぐ財産と家のルーンです。家族や故郷、長く大切にしてきたものに目を向けると良い日。実家の用事や、古い持ち物の整理にもツキがあります。",
+  rv:"古い習慣や受け継いだやり方に、縛られすぎているかもしれません。守るべきものと手放すべきものを分けることが、今日のテーマです。家や財産の話は慎重に。"}
+];
+
+var birthEl = document.getElementById("birth");
+var todayLine = document.getElementById("todayLine");
+var drawBtn = document.getElementById("drawBtn");
+var resultCard = document.getElementById("resultCard");
+var rGlyph = document.getElementById("rGlyph");
+var rJp = document.getElementById("rJp");
+var rRomaji = document.getElementById("rRomaji");
+var rBadge = document.getElementById("rBadge");
+var rKw = document.getElementById("rKw");
+var rMeaning = document.getElementById("rMeaning");
+
+function updateLine(){
+  var birth = birthEl.value || "";
+  var d = new Date();
+  todayLine.textContent = d.getFullYear() + "年" + (d.getMonth()+1) + "月" + d.getDate() + "日のルーン" + (birth ? "（あなた専用）" : "（みんなのルーン）");
+}
+
+function draw(){
+  var t = todayStr();
+  var birth = birthEl.value || "";
+  updateLine();
+  var rng = mulberry32(hashSeed("rune|" + t + "|" + birth));
+  var idx = Math.floor(rng() * RUNES.length);
+  var r = RUNES[idx];
+  var reversed = (r.rv !== null) && (rng() < 0.3);
+  rGlyph.textContent = r.ch;
+  rGlyph.classList.toggle("rev", reversed);
+  rJp.textContent = r.jp;
+  rRomaji.textContent = r.romaji;
+  if(r.rv === null){
+    rBadge.textContent = "正位置のみ";
+    rBadge.className = "badge na";
+  } else {
+    rBadge.textContent = reversed ? "逆位置" : "正位置";
+    rBadge.className = "badge " + (reversed ? "rv" : "up");
+  }
+  rKw.innerHTML = "";
+  r.kw.forEach(function(k){
+    var s = document.createElement("span");
+    s.textContent = k;
+    rKw.appendChild(s);
+  });
+  rMeaning.textContent = reversed ? r.rv : r.up;
+  resultCard.classList.remove("hidden");
+}
+drawBtn.addEventListener("click", draw);
+birthEl.addEventListener("change", updateLine);
+updateLine();
+</script>
+</body>
+</html>

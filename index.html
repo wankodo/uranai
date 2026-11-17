@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>占いツール集</title>
+<meta name="description" content="タロット1枚引きやおみくじ、数秘術、星座占いなど、毎日の占いツールを集めた無料ページです。">
+<style>
+:root{
+  --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1d2733; --mut:#68707c;
+  --line:#ddd6c8; --red:#b03a2e; --green:#1e7d46; --soft:#fdf6e0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:22px 16px 18px;border-bottom:4px solid var(--amber)}
+header .wrap{max-width:980px;margin:0 auto}
+header h1{margin:0;font-size:24px;letter-spacing:.04em}
+header h1 .accent{color:var(--amber)}
+header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
+.wrap{max-width:980px;margin:0 auto;padding:0 12px}
+.note{font-size:12.5px;color:var(--mut)}
+.sitebar{background:var(--navy2);border-bottom:2px solid var(--amber)}
+.sitebar .sb-in{max-width:980px;margin:0 auto;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sitebar a{color:#fff;text-decoration:none;font-size:13px}
+.sitebar a:hover{color:var(--amber)}
+.sitebar .sb-name{font-weight:700;letter-spacing:.03em;color:#fff;font-size:13px}
+.searchbox{margin:18px 0 6px}
+.searchbox input{
+  width:100%;padding:16px 18px;font-size:18px;border:2px solid var(--navy);border-radius:12px;background:#fff;color:var(--ink);
+  box-shadow:0 2px 8px rgba(18,40,63,.10);
+}
+.searchbox input:focus{outline:3px solid var(--amber);outline-offset:0;border-color:var(--amber-d)}
+.search-field{position:relative}
+.suggest{
+  position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:30;
+  background:#fff;border:2px solid var(--navy);border-radius:12px;
+  box-shadow:0 8px 24px rgba(18,40,63,.18);
+  max-height:320px;overflow-y:auto;padding:4px;
+}
+.suggest[hidden]{display:none}
+.sug-item{
+  display:flex;align-items:center;gap:8px;min-height:44px;
+  padding:11px 10px;border-radius:8px;text-decoration:none;color:var(--ink);font-size:15px;
+}
+.sug-item:hover,.sug-item:active{background:var(--soft)}
+.sug-item .sug-name{flex:1;line-height:1.4}
+.sug-none{padding:14px 10px;color:var(--mut);font-size:14px;text-align:center}
+.searchinfo{font-size:13px;color:var(--mut);margin:8px 2px 0;min-height:1.4em}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0 20px}
+@media(max-width:640px){.cards{grid-template-columns:1fr}}
+.tool-card{
+  display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;
+  box-shadow:0 1px 3px rgba(18,40,63,.06);text-decoration:none;color:var(--ink);
+}
+.tool-card:hover{border-color:var(--amber);box-shadow:0 2px 10px rgba(18,40,63,.13)}
+.tool-card .tc-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tool-card h2{margin:0;font-size:17px;color:var(--navy)}
+.tool-card .tc-cat{font-size:12px;color:var(--mut);margin-top:2px}
+.tool-card p{margin:8px 0 0;font-size:13.5px}
+.badge{display:inline-block;font-size:11.5px;font-weight:700;border-radius:999px;padding:1px 9px;line-height:1.7}
+.badge-money{background:var(--amber);color:#231a00}
+.badge-mob{background:var(--navy);color:#fff}
+.badge-uranai{background:#6d28d9;color:#fff}
+.noresult{
+  display:none;background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:22px 16px;margin:14px 0 20px;text-align:center;color:var(--mut);font-size:14.5px;
+}
+footer{margin:26px 0 0;background:var(--navy2);color:#cfd9e4}
+footer .wrap{max-width:980px;margin:0 auto;padding:18px 12px}
+footer .note{color:#9fb0c1}
+footer .credit{margin:8px 0 0;font-size:13px;color:#fff}
+</style>
+</head>
+<body>
+<div class="sitebar"><div class="sb-in"><span class="sb-name">占いツール集</span></div></div>
+<header>
+  <div class="wrap">
+    <h1>占い <span class="accent">ツール集</span></h1>
+    <p>タロットやおみくじ、数秘術、星座占いなど、毎日の占いツールを集めました。どれも無料・登録なしで使えます。</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="searchbox">
+    <div class="search-field">
+      <input type="search" id="searchBox" placeholder="ツールを検索（例：タロット、おみくじ、高速）" autocomplete="off">
+      <div class="suggest" id="suggest" hidden></div>
+    </div>
+    <p class="searchinfo" id="searchInfo"></p>
+  </div>
+
+  <div class="cards" id="cards"></div>
+  <div class="noresult" id="noResult">見つかりませんでした。別の言葉で試してみてください。</div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p class="note">このサイトのツールは非公式の個人ツールです。占いの結果はエンターテインメントとしてお楽しみください。結果に基づく大事な判断は、ご自身の責任でお願いします。</p>
+    <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
+  </div>
+</footer>
+
+<script>
+var MOB = "https://wankodo.github.io/mobility-simulator/";
+var MONEY = "https://wankodo.github.io/money-tools/";
+var TOOLS = [
+  { site: "uranai", name: "タロット1枚引き", cat: "タロット", url: "tarot.html",
+    desc: "今日の1枚を引いて、カードからのメッセージを受け取ります。正位置・逆位置つき。",
+    keywords: "タロット 占い ワンオラクル 今日の運勢 カード 大アルカナ 正位置 逆位置" },
+  { site: "uranai", name: "おみくじ", cat: "神社", url: "omikuji.html",
+    desc: "大吉から凶までの運勢と、今日のひとことが出ます。毎日の運試しに。",
+    keywords: "おみくじ 神社 運勢 大吉 吉 凶 くじ 初詣 お参り 運試し" },
+  { site: "uranai", name: "数秘術", cat: "数字", url: "numerology.html",
+    desc: "生年月日から運命数（ライフパスナンバー）を計算して、性格と今日の運勢を見ます。",
+    keywords: "数秘術 運命数 ライフパスナンバー 生年月日 数字 性格診断 誕生日 カバラ" },
+  { site: "uranai", name: "星座占い", cat: "星占い", url: "zodiac.html",
+    desc: "12星座の今日の運勢と、ラッキーアイテム・ラッキーカラーを表示します。",
+    keywords: "星座 星占い 12星座 今日の運勢 ランキング ホロスコープ ラッキーアイテム ラッキーカラー" },
+  { site: "uranai", name: "六曜カレンダー", cat: "暦", url: "rokuyo.html",
+    desc: "今月のカレンダーに六曜（先勝・友引・先負・仏滅・大安・赤口）を表示します。日取りの参考に。",
+    keywords: "六曜 大安 仏滅 友引 先勝 先負 赤口 カレンダー 暦 日取り 結婚式 葬式" },
+  { site: "uranai", name: "相性占い", cat: "相性", url: "compatibility.html",
+    desc: "ふたりの生年月日から、数秘術と星座で相性を診断します。",
+    keywords: "相性 占い 恋愛 カップル 生年月日 星座 数秘術 診断 好きな人" },
+  { site: "uranai", name: "九星気学", cat: "気学", url: "kyusei.html",
+    desc: "生年月日から本命星を出し、今日の吉方位・開運のヒントを表示します。",
+    keywords: "九星 気学 本命星 吉方位 開運 方位" },
+  { site: "uranai", name: "四柱推命（簡易）", cat: "命占", url: "shichu.html",
+    desc: "生年月日から命式を出し、干支・日主・五行のバランスを見ます。",
+    keywords: "四柱推命 干支 五行 命式" },
+  { site: "uranai", name: "易占い", cat: "易", url: "eki.html",
+    desc: "コインを投げて卦を立て、64卦から今日へのメッセージを読みます。",
+    keywords: "易 易経 卦" },
+  { site: "uranai", name: "月齢占い", cat: "月", url: "moon.html",
+    desc: "今日の月齢と月の満ち欠けを表示し、月からの運勢メッセージを伝えます。",
+    keywords: "月齢 満月 新月 月 ムーン" },
+  { site: "uranai", name: "タロット3枚引き", cat: "タロット", url: "tarot3.html",
+    desc: "過去・現在・未来の3枚のカードを引いて、流れを読みます。",
+    keywords: "タロット 3枚 スリーカード 過去 現在 未来" },
+  { site: "uranai", name: "ルーン占い", cat: "ルーン", url: "rune.html",
+    desc: "ルーン文字を1枚引いて、北欧の神話からのメッセージを受け取ります。",
+    keywords: "ルーン 北欧" },
+  { site: "uranai", name: "血液型占い", cat: "血液型", url: "blood.html",
+    desc: "血液型ごとに今日の運勢をランキング形式で表示します。",
+    keywords: "血液型 A型 B型 O型 AB型" },
+  { site: "uranai", name: "誕生日占い", cat: "誕生日", url: "birthday.html",
+    desc: "366日すべての誕生日について、性格の傾向と運勢を表示します。",
+    keywords: "誕生日 性格 366日" },
+  { site: "uranai", name: "夢占い", cat: "夢", url: "dream.html",
+    desc: "見た夢に出てきたキーワードから、夢の意味を検索できます。",
+    keywords: "夢 意味 キーワード 夢診断" },
+  { site: "money", name: "帳簿ツール（確定申告補助）", cat: "税金・申告", url: MONEY + "bookkeeping.html",
+    desc: "収入と支出を入れるだけで、複式簿記の帳簿と、確定申告への転記ガイドが作れます。",
+    keywords: "確定申告 青色申告 白色申告 帳簿 簿記 複式簿記 経費 売上 仕訳 決算書 収支内訳書 個人事業主 フリーランス 税金 所得税 会計" },
+  { site: "money", name: "奨学金返済シミュレーター", cat: "教育・ローン", url: MONEY + "scholarship.html",
+    desc: "借りる前に、毎月の返還額・返還総額・利息・完済時の年齢が分かります。返済中の見直しにも使えます。",
+    keywords: "奨学金 学費 学生 借金 返済 JASSO 日本学生支援機構 ローン 利息 大学 専門学校 進学 返還" },
+  { site: "mob", name: "タイムズカー料金シミュレーター", cat: "車", url: MOB + "timescar.html",
+    desc: "カーシェアの利用料金を、利用時間と走行距離から試算します。",
+    keywords: "カーシェア シェアカー タイムズ レンタカー 車 料金 ナイトパック 距離料金" },
+  { site: "mob", name: "高速道路料金シミュレーター", cat: "車", url: MOB + "highway.html",
+    desc: "高速道路の料金を、IC間・車種・ETC割引から計算します。",
+    keywords: "高速 高速道路 ETC ドライブ インターチェンジ IC 有料道路 深夜割引 休日割引 NEXCO ネクスコ" },
+  { site: "mob", name: "電車・新幹線料金シミュレーター", cat: "電車", url: MOB + "train.html",
+    desc: "電車と新幹線の運賃・特急料金を、路線と駅から調べます。",
+    keywords: "電車 鉄道 新幹線 運賃 特急 JR 私鉄 地下鉄 乗換 料金 切符" },
+  { site: "mob", name: "ガソリン代計算", cat: "車", url: MOB + "gasoline.html",
+    desc: "走る距離と燃費から、ガソリン代を計算します。",
+    keywords: "ガソリン 燃費 給油 燃料費 車 ドライブ 通勤 レギュラー ハイオク 軽油" },
+  { site: "mob", name: "EV電気代計算", cat: "車", url: MOB + "ev.html",
+    desc: "電気自動車の充電にかかる電気代を計算します。",
+    keywords: "EV 電気自動車 充電 電気代 車 電費" },
+  { site: "mob", name: "駐車場料金計算", cat: "車", url: MOB + "parking.html",
+    desc: "駐車場の料金体系から、停めた時間分の料金を計算します。",
+    keywords: "駐車場 パーキング コインパーキング 車 料金 最大料金 月極" },
+  { site: "mob", name: "タクシー料金計算", cat: "車", url: MOB + "taxi.html",
+    desc: "距離と時間から、タクシー運賃の目安を計算します。",
+    keywords: "タクシー 運賃 初乗り 深夜 迎車 料金 距離" },
+  { site: "mob", name: "定期代お得度チェック", cat: "電車", url: MOB + "pass.html",
+    desc: "定期券を買うのと都度払いの、どちらが得かを比べます。",
+    keywords: "定期 定期券 通勤 通学 電車 お得 回数券 運賃" },
+  { site: "mob", name: "マイカー維持費 vs カーシェア比較", cat: "車", url: MOB + "owncar.html",
+    desc: "マイカーの年間維持費と、カーシェアの料金を比較します。",
+    keywords: "マイカー 維持費 車検 自動車税 保険 カーシェア 比較 車 所有" },
+  { site: "mob", name: "引っ越し費用の目安", cat: "暮らし", url: MOB + "moving.html",
+    desc: "荷物量と移動距離から、引っ越し費用の目安を出します。",
+    keywords: "引っ越し 引越し 見積もり 単身 家族 荷物 転居" },
+  { site: "mob", name: "レンタカー料金比較", cat: "車", url: MOB + "rental.html",
+    desc: "レンタカー各社の料金を、車種クラスと割引から比べます。",
+    keywords: "レンタカー レンタル 車 旅行 割引 料金 比較 トヨタ ニッポン オリックス タイムズ" }
+];
+
+var cardsEl = document.getElementById("cards");
+var infoEl = document.getElementById("searchInfo");
+var noResultEl = document.getElementById("noResult");
+var boxEl = document.getElementById("searchBox");
+var sugEl = document.getElementById("suggest");
+var fieldEl = document.querySelector(".search-field");
+
+function badgeHtml(site){
+  if (site === "mob") return '<span class="badge badge-mob">移動</span>';
+  if (site === "uranai") return '<span class="badge badge-uranai">占い</span>';
+  return '<span class="badge badge-money">お金</span>';
+}
+
+function matchTools(q){
+  var tokens = q.split(/[\s　]+/).filter(function(s){ return s; }).map(function(s){ return s.toLowerCase(); });
+  if (!tokens.length) return TOOLS.slice();
+  return TOOLS.filter(function(t){
+    var hay = (t.name + " " + t.desc + " " + t.keywords + " " + t.cat).toLowerCase();
+    return tokens.every(function(tok){ return hay.indexOf(tok) >= 0; });
+  });
+}
+
+function render(list){
+  cardsEl.innerHTML = "";
+  list.forEach(function(t){
+    var a = document.createElement("a");
+    a.className = "tool-card";
+    a.href = t.url;
+    var badge = badgeHtml(t.site);
+    a.innerHTML = '<div class="tc-head"><h2></h2>' + badge + '</div>'
+      + '<div class="tc-cat"></div><p></p>';
+    a.querySelector("h2").textContent = t.name;
+    a.querySelector(".tc-cat").textContent = t.cat;
+    a.querySelector("p").textContent = t.desc;
+    cardsEl.appendChild(a);
+  });
+  noResultEl.style.display = list.length ? "none" : "block";
+}
+
+function doSearch(){
+  var q = boxEl.value.trim();
+  if (!q) {
+    render(TOOLS.filter(function(t){ return t.site === "uranai"; }));
+    infoEl.textContent = "";
+    return;
+  }
+  var hits = matchTools(q);
+  render(hits);
+  infoEl.textContent = hits.length
+    ? "「" + q + "」で " + hits.length + " 件見つかりました（お金・移動系のツールも含めて検索しています）"
+    : "";
+}
+
+function renderSuggest(){
+  var list = matchTools(boxEl.value.trim());
+  sugEl.innerHTML = "";
+  if (!list.length) {
+    var d = document.createElement("div");
+    d.className = "sug-none";
+    d.textContent = "見つかりませんでした。別の言葉で試してみてください。";
+    sugEl.appendChild(d);
+    return;
+  }
+  list.forEach(function(t){
+    var a = document.createElement("a");
+    a.className = "sug-item";
+    a.href = t.url;
+    a.innerHTML = '<span class="sug-name"></span>' + badgeHtml(t.site);
+    a.querySelector(".sug-name").textContent = t.name;
+    sugEl.appendChild(a);
+  });
+}
+
+function openSuggest(){
+  renderSuggest();
+  sugEl.hidden = false;
+}
+
+function closeSuggest(){
+  sugEl.hidden = true;
+}
+
+boxEl.addEventListener("input", function(){
+  doSearch();
+  openSuggest();
+});
+boxEl.addEventListener("focus", openSuggest);
+boxEl.addEventListener("click", openSuggest);
+boxEl.addEventListener("keydown", function(e){
+  if (e.key === "Escape") {
+    e.preventDefault();
+    closeSuggest();
+  }
+});
+document.addEventListener("mousedown", function(e){
+  if (!fieldEl.contains(e.target)) closeSuggest();
+});
+document.addEventListener("touchstart", function(e){
+  if (!fieldEl.contains(e.target)) closeSuggest();
+}, { passive: true });
+
+doSearch();
+</script>
+</body>
+</html>

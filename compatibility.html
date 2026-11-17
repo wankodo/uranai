@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>相性占い｜占いツール集</title>
+<meta name="description" content="2人の生年月日から運命数の組み合わせで相性を出す無料の相性占い。総合スコアと、恋愛・仕事・友情の3項目を表示します。">
+<style>
+:root{
+  --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1d2733; --mut:#68707c;
+  --line:#ddd6c8; --red:#b03a2e; --green:#1e7d46; --soft:#fdf6e0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:22px 16px 18px;border-bottom:4px solid var(--amber)}
+header .wrap{max-width:980px;margin:0 auto}
+header h1{margin:0;font-size:24px;letter-spacing:.04em}
+header h1 .accent{color:var(--amber)}
+header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
+.wrap{max-width:980px;margin:0 auto;padding:0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 1px 3px rgba(18,40,63,.06)}
+.card h2{margin:0 0 10px;font-size:17px;color:var(--navy);border-left:5px solid var(--amber);padding-left:9px}
+.note{font-size:12.5px;color:var(--mut)}
+label.flabel{display:block;font-size:12.5px;color:var(--mut);margin:10px 0 3px}
+input[type="date"],input[type="text"]{
+  width:100%;padding:9px 10px;border:1px solid #c9c2b2;border-radius:7px;font-size:15px;background:#fff;color:var(--ink);
+}
+input:focus{outline:2px solid var(--amber);outline-offset:0;border-color:var(--amber)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){.frow{grid-template-columns:1fr}}
+.person{border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.person h3{margin:0 0 4px;font-size:15px;color:var(--navy)}
+.scorebox{background:var(--navy);color:#fff;border-radius:10px;padding:18px 16px;text-align:center;margin:14px 0}
+.scorebox .lab{font-size:13px;color:#b9c8d8}
+.scorebox .val{font-size:56px;font-weight:800;color:var(--amber);font-variant-numeric:tabular-nums;line-height:1.1}
+.scorebox .val .unit{font-size:20px}
+.scorebox .comment{font-size:14px;color:#e6edf4;margin-top:6px}
+.lp-line{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:10px 0 2px;font-size:14px}
+.lp-line .lp{background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 14px}
+.lp-line .lp b{color:var(--navy);font-size:18px}
+.bar-row{margin:12px 0}
+.bar-row .bar-head{display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px}
+.bar-row .bar-head .cat{font-weight:700;color:var(--navy)}
+.bar-row .bar-head .num{font-variant-numeric:tabular-nums;font-weight:700}
+.bar-track{background:#e9e4d8;border-radius:6px;height:14px;overflow:hidden}
+.bar-fill{background:linear-gradient(90deg,var(--amber-d),var(--amber));height:100%;width:0%;transition:width .3s}
+.bar-row .bar-comment{font-size:12.5px;color:var(--mut);margin-top:3px}
+footer{margin:26px 0 40px}
+footer .card{font-size:12.5px;color:var(--mut)}
+.credit{text-align:center;color:var(--mut);font-size:12px;margin:10px 0 30px}
+a{color:var(--navy)}
+.sitebar{background:var(--navy2);border-bottom:2px solid var(--amber)}
+.sitebar .sb-in{max-width:980px;margin:0 auto;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sitebar a{color:#fff;text-decoration:none;font-size:13px}
+.sitebar a:hover{color:var(--amber)}
+.sitebar .sb-name{font-weight:700;letter-spacing:.03em}
+.sitebar .sb-tool{color:#b9c8d8;font-size:13px}
+</style>
+</head>
+<body>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span class="sb-tool">相性占い</span></div></div>
+
+<header>
+  <div class="wrap">
+    <h1>相性占い <span class="accent">数秘術で見る2人</span></h1>
+    <p>2人の生年月日から運命数を出し、その組み合わせで相性を占います。同じ入力なら結果はいつも同じです。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>2人の情報を入力</h2>
+    <div class="frow">
+      <div class="person">
+        <h3>1人目</h3>
+        <label class="flabel" for="nameA">名前（任意・表示用）</label>
+        <input type="text" id="nameA" placeholder="例：たろう">
+        <label class="flabel" for="dobA">生年月日</label>
+        <input type="date" id="dobA" min="1900-01-01" max="2100-12-31">
+      </div>
+      <div class="person">
+        <h3>2人目</h3>
+        <label class="flabel" for="nameB">名前（任意・表示用）</label>
+        <input type="text" id="nameB" placeholder="例：はなこ">
+        <label class="flabel" for="dobB">生年月日</label>
+        <input type="date" id="dobB" min="1900-01-01" max="2100-12-31">
+      </div>
+    </div>
+    <p class="note">入力すると自動で計算します。運命数は数秘術の標準手順（数字を全部足して一桁化、11・22・33はマスターナンバーとして残す）で出します。</p>
+  </div>
+
+  <div class="lp-line">
+    <div class="lp"><span id="lpNameA">1人目</span>の運命数：<b id="lpA">—</b></div>
+    <div class="lp"><span id="lpNameB">2人目</span>の運命数：<b id="lpB">—</b></div>
+  </div>
+
+  <div class="scorebox">
+    <div class="lab">総合相性スコア</div>
+    <div class="val"><span id="totalScore">—</span><span class="unit" id="totalUnit"></span></div>
+    <div class="comment" id="totalComment">未入力</div>
+  </div>
+
+  <div class="card">
+    <h2>項目別の相性</h2>
+    <div class="bar-row">
+      <div class="bar-head"><span class="cat">恋愛</span><span class="num" id="loveNum">—</span></div>
+      <div class="bar-track"><div class="bar-fill" id="loveBar"></div></div>
+      <div class="bar-comment" id="loveComment">未入力</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-head"><span class="cat">仕事</span><span class="num" id="workNum">—</span></div>
+      <div class="bar-track"><div class="bar-fill" id="workBar"></div></div>
+      <div class="bar-comment" id="workComment">未入力</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-head"><span class="cat">友情</span><span class="num" id="friendNum">—</span></div>
+      <div class="bar-track"><div class="bar-fill" id="friendBar"></div></div>
+      <div class="bar-comment" id="friendComment">未入力</div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="card">
+      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。
+    </div>
+    <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+function digitSum(n){
+  var s = 0;
+  while(n > 0){ s += n % 10; n = Math.floor(n / 10); }
+  return s;
+}
+
+// Reduce to a single digit, keeping master numbers 11, 22, 33.
+function reduceNum(n){
+  while(n > 9 && n !== 11 && n !== 22 && n !== 33){
+    n = digitSum(n);
+  }
+  return n;
+}
+
+// Core single digit used for pairing (master numbers pair as 2, 4, 6).
+function coreNum(n){
+  var r = n;
+  while(r > 9) r = digitSum(r);
+  return r;
+}
+
+function sumDigitsOfString(str){
+  var s = 0;
+  for(var i = 0; i < str.length; i++){
+    var c = str.charCodeAt(i);
+    if(c >= 48 && c <= 57) s += c - 48;
+  }
+  return s;
+}
+
+// Symmetric base-score table for core-number pairs 1-9.
+var PAIR = {
+  1:{1:82, 2:74, 3:88, 4:66, 5:90, 6:78, 7:62, 8:84, 9:76},
+  2:{1:74, 2:80, 3:72, 4:86, 5:64, 6:92, 7:70, 8:68, 9:88},
+  3:{1:88, 2:72, 3:84, 4:60, 5:86, 6:82, 7:74, 8:66, 9:90},
+  4:{1:66, 2:86, 3:60, 4:78, 5:62, 6:84, 7:72, 8:88, 9:64},
+  5:{1:90, 2:64, 3:86, 4:62, 5:80, 6:70, 7:78, 8:74, 9:82},
+  6:{1:78, 2:92, 3:82, 4:84, 5:70, 6:86, 7:66, 8:80, 9:84},
+  7:{1:62, 2:70, 3:74, 4:72, 5:78, 6:66, 7:76, 8:64, 9:72},
+  8:{1:84, 2:68, 3:66, 4:88, 5:74, 6:80, 7:64, 8:82, 9:68},
+  9:{1:76, 2:88, 3:90, 4:64, 5:82, 6:84, 7:72, 8:68, 9:80}
+};
+
+function clamp(v){
+  if(v < 0) return 0;
+  if(v > 100) return 100;
+  return v;
+}
+
+function bandIndex(score){
+  if(score >= 80) return 0;
+  if(score >= 65) return 1;
+  if(score >= 50) return 2;
+  if(score >= 35) return 3;
+  return 4;
+}
+
+var TOTAL_COMMENTS = [
+  "相性は抜群です。価値観の芯が似ていて、長く一緒にいても自然体でいられる組み合わせです。",
+  "相性は良好です。お互いの強みがかみ合いやすく、支え合える関係になりやすいでしょう。",
+  "相性は標準的です。違いはありますが、それが刺激にもなる組み合わせ。歩み寄りが鍵です。",
+  "相性はやや工夫が要る組み合わせです。違いを欠点ではなく役割分担と捉えると回り始めます。",
+  "相性は正直、低めです。ただし数字は目安にすぎません。実際の関係は2人の積み重ねで大きく変わります。"
+];
+
+var ITEM_COMMENTS = {
+  love:[
+    "恋愛相性は最高クラス。惹かれ合いやすく、気持ちの温度も合いやすい組み合わせです。",
+    "恋愛相性は良好。安心感のある恋になりやすく、長続きしやすいでしょう。",
+    "恋愛相性はまずまず。好意はあっても表現の仕方が違うので、言葉にして伝えることが大切です。",
+    "恋愛面はすれ違いやすい組み合わせ。相手のペースを尊重すると距離が縮まります。",
+    "恋愛面は課題多め。ただし、違いが大きい分だけ、補い合えたときの力も大きい組み合わせです。"
+  ],
+  work:[
+    "仕事相性は最高クラス。役割分担が自然に決まり、成果を出しやすいコンビです。",
+    "仕事相性は良好。お互いの得意分野を活かせば、安定して結果を出せるでしょう。",
+    "仕事相性はまずまず。進め方の違いはありますが、ゴールを共有すれば噛み合います。",
+    "仕事面は意見がぶつかりやすい組み合わせ。役割を先に決めておくと摩擦が減ります。",
+    "仕事面は低め。ただし、違う視点を持つ者同士なので、革新的な仕事には向いています。"
+  ],
+  friend:[
+    "友情相性は最高クラス。一緒にいて楽で、長く続く友達になれる組み合わせです。",
+    "友情相性は良好。趣味や笑いのツボが合いやすく、自然に仲が深まります。",
+    "友情相性はまずまず。付き合いの頻度よりも、会ったときの濃さで深まるタイプです。",
+    "友情面は距離感が大事な組み合わせ。近づきすぎず、程よい間合いが長続きのコツです。",
+    "友情面は低め。ただし無理に合わせる必要はありません。必要なときに頼れる関係も立派な友情です。"
+  ]
+};
+
+function parseDob(v){
+  if(!v) return null;
+  var parts = v.split("-");
+  if(parts.length !== 3) return null;
+  var y = parseInt(parts[0], 10), m = parseInt(parts[1], 10), d = parseInt(parts[2], 10);
+  if(!y || !m || !d || y < 1900 || y > 2100) return null;
+  return { y:y, m:m, d:d, lp: reduceNum(sumDigitsOfString(parts[0] + parts[1] + parts[2])), bd: reduceNum(d) };
+}
+
+var nameA = document.getElementById("nameA"), nameB = document.getElementById("nameB");
+var dobA = document.getElementById("dobA"), dobB = document.getElementById("dobB");
+
+function setBar(prefix, score, kind){
+  document.getElementById(prefix + "Num").textContent = score;
+  document.getElementById(prefix + "Bar").style.width = score + "%";
+  document.getElementById(prefix + "Comment").textContent = ITEM_COMMENTS[kind][bandIndex(score)];
+}
+
+function setEmpty(){
+  document.getElementById("lpA").textContent = "—";
+  document.getElementById("lpB").textContent = "—";
+  document.getElementById("totalScore").textContent = "—";
+  document.getElementById("totalUnit").textContent = "";
+  document.getElementById("totalComment").textContent = "未入力";
+  ["love", "work", "friend"].forEach(function(p){
+    document.getElementById(p + "Num").textContent = "—";
+    document.getElementById(p + "Bar").style.width = "0%";
+    document.getElementById(p + "Comment").textContent = "未入力";
+  });
+}
+
+function calc(){
+  document.getElementById("lpNameA").textContent = nameA.value.trim() || "1人目";
+  document.getElementById("lpNameB").textContent = nameB.value.trim() || "2人目";
+  var a = parseDob(dobA.value), b = parseDob(dobB.value);
+  if(a) document.getElementById("lpA").textContent = a.lp;
+  if(b) document.getElementById("lpB").textContent = b.lp;
+  if(!a || !b){ 
+    if(!a) document.getElementById("lpA").textContent = "—";
+    if(!b) document.getElementById("lpB").textContent = "—";
+    document.getElementById("totalScore").textContent = "—";
+    document.getElementById("totalUnit").textContent = "";
+    document.getElementById("totalComment").textContent = "未入力";
+    ["love", "work", "friend"].forEach(function(p){
+      document.getElementById(p + "Num").textContent = "—";
+      document.getElementById(p + "Bar").style.width = "0%";
+      document.getElementById(p + "Comment").textContent = "未入力";
+    });
+    return;
+  }
+
+  var ca = coreNum(a.lp), cb = coreNum(b.lp);
+  var base = PAIR[ca][cb];
+  var masterBonus = 0;
+  var aMaster = (a.lp === 11 || a.lp === 22 || a.lp === 33);
+  var bMaster = (b.lp === 11 || b.lp === 22 || b.lp === 33);
+  if(aMaster && bMaster) masterBonus = 4;
+  else if(aMaster || bMaster) masterBonus = 2;
+
+  // Small symmetric adjustment from the birthday-number pair.
+  var bdAdj = Math.round((PAIR[coreNum(a.bd)][coreNum(b.bd)] - 65) / 10);
+
+  var total = clamp(base + masterBonus + bdAdj);
+  var love = clamp(total + ((ca * cb) % 7) - 3);
+  var work = clamp(total + (((ca + cb) * 2) % 7) - 3);
+  var friend = clamp(total + ((Math.abs(ca - cb) * 3) % 7) - 3);
+
+  document.getElementById("totalScore").textContent = total;
+  document.getElementById("totalUnit").textContent = " 点";
+  document.getElementById("totalComment").textContent = TOTAL_COMMENTS[bandIndex(total)];
+  setBar("love", love, "love");
+  setBar("work", work, "work");
+  setBar("friend", friend, "friend");
+}
+
+[nameA, nameB, dobA, dobB].forEach(function(el){
+  el.addEventListener("input", calc);
+  el.addEventListener("change", calc);
+});
+setEmpty();
+})();
+</script>
+</body>
+</html>

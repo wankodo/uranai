@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>今日のおみくじ｜占いツール集</title>
+<meta name="description" content="1日1回、今日の運勢を引く無料おみくじ。大吉から大凶までの総合運と、願い事・恋愛・仕事・金運・健康の運勢、ラッキーアイテムとラッキーカラーをお知らせします。">
+<style>
+:root{
+  --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1d2733; --mut:#68707c;
+  --line:#ddd6c8; --red:#b03a2e; --green:#1e7d46; --soft:#fdf6e0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:22px 16px 18px;border-bottom:4px solid var(--amber)}
+header .wrap{max-width:980px;margin:0 auto}
+header h1{margin:0;font-size:24px;letter-spacing:.04em}
+header h1 .accent{color:var(--amber)}
+header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
+.wrap{max-width:980px;margin:0 auto;padding:0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 1px 3px rgba(18,40,63,.06)}
+.card h2{margin:0 0 10px;font-size:17px;color:var(--navy);border-left:5px solid var(--amber);padding-left:9px}
+.note{font-size:12.5px;color:var(--mut)}
+label.flabel{display:block;font-size:12.5px;color:var(--mut);margin:10px 0 3px}
+input[type="date"]{width:100%;padding:9px 10px;border:1px solid #c9c2b2;border-radius:7px;font-size:15px;background:#fff;color:var(--ink)}
+input:focus{outline:2px solid var(--amber);outline-offset:0;border-color:var(--amber)}
+footer{margin:26px 0 40px}
+footer .card{font-size:12.5px;color:var(--mut)}
+.credit{text-align:center;color:var(--mut);font-size:12px;margin:10px 0 30px}
+a{color:var(--navy)}
+.sitebar{background:var(--navy2);border-bottom:2px solid var(--amber)}
+.sitebar .sb-in{max-width:980px;margin:0 auto;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sitebar a{color:#fff;text-decoration:none;font-size:13px}
+.sitebar a:hover{color:var(--amber)}
+.sitebar .sb-name{font-weight:700;letter-spacing:.03em}
+.date-line{font-size:14px;color:var(--navy);font-weight:700}
+.tube-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;margin:10px 0 4px}
+.tube{width:86px;height:150px;background:linear-gradient(90deg,#8a5a1e,#c98f2e 45%,#8a5a1e);border-radius:12px 12px 18px 18px;border:2px solid #6e4513;position:relative;box-shadow:0 4px 10px rgba(7,24,39,.25)}
+.tube::before{content:"";position:absolute;top:-26px;left:50%;transform:translateX(-50%);width:8px;height:34px;background:#e8dcc0;border:1px solid #b8a67e;border-radius:3px}
+.tube::after{content:"籤";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff7e0;font-size:34px;font-weight:800;text-shadow:0 1px 3px rgba(0,0,0,.4)}
+.tube.shaking{animation:shake .12s linear 10}
+@keyframes shake{0%{transform:rotate(0)}25%{transform:rotate(-7deg) translateY(-3px)}75%{transform:rotate(7deg) translateY(2px)}100%{transform:rotate(0)}}
+.drawbtn{background:var(--navy);color:#fff;border:1px solid var(--navy);border-radius:9px;padding:12px 34px;font-size:16px;font-weight:700;cursor:pointer}
+.drawbtn:hover{background:var(--navy2)}
+.drawbtn:disabled{opacity:.5;cursor:not-allowed}
+.grade{text-align:center;font-size:52px;font-weight:800;color:var(--navy);letter-spacing:.2em;margin:6px 0 2px}
+.grade.good{color:var(--amber-d)}
+.grade.bad{color:var(--red)}
+.overall{text-align:center;font-size:15px;margin:0 0 6px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14.5px}
+.kv dt{color:var(--navy);font-weight:700;padding:6px 0;border-bottom:1px solid var(--line)}
+.kv dd{margin:0;padding:6px 0;border-bottom:1px solid var(--line)}
+.lucky{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0 0}
+@media(max-width:640px){.lucky{grid-template-columns:1fr}}
+.lucky .box{background:var(--navy);color:#fff;border-radius:10px;padding:12px 16px}
+.lucky .lab{font-size:12.5px;color:#b9c8d8}
+.lucky .val{font-size:19px;font-weight:800;color:var(--amber)}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span style="color:#cfd9e4;font-size:13px">今日のおみくじ</span></div></div>
+
+<header>
+  <div class="wrap">
+    <h1>今日の <span class="accent">おみくじ</span></h1>
+    <p>筒を振って、今日の運勢を引きましょう。結果は1日1回、その日ずっと同じです。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>おみくじを引く</h2>
+    <p class="date-line" id="todayLine"></p>
+    <label class="flabel" for="birth">生年月日（任意）</label>
+    <input type="date" id="birth" value="">
+    <p class="note">生年月日を入れると、あなた専用のおみくじになります。未入力の場合は、その日みんなに共通の結果です。</p>
+    <div class="tube-wrap">
+      <div class="tube" id="tube"></div>
+      <button type="button" class="drawbtn" id="drawBtn">おみくじを引く</button>
+    </div>
+    <p class="note" style="text-align:center">結果はその日1日固定です（引き直しても、開き直しても同じ結果になります）。</p>
+  </div>
+
+  <div class="card hidden" id="resultCard">
+    <h2>今日の運勢</h2>
+    <div class="grade" id="gGrade">-</div>
+    <p class="overall" id="gOverall"></p>
+    <dl class="kv">
+      <dt>願い事</dt><dd id="gWish"></dd>
+      <dt>恋愛</dt><dd id="gLove"></dd>
+      <dt>仕事</dt><dd id="gWork"></dd>
+      <dt>金運</dt><dd id="gMoney"></dd>
+      <dt>健康</dt><dd id="gHealth"></dd>
+    </dl>
+    <div class="lucky">
+      <div class="box"><div class="lab">ラッキーアイテム</div><div class="val" id="gItem">-</div></div>
+      <div class="box"><div class="lab">ラッキーカラー</div><div class="val" id="gColor">-</div></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="card">
+      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。結果は日付（と任意入力の生年月日）から自動で決まります。
+    </div>
+    <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
+  </footer>
+
+</div>
+
+<script>
+"use strict";
+// xmur3-style string hash -> seed for mulberry32
+function hashSeed(str){
+  let h = 1779033703 ^ str.length;
+  for(let i=0;i<str.length;i++){
+    h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+    h = (h << 13) | (h >>> 19);
+  }
+  return h >>> 0;
+}
+function mulberry32(a){
+  return function(){
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function todayStr(){
+  const d = new Date();
+  const m = String(d.getMonth()+1).padStart(2,"0");
+  const day = String(d.getDate()).padStart(2,"0");
+  return d.getFullYear() + "-" + m + "-" + day;
+}
+function pick(rng, arr){ return arr[Math.floor(rng() * arr.length)]; }
+
+var GRADES = [
+ {name:"大吉", cls:"good", w:12},
+ {name:"中吉", cls:"good", w:18},
+ {name:"小吉", cls:"good", w:18},
+ {name:"吉",   cls:"",     w:20},
+ {name:"末吉", cls:"",     w:14},
+ {name:"凶",   cls:"bad",  w:12},
+ {name:"大凶", cls:"bad",  w:6}
+];
+
+var TEXTS = {
+ overall:{
+  "大吉":["何をやっても追い風の一日。思い切った行動が大きな実りにつながります。","運気は最高潮。長く温めてきた計画を実行に移す絶好の日です。"],
+  "中吉":["穏やかに運が向いてくる一日。小さな幸運が積み重なっていきます。","良い流れの中にいます。丁寧に過ごせば、嬉しい知らせが届くでしょう。"],
+  "小吉":["小さな喜びが見つかる一日。身近なところに幸運の種があります。","派手さはないけれど、確かな手応えのある一日になりそうです。"],
+  "吉":["安定した運気の一日。普段通りの丁寧さが、良い結果を連れてきます。","焦らず着実に進めば、夕方には良い手応えを感じられるでしょう。"],
+  "末吉":["朝は停滞気味でも、後半に運が上向く一日。焦りは禁物です。","今は助走の時期。準備を怠らなければ、近いうちに花開きます。"],
+  "凶":["慎重さが身を助ける一日。大きな決断は先送りが正解です。","思わぬところに落とし穴。確認を怠らず、無理のない範囲で過ごしましょう。"],
+  "大凶":["今日は守りの日。新しいことは控え、体と心を休めることに専念を。","嵐の中にいるような一日ですが、必ず過ぎ去ります。静かに耐えることが明日の糧になります。"]
+ },
+ wish:{
+  "大吉":["強く願えば叶う兆し。行動が願いを引き寄せます。","願いは実を結ぶ時期に入りました。堂々と進んでください。"],
+  "中吉":["願いは順調に近づいています。あと一押しの努力を。","人の助けを得て、願いが前進するでしょう。"],
+  "小吉":["小さな願いから叶っていきます。欲張らず一つずつ。","叶うまであと少し。諦めなければ届く距離にあります。"],
+  "吉":["願いは時間をかけて実るもの。今は土台を固める時です。","焦らなければ、やがて良い知らせが来るでしょう。"],
+  "末吉":["今はまだ時期尚早。願いを見直すと道が見えます。","遅れて叶う願いです。待つ間の準備が鍵になります。"],
+  "凶":["願いは今日のところは届きにくい様子。無理に進めないで。","願う方向を変えると、別の扉が開くかもしれません。"],
+  "大凶":["願いは一旦手放す勇気を。今は力を蓄える時期です。","叶わぬ願いに固執すると疲れるだけ。休息を優先してください。"]
+ },
+ love:{
+  "大吉":["素直な気持ちが相手に届く日。告白や誘いに最適です。","新しい出会いにも既存の関係にも、大きな進展の兆し。"],
+  "中吉":["優しい言葉が関係を深めます。連絡は早めに返すと吉。","相手の良いところに目を向けると、絆が強くなります。"],
+  "小吉":["さりげない気遣いが好印象に。焦らず距離を縮めて。","小さな共通点が、会話の花を咲かせてくれます。"],
+  "吉":["穏やかな関係が続きます。普段通りの優しさで十分です。","相手の話をよく聞くことが、信頼につながる一日。"],
+  "末吉":["今は様子見が正解。焦って結論を出さないで。","気持ちに波がある日。自分の時間を大切にすると整います。"],
+  "凶":["すれ違いやすい日。言葉は選んで、誤解を招かないように。","相手の機嫌に振り回されがち。距離を置くのも優しさです。"],
+  "大凶":["今日は恋愛より自分を労わる日。無理な約束はしないで。","感情的になりやすい日。大事な話は後日に回しましょう。"]
+ },
+ work:{
+  "大吉":["仕事運は絶好調。大きな仕事や提案が実を結びます。","集中力が冴える日。難しい案件から手をつけると吉。"],
+  "中吉":["周りとの連携が上手くいく日。相談が良い結果を呼びます。","コツコツ進めた仕事が、評価につながる兆しです。"],
+  "小吉":["細かい作業が捗る日。確認作業や整理に力を入れて。","小さな改善が、後の大きな効率化につながります。"],
+  "吉":["平常運転が一番の日。ルーティンを丁寧にこなして。","新しいことより、今の仕事の完成度を上げると吉。"],
+  "末吉":["午前は滞りがち。午後から流れが良くなります。","急な変更にも慌てずに。柔軟さが評価される日です。"],
+  "凶":["ミスが出やすい日。送信前・提出前の確認を二重に。","人の仕事の尻拭いが回ってくるかも。引き受けすぎに注意。"],
+  "大凶":["今日は攻めずに守る日。最低限の仕事に絞って無理をしないで。","トラブルの種は早期発見が鍵。違和感は放置しないこと。"]
+ },
+ money:{
+  "大吉":["金運は絶好調。思わぬ臨時収入やお得な話の兆し。","買い物運も良好。長く使える良いものに出会えそうです。"],
+  "中吉":["金運は上向き。計画的な出費なら問題ありません。","小さな節約が、後で大きな差になります。"],
+  "小吉":["コツコツ貯めるのに良い日。少額の積み立てを始める好機。","財布の紐はやや緩め。でも無駄遣いにはならない範囲です。"],
+  "吉":["収支は安定。普段通りの使い方で問題なし。","大きな買い物は、比較してから決めると損なし。"],
+  "末吉":["出費がかさみがちな日。衝動買いは一晩寝かせてから。","貸し借りは今日は避けるのが無難です。"],
+  "凶":["金運は低め。財布や支払いの確認をしっかりと。","お得そうな話ほど要注意。契約ごとは今日は見送りを。"],
+  "大凶":["大きな出費は厳禁の日。財布を家に置くくらいで丁度いい。","なくし物・落とし物に注意。貴重品の管理を徹底して。"]
+ },
+ health:{
+  "大吉":["体調は万全。運動や新しい習慣を始めるのに最適な日。","よく眠れてよく動ける日。エネルギーを外に向けて。"],
+  "中吉":["体調は良好。軽い運動がさらに運気を上げます。","食事のバランスを意識すると、一日元気に過ごせます。"],
+  "小吉":["概ね良好。肩や目の疲れは早めにほぐして。","温かい飲み物が体に優しい日です。"],
+  "吉":["可もなく不可もない体調。普段通りの生活リズムを守って。","睡眠時間を確保することが、今日の健康の鍵。"],
+  "末吉":["疲れが溜まり始めているかも。休憩をこまめに取って。","冷えに注意。温かい服装と食事を心がけて。"],
+  "凶":["体調を崩しやすい日。無理な予定は詰め込まないで。","胃腸が弱りがち。暴飲暴食は避けましょう。"],
+  "大凶":["今日は休養第一。体の声を無視しないでください。","持病や古傷が気になるなら、早めの受診を検討して。"]
+ }
+};
+
+var ITEMS = ["ハンカチ","腕時計","青いペン","折りたたみ傘","新しい靴下","文庫本","キーケース","エコバッグ","リップクリーム","ミントタブレット","手帳","水筒","眼鏡拭き","ヘアゴム","缶コーヒー","ガム","ポケットティッシュ","指輪","マフラー","スマホケース"];
+var COLORS = ["紺","アンバー","白","黒","赤","青","緑","黄色","ピンク","水色","グレー","金色","銀色","紫","オレンジ","ベージュ"];
+
+var birthEl = document.getElementById("birth");
+var todayLine = document.getElementById("todayLine");
+var tube = document.getElementById("tube");
+var drawBtn = document.getElementById("drawBtn");
+var resultCard = document.getElementById("resultCard");
+var drawing = false;
+
+function computeResult(){
+  var rng = mulberry32(hashSeed("omikuji|" + todayStr() + "|" + (birthEl.value || "")));
+  var totalW = 0;
+  GRADES.forEach(function(g){ totalW += g.w; });
+  var r = rng() * totalW;
+  var grade = GRADES[GRADES.length-1];
+  for(var i=0;i<GRADES.length;i++){
+    if(r < GRADES[i].w){ grade = GRADES[i]; break; }
+    r -= GRADES[i].w;
+  }
+  return {
+    grade: grade,
+    overall: pick(rng, TEXTS.overall[grade.name]),
+    wish: pick(rng, TEXTS.wish[grade.name]),
+    love: pick(rng, TEXTS.love[grade.name]),
+    work: pick(rng, TEXTS.work[grade.name]),
+    money: pick(rng, TEXTS.money[grade.name]),
+    health: pick(rng, TEXTS.health[grade.name]),
+    item: pick(rng, ITEMS),
+    color: pick(rng, COLORS)
+  };
+}
+
+function showResult(res){
+  var gEl = document.getElementById("gGrade");
+  gEl.textContent = res.grade.name;
+  gEl.className = "grade " + res.grade.cls;
+  document.getElementById("gOverall").textContent = res.overall;
+  document.getElementById("gWish").textContent = res.wish;
+  document.getElementById("gLove").textContent = res.love;
+  document.getElementById("gWork").textContent = res.work;
+  document.getElementById("gMoney").textContent = res.money;
+  document.getElementById("gHealth").textContent = res.health;
+  document.getElementById("gItem").textContent = res.item;
+  document.getElementById("gColor").textContent = res.color;
+  resultCard.classList.remove("hidden");
+}
+
+drawBtn.addEventListener("click", function(){
+  if(drawing) return;
+  drawing = true;
+  drawBtn.disabled = true;
+  resultCard.classList.add("hidden");
+  tube.classList.remove("shaking");
+  void tube.offsetWidth;
+  tube.classList.add("shaking");
+  var res = computeResult();
+  setTimeout(function(){
+    tube.classList.remove("shaking");
+    showResult(res);
+    drawBtn.disabled = false;
+    drawing = false;
+  }, 1300);
+});
+
+(function(){
+  var d = new Date();
+  todayLine.textContent = d.getFullYear() + "年" + (d.getMonth()+1) + "月" + d.getDate() + "日のおみくじ";
+})();
+</script>
+</body>
+</html>

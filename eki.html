@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>易占い｜占いツール集</title>
+<meta name="description" content="コイン3枚を6回投げて卦を立てる無料の易占い（易経）ツール。本卦・変爻・変卦まで出す本格派の目安占いです。">
+<style>
+:root{
+  --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1d2733; --mut:#68707c;
+  --line:#ddd6c8; --red:#b03a2e; --green:#1e7d46; --soft:#fdf6e0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:22px 16px 18px;border-bottom:4px solid var(--amber)}
+header .wrap{max-width:980px;margin:0 auto}
+header h1{margin:0;font-size:24px;letter-spacing:.04em}
+header h1 .accent{color:var(--amber)}
+header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
+.wrap{max-width:980px;margin:0 auto;padding:0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 1px 3px rgba(18,40,63,.06)}
+.card h2{margin:0 0 10px;font-size:17px;color:var(--navy);border-left:5px solid var(--amber);padding-left:9px}
+.note{font-size:12.5px;color:var(--mut)}
+label.flabel{display:block;font-size:12.5px;color:var(--mut);margin:10px 0 3px}
+input[type="text"]{
+  width:100%;padding:9px 10px;border:1px solid #c9c2b2;border-radius:7px;font-size:15px;background:#fff;color:var(--ink);
+}
+input:focus{outline:2px solid var(--amber);outline-offset:0;border-color:var(--amber)}
+button.cast{
+  margin-top:14px;width:100%;padding:13px 10px;border:none;border-radius:8px;cursor:pointer;
+  background:var(--amber);color:#231a00;font-size:17px;font-weight:800;letter-spacing:.08em;
+}
+button.cast:hover{background:var(--amber-d);color:#fff}
+button.cast:disabled{opacity:.55;cursor:wait}
+.hexarea{display:flex;gap:18px;flex-wrap:wrap}
+.hexbox{flex:1 1 260px;background:var(--navy);border-radius:10px;padding:16px;color:#fff}
+.hexbox.sub{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.hexbox .hname{font-size:20px;font-weight:800;letter-spacing:.03em}
+.hexbox .hname .accent{color:var(--amber)}
+.hexbox.sub .hname .accent{color:var(--amber-d)}
+.hexbox .hread{font-size:12.5px;color:#b9c8d8;margin-bottom:10px}
+.hexbox.sub .hread{color:var(--mut)}
+.lines{display:flex;flex-direction:column;gap:7px;margin:8px 0 4px}
+.lrow{display:flex;align-items:center;gap:10px}
+.lbar{flex:1;display:flex;gap:14px;height:13px}
+.lbar .seg{background:currentColor;border-radius:2px;height:13px}
+.lbar.yang .seg{flex:1}
+.lbar.yin .seg{flex:1}
+.lmark{width:20px;text-align:center;font-weight:800;color:var(--amber);font-size:15px}
+.hexbox.sub .lmark{color:var(--red)}
+.llab{width:34px;font-size:11.5px;color:#b9c8d8;text-align:right}
+.hexbox.sub .llab{color:var(--mut)}
+.htext{font-size:14px;margin-top:10px;line-height:1.75}
+.today{background:var(--soft);border:1px solid #ecd27a;border-radius:10px;padding:14px 16px;margin:14px 0}
+.today .lab{font-size:12.5px;color:var(--mut)}
+.today .word{font-size:19px;font-weight:800;color:var(--navy)}
+.today .desc{font-size:13.5px;margin-top:4px}
+.coins{font-size:12.5px;color:var(--mut);margin-top:8px}
+.hidden{display:none}
+footer{margin:26px 0 40px}
+footer .card{font-size:12.5px;color:var(--mut)}
+.credit{text-align:center;color:var(--mut);font-size:12px;margin:10px 0 30px}
+a{color:var(--navy)}
+.sitebar{background:var(--navy2);border-bottom:2px solid var(--amber)}
+.sitebar .sb-in{max-width:980px;margin:0 auto;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sitebar a{color:#fff;text-decoration:none;font-size:13px}
+.sitebar a:hover{color:var(--amber)}
+.sitebar .sb-name{font-weight:700;letter-spacing:.03em}
+.sitebar .sb-tool{color:#b9c8d8;font-size:13px}
+</style>
+</head>
+<body>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span class="sb-tool">易占い</span></div></div>
+
+<header>
+  <div class="wrap">
+    <h1>易占い <span class="accent">易経</span></h1>
+    <p>コイン3枚を6回投げて卦を立てる、本格派の易占い。問いを心に浮かべて「占う」を押してください。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>問いを入力（任意）</h2>
+    <label class="flabel" for="question">占いたいこと</label>
+    <input type="text" id="question" placeholder="例：転職すべきか／あの人との今後／今年の運勢">
+    <p class="note">入力しなくても占えます。コインの表＝3・裏＝2として6回分を自動で投げ、合計 6＝老陰（変化する陰）、7＝少陽、8＝少陰、9＝老陽（変化する陽）で爻を作ります。爻は下から順に積み上げます。</p>
+    <button class="cast" id="castBtn" type="button">占う</button>
+  </div>
+
+  <div id="result" class="hidden">
+    <div class="card">
+      <h2>本卦（ほんけ）</h2>
+      <p class="note" id="qEcho"></p>
+      <div class="hexarea">
+        <div class="hexbox">
+          <div class="hname" id="mainName">—</div>
+          <div class="hread" id="mainRead">—</div>
+          <div class="lines" id="mainLines"></div>
+          <div class="htext" id="mainText"></div>
+          <div class="coins" id="coinLog"></div>
+        </div>
+        <div class="hexbox sub hidden" id="changedBox">
+          <div class="hname" id="chgName">—</div>
+          <div class="hread" id="chgRead">—</div>
+          <div class="lines" id="chgLines"></div>
+          <div class="htext" id="chgText"></div>
+        </div>
+      </div>
+      <p class="note" id="chgNote"></p>
+    </div>
+
+    <div class="today">
+      <div class="lab">今日への一言</div>
+      <div class="word" id="adviceWord">—</div>
+      <div class="desc" id="adviceDesc"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>易占いの見方</h2>
+    <p class="note" style="font-size:13px;color:var(--ink)">
+      本卦は「今の状況」を表します。投げたコインの合計が 6（老陰）や 9（老陽）になった爻は「変爻（へんこう）」といい、変化の起きるポイントです。
+      変爻がある場合は、その爻を反転させた「変卦（へんけ）」が「この先の流れ」を示します。変爻がない卦は、状況がしばらく安定しているサインと読みます。
+      易は答えを断定するものではなく、考えるヒントをくれる占いです。結果は目安としてお楽しみください。
+    </p>
+  </div>
+
+  <footer>
+    <div class="card">
+      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。
+    </div>
+    <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+// Trigrams: bits are lines from bottom to top (1 = yang, 0 = yin).
+var TRIGRAMS = {
+  "乾":{read:"けん", symbol:"☰", bits:[1,1,1]},
+  "兌":{read:"だ",   symbol:"☱", bits:[1,1,0]},
+  "離":{read:"り",   symbol:"☲", bits:[1,0,1]},
+  "震":{read:"しん", symbol:"☳", bits:[1,0,0]},
+  "巽":{read:"そん", symbol:"☴", bits:[0,1,1]},
+  "坎":{read:"かん", symbol:"☵", bits:[0,1,0]},
+  "艮":{read:"ごん", symbol:"☶", bits:[0,0,1]},
+  "坤":{read:"こん", symbol:"☷", bits:[0,0,0]}
+};
+
+function triNameByBits(bits){
+  for(var k in TRIGRAMS){
+    var b = TRIGRAMS[k].bits;
+    if(b[0]===bits[0] && b[1]===bits[1] && b[2]===bits[2]) return k;
+  }
+  return null;
+}
+
+// 64 hexagrams keyed by upper|lower trigram name.
+var HEXAGRAMS = {
+  "乾|乾":{name:"乾為天", read:"けんいてん", text:"天が天の上を巡る、最も力強い卦。勢いと創造のエネルギーが満ちています。ただし力みすぎは禁物で、昇りきった龍は悔いありとも読むため、謙虚さを忘れずに進むのが吉です。", advice:"勢いに乗って大きく動く"},
+  "坤|坤":{name:"坤為地", read:"こんいち", text:"大地のようにすべてを受け止める卦。自分が先頭に立つより、支える・育てる姿勢が実を結びます。焦らず受け身でいることが、かえって大きな力になります。", advice:"受け止める姿勢で信頼を得る"},
+  "坎|震":{name:"水雷屯", read:"すいらいちゅん", text:"芽が出たばかりで障害も多い、産みの苦しみの卦。物事の始まりは混乱がつきものです。無理に突破しようとせず、助けてくれる人を得て少しずつ整えていきましょう。", advice:"助っ人を得て土台作りから"},
+  "艮|坎":{name:"山水蒙", read:"さんすいもう", text:"霧の中で道を探す、学び始めの卦。分からないことを素直に聞ける時期です。教えを乞うのは占う側ではなく学ぶ側の姿勢が大切で、謙虚さが霧を晴らします。", advice:"分からないことは素直に聞く"},
+  "坎|乾":{name:"水天需", read:"すいてんじゅ", text:"雨を待つように、時機を待つ卦。今は力を蓄えて待つことが最善の策です。飲食を楽しみ心を落ち着けて待てば、望む雨は必ず降ります。", advice:"焦らず時機を待つ"},
+  "乾|坎":{name:"天水訟", read:"てんすいしょう", text:"言い分が食い違う、争いの卦。真正面から争っても得るものは少なく、途中で和らぐ道を探るのが賢明です。第三者の仲裁も味方にしましょう。", advice:"争わず和解の道を探る"},
+  "坤|坎":{name:"地水師", read:"ちすいし", text:"軍を率いるように、統率と規律が問われる卦。大勢を動かすには経験あるリーダーと秩序が要ります。一人で抱えず、役割分担を明確にすることが勝利の鍵です。", advice:"役割分担と規律を明確に"},
+  "坎|坤":{name:"水地比", read:"すいちひ", text:"水が大地に寄り添う、親しみ助け合う卦。人との結びつきが幸運を運びます。遅れて加わると実りを逃すので、良い縁には早めに近づくのが吉です。", advice:"良い縁には早めに近づく"},
+  "巽|乾":{name:"風天小畜", read:"ふうてんしょうちく", text:"雲が集まってもまだ雨にならない、小さく蓄える卦。大きな成果はもう少し先ですが、準備と蓄積は着実に進んでいます。小さな改善の積み重ねを大切に。", advice:"小さな蓄積を続ける"},
+  "乾|兌":{name:"天沢履", read:"てんたくり", text:"虎の尾を踏むような慎重さが要る卦。礼を尽くし、踏むべき順序を守れば危険は避けられます。丁寧な振る舞いが身を守る時期です。", advice:"礼儀と順序を守って慎重に"},
+  "坤|乾":{name:"地天泰", read:"ちてんたい", text:"天地が交わり万物が通じる、泰平の卦。物事が順調に流れ、上下の意思疎通も良好です。良い時期ほど先の備えをしておくと、安泰が長続きします。", advice:"順調なうちに次の備えを"},
+  "乾|坤":{name:"天地否", read:"てんちひ", text:"天地が背き合う、停滞の卦。今は無理に動いても空回りしがちです。外に求めず内を固め、時が変わるのを静かに待つのが賢明です。", advice:"無理に動かず内を固める"},
+  "乾|離":{name:"天火同人", read:"てんかどうじん", text:"志を同じくする仲間と集う卦。一人では届かない目標も、仲間と力を合わせれば届きます。私心を捨てて公明に付き合うことが成功の条件です。", advice:"仲間と志を合わせて進む"},
+  "離|乾":{name:"火天大有", read:"かてんたいゆう", text:"太陽が高く輝く、大いなる収穫の卦。豊かさと成功が手に入りやすい時期です。得たものを独占せず分け合うことで、豊かさはさらに広がります。", advice:"実りを分け合って広げる"},
+  "坤|艮":{name:"地山謙", read:"ちざんけん", text:"高い山が地の下に身を置く、謙虚の卦。実力があっても表に出すぎない姿勢が、人望と幸運を呼びます。易の中でも特に吉とされる卦の一つです。", advice:"謙虚さが一番の武器になる"},
+  "震|坤":{name:"雷地豫", read:"らいちよ", text:"春雷に万物が喜ぶ、楽しみと備えの卦。心が弾むような展開が期待できます。楽しみの中にも備えを忘れなければ、喜びは長く続きます。", advice:"楽しみながら備えも忘れずに"},
+  "兌|震":{name:"沢雷随", read:"たくさんずい", text:"流れに随う卦。自分のやり方に固執せず、時流や相手に合わせる柔軟さが吉を呼びます。夕方には静かに休むことも大切なリズムです。", advice:"流れに合わせて柔軟に"},
+  "艮|巽":{name:"山風蠱", read:"さんぷうこ", text:"器の中で虫が湧くように、腐敗や滞りを正す卦。先送りしてきた問題に手をつける時です。原因を丁寧に取り除けば、物事は再び回り始めます。", advice:"先送りの問題に手をつける"},
+  "坤|兌":{name:"地沢臨", read:"ちたくりん", text:"大きく臨み近づく卦。運気は上昇中で、人や物事に積極的に近づくほど実りがあります。ただし盛りには限りがあるため、良い時期を無駄にしないことが大切です。", advice:"好機を逃さず積極的に近づく"},
+  "巽|坤":{name:"風地観", read:"ふうちかん", text:"風が地の上を渡る、観察と洞察の卦。今は動くよりよく見る時期です。全体を俯瞰すれば、進むべき道と避けるべき落とし穴が見えてきます。", advice:"動く前に全体をよく観察する"},
+  "離|震":{name:"火雷噬嗑", read:"からいぜいごう", text:"噛み砕いて障害を取り除く卦。間に入った障害や、曖昧なままの問題をきちんと処理する時です。公正な判断と決断が、滞りを解消します。", advice:"障害は正面から処理する"},
+  "艮|離":{name:"山火賁", read:"さんかべん", text:"山に夕日が映える、飾りの卦。見た目や印象を整えることにツキがあります。ただし飾りは本質あってこそで、中身の充実を忘れないことが大切です。", advice:"印象を整えつつ中身も磨く"},
+  "艮|坤":{name:"山地剥", read:"さんちはく", text:"山が崩れ落ちるように、物事が剥がれ落ちる卦。今は積極策が裏目に出やすく、静かに耐えるのが賢明です。土台から立て直す準備期間と捉えましょう。", advice:"静かに耐えて立て直しに備える"},
+  "坤|震":{name:"地雷復", read:"ちらいふく", text:"一陽が地の下から戻る、回復と再始動の卦。悪い流れが底を打ち、良いものが戻り始めます。焦らず小さな回復を積み重ねることで、本来の力を取り戻せます。", advice:"小さな回復を積み重ねる"},
+  "乾|震":{name:"天雷無妄", read:"てんらいむぼう", text:"天の雷のように、自然で偽りのない卦。下心や計算で動くと災いを招きます。誠実に、成り行きに任せる素直さが最良の結果を連れてきます。", advice:"下心なく誠実に臨む"},
+  "艮|乾":{name:"山天大畜", read:"さんてんたいちく", text:"大きな力を蓄える卦。今は実力を溜める時期で、蓄えた力はやがて大きな仕事に使えます。学びと経験の蓄積が、将来の飛躍の土台になります。", advice:"実力を蓄える時期と心得る"},
+  "艮|震":{name:"山雷頤", read:"さんらいい", text:"口と養いを表す卦。言葉の使い方と、何を取り入れるかが運を左右します。発する言葉を選び、体と心の栄養を整えることが大切です。", advice:"言葉と食を丁寧に選ぶ"},
+  "兌|巽":{name:"沢風大過", read:"たくふうたいか", text:"棟木がたわむほど重みがかかる、過重の卦。通常を超えた負担や非常事態に対応する時です。無理を承知で踏ん張るなら、支えを増やす工夫も同時に必要です。", advice:"負担を分け合う支えを作る"},
+  "坎|坎":{name:"坎為水", read:"かんいすい", text:"水が幾重にも重なる、困難の卦。難所が続いても、水のように誠実に流れ続けることが突破口です。同じ失敗を繰り返さず、一つずつ越えていきましょう。", advice:"誠実に一つずつ越えていく"},
+  "離|離":{name:"離為火", read:"りいか", text:"火が重なり明るく照らす卦。知性と情熱が輝く時期ですが、火は燃え移るものあってこそ続きます。頼るべき土台と、正しい方向を見定めることが大切です。", advice:"情熱の向け先を見定める"},
+  "兌|艮":{name:"沢山咸", read:"たくさんかん", text:"山と沢が感じ合う、感応の卦。人の気持ちに敏感に響き合える時期で、恋愛や出会いにも良い兆しです。素直な感性が縁を引き寄せます。", advice:"素直な感性で縁を引き寄せる"},
+  "震|巽":{name:"雷風恒", read:"らいふうこう", text:"雷と風が常に伴う、恒常の卦。続けることに力がある時期です。方針をころころ変えず、一つのやり方を丁寧に続けることが実りを生みます。", advice:"方針を変えず丁寧に続ける"},
+  "乾|艮":{name:"天山遯", read:"てんざんとん", text:"退くことが賢明な、退避の卦。不利な場所からは潔く離れるのが正解です。引くことは負けではなく、次の機会を守るための知恵です。", advice:"潔く引いて機会を守る"},
+  "震|乾":{name:"雷天大壮", read:"らいてんたいそう", text:"雷が天に轟く、壮んな勢いの卦。力は十分にありますが、勢い任せの突進は壁に当たります。力を正しい方向に制御できれば大きな成果が得られます。", advice:"勢いを制御して正しく使う"},
+  "離|坤":{name:"火地晋", read:"かちしん", text:"太陽が地の上に昇る、前進と昇進の卦。努力が認められ、表舞台に出るチャンスです。明るく堂々と進むことで、味方も増えていきます。", advice:"堂々と進んで認められに行く"},
+  "坤|離":{name:"地火明夷", read:"ちかめいい", text:"明るさが地に傷つけられる、忍耐の卦。今は目立つと損をしやすい時期です。光を内に秘め、静かに力を保つことが身を守ります。", advice:"目立たず光を内に秘める"},
+  "巽|離":{name:"風火家人", read:"ふうかかじん", text:"家族・身内の和を表す卦。足元の人間関係を整えることが、すべての運の土台になります。言葉と役割を正しく保つことで、内側から安定します。", advice:"足元の人間関係を整える"},
+  "離|兌":{name:"火沢睽", read:"かたくけい", text:"火と沢が背き合う、食い違いの卦。小さな意見の相違が起きやすい時期です。大きな対立に育てる前に、小さな一致点を見つけることが大切です。", advice:"小さな一致点から歩み寄る"},
+  "坎|艮":{name:"水山蹇", read:"すいざんけん", text:"足が進まない、困難の卦。前にも横にも障害がある時は、無理に進まず助けを求めるのが正解です。賢い協力者の存在が道を開きます。", advice:"無理せず助けを求める"},
+  "震|坎":{name:"雷水解", read:"らいすいかい", text:"雷雨が過ぎて解ける、解放の卦。問題がほぐれ、滞っていたことが動き出します。解決したら長居せず、素早く平常に戻るのが吉です。", advice:"解決したら素早く平常へ戻る"},
+  "艮|兌":{name:"山沢損", read:"さんたくそん", text:"下を損して上を益する、損して得取る卦。今の小さな犠牲や節約が、将来の大きな実りにつながります。誠意ある倹約は損ではありません。", advice:"目先の損を将来への投資と捉える"},
+  "巽|震":{name:"風雷益", read:"ふうらいえき", text:"上を損して下を益する、増益の卦。人に与えることで巡り巡って自分も潤います。良い行いは積極的に、悪いに傾く心は早めに正すのが大切です。", advice:"与えることが巡って実る"},
+  "兌|乾":{name:"沢天夬", read:"たくさんかい", text:"決断と決行の卦。ためらっていたことに決着をつける時です。ただし強引な断行は反発を招くため、堂々と理由を示して進めることが大切です。", advice:"理由を示して堂々と決断する"},
+  "乾|巽":{name:"天風姤", read:"てんぷうこう", text:"思いがけない出会いの卦。偶然の遭遇や予期せぬ話に、大きな意味が隠れていることがあります。ただし軽はずみな深入りには注意も必要です。", advice:"偶然の出会いを大切に、深入りは慎重に"},
+  "兌|坤":{name:"沢地萃", read:"たくちすい", text:"水が地に集まるように、人と物が集まる卦。集まりやチーム作りにツキがあります。中心となる目的を明確にすると、集まった力が大きな実りになります。", advice:"集まる目的を明確にする"},
+  "坤|巽":{name:"地風升", read:"ちふうしょう", text:"地中から木が伸び上がる、上昇の卦。着実な努力が少しずつ実を結び、地位も運も上向きます。偉い人に会いに行くような積極性も吉です。", advice:"着実な上昇を信じて一歩ずつ"},
+  "兌|坎":{name:"沢水困", read:"たくすいこん", text:"沢の水が涸れる、困窮の卦。思うようにいかず言葉も届きにくい時期です。弁解より行動で誠意を示すことが、困りごとを解く鍵になります。", advice:"言葉より行動で誠意を示す"},
+  "坎|巽":{name:"水風井", read:"すいふうせい", text:"村の井戸のように、変わらず人を養う卦。日々の供給と基盤を整えることが大切です。井戸の水は汲む人がいてこそ活きるため、使い方の工夫も必要です。", advice:"日々の基盤を整え直す"},
+  "兌|離":{name:"沢火革", read:"たくかかく", text:"革をなめすように、変革の卦。古いやり方を改めるべき時が来ています。変革は信頼があってこそ成るため、タイミングと説明を丁寧にすることが成功の条件です。", advice:"変革は説明を丁寧に進める"},
+  "離|巽":{name:"火風鼎", read:"かふうてい", text:"鼎で供物を煮る、調和と刷新の卦。新しい体制や仕組みを作るのに良い時期です。人材を活かし、バランスよく整えることで大きな実りが得られます。", advice:"新しい仕組みをバランスよく作る"},
+  "震|震":{name:"震為雷", read:"しんいらい", text:"雷が重なり轟く、驚きと目覚めの卦。突然の出来事に動揺しやすい時期ですが、恐れて笑う余裕を取り戻せば被害は小さく済みます。驚きは気づきのチャンスでもあります。", advice:"驚いても笑う余裕を取り戻す"},
+  "艮|艮":{name:"艮為山", read:"ごんいさん", text:"山のように止まる卦。今は動くべき時ではなく、止まる勇気が要ります。止まる場所と時を知ることで、心が静まり次の動きが冴えてきます。", advice:"止まる勇気を持って静かに待つ"},
+  "巽|艮":{name:"風山漸", read:"ふうざんぜん", text:"木が山に少しずつ育つ、漸進の卦。順序を踏んで一歩ずつ進むことが成功の条件です。急な近道は実りを小さくするため、正規の手順を大切にしましょう。", advice:"順序を踏んで一歩ずつ進む"},
+  "震|兌":{name:"雷沢帰妹", read:"らいたくきまい", text:"順序を欠いた進み方に注意を促す卦。気持ちが先行して形式や段取りが後回しになりがちです。焦って形だけ整えても長続きしないため、順序の立て直しが必要です。", advice:"気持ちより先に段取りを整える"},
+  "震|離":{name:"雷火豊", read:"らいかほう", text:"雷と電光が満ちる、豊かさの卦。盛大で実り多い時期ですが、満ちた月は欠け始めるものでもあります。豊かな今のうちに、次の備えと人への配慮をしておきましょう。", advice:"豊かな今のうちに次へ備える"},
+  "離|艮":{name:"火山旅", read:"かざんりょ", text:"旅人の卦。落ち着く場所が定まらず、仮住まいのような心持ちの時期です。旅先では慎みと柔軟さが身を守り、小さな幸運は大切に留めましょう。", advice:"旅人の慎みで柔軟に対応する"},
+  "巽|巽":{name:"巽為風", read:"そんいふう", text:"風が風に従う、柔順と浸透の卦。強い主張より、繰り返し丁寧に伝えることが物事を動かします。方針を小まめに確認しながら、少しずつ浸透させていきましょう。", advice:"丁寧に繰り返し伝えて浸透させる"},
+  "兌|兌":{name:"兌為沢", read:"だいたく", text:"沢が重なる、喜びの卦。人と喜びを分かち合い、語り合うことにツキがあります。楽しい誘いには良い縁が含まれますが、甘い言葉への警戒も少しだけ忘れずに。", advice:"喜びを分かち合って縁を育てる"},
+  "巽|坎":{name:"風水渙", read:"ふうすいかん", text:"氷が解けて散るように、滞りがほどける卦。固まっていた状況や気持ちが流れ出します。散らかった力を再び集める場を作ると、再出発がスムーズになります。", advice:"ほどけた流れを再び集める場を作る"},
+  "坎|兌":{name:"水沢節", read:"すいたくせつ", text:"水量を調節する、節度の卦。限度を決めることが運を守ります。節約や制限も、苦しくなりすぎない適度な線引きが長続きのコツです。", advice:"適度な線引きで節度を保つ"},
+  "巽|兌":{name:"風沢中孚", read:"ふうたくちゅうふ", text:"誠が内に満ちる、信頼の卦。真心は言葉以上に伝わります。約束を守り誠実でいることが、難しい相手の心も開く力になります。", advice:"真心と約束で信頼を築く"},
+  "震|艮":{name:"雷山小過", read:"らいざんしょうか", text:"小さく行き過ぎる、小事に適した卦。大きな勝負より、身近な小さなことを丁寧に仕上げるのに向いています。高望みを控えると、小さな成功が積み上がります。", advice:"小さなことを丁寧に仕上げる"},
+  "坎|離":{name:"水火既済", read:"すいかきせい", text:"水と火が調い、物事が完成する卦。一応の完成と安定が得られます。ただし完成の直後こそ乱れの始まりでもあるため、仕上げの確認を怠らないことが大切です。", advice:"完成直後こそ仕上げを確認する"},
+  "離|坎":{name:"火水未済", read:"かすいびせい", text:"まだ完成していない、未完の卦。あと一歩のところで調わない状態ですが、それは可能性が残っている証でもあります。最後の詰めを慎重に行えば、完成に届きます。", advice:"あと一歩の詰めを慎重に"}
+};
+
+var LINE_NAMES = ["初爻","二爻","三爻","四爻","五爻","上爻"];
+
+function triFromLines(lines){
+  return triNameByBits(lines);
+}
+
+function hexagramFromLines(lines){
+  var lower = triFromLines([lines[0], lines[1], lines[2]]);
+  var upper = triFromLines([lines[3], lines[4], lines[5]]);
+  return {upper:upper, lower:lower, data:HEXAGRAMS[upper + "|" + lower]};
+}
+
+// One throw of 3 coins: each coin heads = 3, tails = 2.
+function throwCoins(){
+  var coins = [];
+  var sum = 0;
+  for(var i = 0; i < 3; i++){
+    var v = Math.random() < 0.5 ? 2 : 3;
+    coins.push(v);
+    sum += v;
+  }
+  return {coins:coins, sum:sum};
+}
+
+// Cast 6 lines from bottom (line 1) to top (line 6).
+function cast(){
+  var throws = [];
+  var lines = [];     // 1 = yang, 0 = yin (present state)
+  var changing = [];  // true when old yang (9) or old yin (6)
+  for(var i = 0; i < 6; i++){
+    var t = throwCoins();
+    throws.push(t);
+    if(t.sum === 9){ lines.push(1); changing.push(true); }
+    else if(t.sum === 7){ lines.push(1); changing.push(false); }
+    else if(t.sum === 8){ lines.push(0); changing.push(false); }
+    else { lines.push(0); changing.push(true); } // 6
+  }
+  return {throws:throws, lines:lines, changing:changing};
+}
+
+function renderLines(el, lines, changing){
+  el.innerHTML = "";
+  for(var i = 5; i >= 0; i--){
+    var row = document.createElement("div");
+    row.className = "lrow";
+    var lab = document.createElement("span");
+    lab.className = "llab";
+    lab.textContent = LINE_NAMES[i];
+    var bar = document.createElement("div");
+    bar.className = "lbar " + (lines[i] === 1 ? "yang" : "yin");
+    if(lines[i] === 1){
+      var s = document.createElement("span"); s.className = "seg"; bar.appendChild(s);
+    } else {
+      var s1 = document.createElement("span"); s1.className = "seg"; bar.appendChild(s1);
+      var s2 = document.createElement("span"); s2.className = "seg"; bar.appendChild(s2);
+    }
+    var mark = document.createElement("span");
+    mark.className = "lmark";
+    if(changing && changing[i]) mark.textContent = lines[i] === 1 ? "○" : "×";
+    row.appendChild(bar);
+    row.appendChild(mark);
+    row.appendChild(lab);
+    el.appendChild(row);
+  }
+}
+
+var castBtn = document.getElementById("castBtn");
+castBtn.addEventListener("click", function(){
+  castBtn.disabled = true;
+  castBtn.textContent = "コインを投げています…";
+  setTimeout(function(){
+    var r = cast();
+    var main = hexagramFromLines(r.lines);
+    var hasChange = r.changing.some(function(c){ return c; });
+
+    var q = document.getElementById("question").value.trim();
+    document.getElementById("qEcho").textContent = q ? "問い：「" + q + "」" : "";
+
+    document.getElementById("mainName").innerHTML = main.data.name + " <span class=\"accent\">" + TRIGRAMS[main.upper].symbol + TRIGRAMS[main.lower].symbol + "</span>";
+    document.getElementById("mainRead").textContent = main.data.read + "（上卦：" + main.upper + "／下卦：" + main.lower + "）";
+    renderLines(document.getElementById("mainLines"), r.lines, r.changing);
+    document.getElementById("mainText").textContent = main.data.text;
+
+    var log = r.throws.map(function(t, i){
+      var kind = t.sum === 9 ? "老陽○" : t.sum === 7 ? "少陽" : t.sum === 8 ? "少陰" : "老陰×";
+      return LINE_NAMES[i] + "：" + t.coins.join("＋") + "＝" + t.sum + "（" + kind + "）";
+    });
+    document.getElementById("coinLog").textContent = "コインの出目 — " + log.join(" ／ ");
+
+    var chgBox = document.getElementById("changedBox");
+    var chgNote = document.getElementById("chgNote");
+    var adviceWord, adviceDesc;
+    if(hasChange){
+      var flipped = r.lines.map(function(v, i){ return r.changing[i] ? 1 - v : v; });
+      var chg = hexagramFromLines(flipped);
+      var pos = [];
+      r.changing.forEach(function(c, i){ if(c) pos.push(LINE_NAMES[i]); });
+      document.getElementById("chgName").innerHTML = chg.data.name + " <span class=\"accent\">" + TRIGRAMS[chg.upper].symbol + TRIGRAMS[chg.lower].symbol + "</span>";
+      document.getElementById("chgRead").textContent = chg.data.read + "（変卦）";
+      renderLines(document.getElementById("chgLines"), flipped, null);
+      document.getElementById("chgText").textContent = chg.data.text;
+      chgBox.classList.remove("hidden");
+      chgNote.textContent = "変爻は " + pos.join("・") + " です。本卦の状況が移ろい、変卦「" + chg.data.name + "」の流れへ向かうと読みます。";
+      adviceWord = main.data.advice;
+      adviceDesc = "変化のポイントは " + pos.join("・") + "。本卦「" + main.data.name + "」の今を踏まえつつ、変卦「" + chg.data.name + "」の先の流れも意識してみてください。";
+    } else {
+      chgBox.classList.add("hidden");
+      chgNote.textContent = "変爻はありませんでした。卦の示す状況がしばらく安定していると読みます。";
+      adviceWord = main.data.advice;
+      adviceDesc = "変爻なしの「" + main.data.name + "」。今の状況は安定しています。" + main.data.text;
+    }
+    document.getElementById("adviceWord").textContent = adviceWord;
+    document.getElementById("adviceDesc").textContent = adviceDesc;
+
+    document.getElementById("result").classList.remove("hidden");
+    castBtn.disabled = false;
+    castBtn.textContent = "もう一度占う";
+    document.getElementById("result").scrollIntoView({behavior:"smooth", block:"start"});
+  }, 450);
+});
+
+// Exposed for verification of the data set.
+window.EKI_DATA = {trigrams: TRIGRAMS, hexagrams: HEXAGRAMS};
+})();
+</script>
+</body>
+</html>
