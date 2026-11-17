@@ -63,6 +63,7 @@ header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
 .badge-money{background:var(--amber);color:#231a00}
 .badge-mob{background:var(--navy);color:#fff}
 .badge-uranai{background:#6d28d9;color:#fff}
+.badge-ins{background:#0f766e;color:#fff}
 .noresult{
   display:none;background:var(--card);border:1px solid var(--line);border-radius:10px;
   padding:22px 16px;margin:14px 0 20px;text-align:center;color:var(--mut);font-size:14.5px;
@@ -105,6 +106,7 @@ footer .credit{margin:8px 0 0;font-size:13px;color:#fff}
 <script>
 var MOB = "https://wankodo.github.io/mobility-simulator/";
 var MONEY = "https://wankodo.github.io/money-tools/";
+var INSURL = "https://wankodo.github.io/insurance/";
 var TOOLS = [
   { site: "uranai", name: "タロット1枚引き", cat: "タロット", url: "tarot.html",
     desc: "今日の1枚引きとケルト十字（10枚引き）が楽しめます。",
@@ -240,7 +242,20 @@ var TOOLS = [
     keywords: "引っ越し 引越し 見積もり 単身 家族 荷物 転居" },
   { site: "mob", name: "レンタカー料金比較", cat: "車", url: MOB + "rental.html",
     desc: "レンタカー各社の料金を、車種クラスと割引から比べます。",
-    keywords: "レンタカー レンタル 車 旅行 割引 料金 比較 トヨタ ニッポン オリックス タイムズ" }
+    keywords: "レンタカー レンタル 車 旅行 割引 料金 比較 トヨタ ニッポン オリックス タイムズ" },
+  { site: "ins", name: "医療保険比較", cat: "医療保険", url: INSURL + "medical.html",
+    desc: "年齢・性別で医療保険・がん保険19商品の月額保険料を比較します。",
+    keywords: "医療保険 がん保険 保険料 比較" },
+  { site: "ins", name: "自動車保険比較", cat: "自動車保険", url: INSURL + "car.html",
+    desc: "各社公式の保険料モデルケースを条件で絞り込んで比較します。",
+    keywords: "自動車保険 任意保険 保険料 モデルケース" },
+  { site: "ins", name: "任意継続 vs 国保", cat: "健康保険", url: INSURL + "continuation.html",
+    desc: "退職後の任意継続と国民健康保険の保険料を比較します。",
+    keywords: "任意継続 国民健康保険 国保 退職" },
+  { site: "ins", name: "社会保険料計算", cat: "社会保険", url: INSURL + "social.html",
+    desc: "給与と賞与から社会保険料の本人・会社負担を計算します。",
+    keywords: "社会保険料 健康保険 厚生年金 雇用保険" }
+
 ];
 
 var cardsEl = document.getElementById("cards");
@@ -253,6 +268,7 @@ var fieldEl = document.querySelector(".search-field");
 function badgeHtml(site){
   if (site === "mob") return '<span class="badge badge-mob">移動</span>';
   if (site === "uranai") return '<span class="badge badge-uranai">占い</span>';
+  if (site === "ins") return '<span class="badge badge-ins">保険</span>';
   return '<span class="badge badge-money">お金</span>';
 }
 
