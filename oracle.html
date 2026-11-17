@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ワンオラクル｜占いツール集</title>
+<meta name="description" content="今日の1枚を引くオラクルカード風の無料占い。30枚のオリジナルカードから、日替わりであなたへのメッセージを届けます。">
+<style>
+:root{
+  --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1d2733; --mut:#68707c;
+  --line:#ddd6c8; --red:#b03a2e; --green:#1e7d46; --soft:#fdf6e0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:22px 16px 18px;border-bottom:4px solid var(--amber)}
+header .wrap{max-width:980px;margin:0 auto}
+header h1{margin:0;font-size:24px;letter-spacing:.04em}
+header h1 .accent{color:var(--amber)}
+header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
+.wrap{max-width:980px;margin:0 auto;padding:0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 1px 3px rgba(18,40,63,.06)}
+.card h2{margin:0 0 10px;font-size:17px;color:var(--navy);border-left:5px solid var(--amber);padding-left:9px}
+.note{font-size:12.5px;color:var(--mut)}
+label.flabel{display:block;font-size:12.5px;color:var(--mut);margin:10px 0 3px}
+input[type="date"]{
+  width:100%;padding:9px 10px;border:1px solid #c9c2b2;border-radius:7px;font-size:15px;background:#fff;color:var(--ink);
+}
+input:focus{outline:2px solid var(--amber);outline-offset:0;border-color:var(--amber)}
+button.draw{
+  display:block;margin:16px auto 4px;padding:12px 34px;font-size:16px;font-weight:800;color:#231a00;
+  background:linear-gradient(180deg,#ffb42a,var(--amber));border:1px solid var(--amber-d);border-radius:999px;cursor:pointer;
+  box-shadow:0 2px 6px rgba(199,127,2,.35);
+}
+button.draw:hover{filter:brightness(1.05)}
+button.draw:disabled{opacity:.55;cursor:default}
+.stage{perspective:1200px;display:flex;justify-content:center;margin:20px 0 6px}
+.ocard{position:relative;width:280px;height:400px;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.3,.7,.3,1)}
+.ocard.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;overflow:hidden;box-shadow:0 6px 18px rgba(11,26,44,.35)}
+.face.back{
+  background:
+    radial-gradient(circle at 50% 38%, rgba(242,160,7,.5), rgba(242,160,7,0) 55%),
+    repeating-linear-gradient(45deg,#12283f 0 14px,#0e2136 14px 28px);
+  border:3px solid var(--amber);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;color:#f5d489;
+}
+.face.back .moon{font-size:56px;line-height:1}
+.face.back .bt{margin-top:12px;font-size:14px;letter-spacing:.35em;color:#e8ecf1}
+.face.front{
+  transform:rotateY(180deg);
+  background:linear-gradient(170deg,#fdfaf2,#f3ead2);
+  border:3px solid var(--amber);
+  padding:22px 18px;display:flex;flex-direction:column;align-items:center;text-align:center;
+}
+.face.front .sym{font-size:52px;line-height:1.15}
+.face.front .ttl{font-size:22px;font-weight:800;color:var(--navy);margin-top:8px;letter-spacing:.05em}
+.face.front .theme{font-size:13.5px;color:var(--ink);margin-top:12px;line-height:1.75;text-align:left}
+.face.front .act{margin-top:auto;background:var(--soft);border:1px solid #ecd27a;border-radius:8px;padding:9px 10px;font-size:13px;width:100%}
+.face.front .act .alab{font-size:11px;color:var(--mut)}
+.face.front .act .aword{font-weight:800;color:var(--navy)}
+footer{margin:26px 0 40px}
+footer .card{font-size:12.5px;color:var(--mut)}
+.credit{text-align:center;color:var(--mut);font-size:12px;margin:10px 0 30px}
+a{color:var(--navy)}
+.sitebar{background:var(--navy2);border-bottom:2px solid var(--amber)}
+.sitebar .sb-in{max-width:980px;margin:0 auto;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sitebar a{color:#fff;text-decoration:none;font-size:13px}
+.sitebar a:hover{color:var(--amber)}
+.sitebar .sb-name{font-weight:700;letter-spacing:.03em}
+.sitebar .sb-tool{color:#b9c8d8;font-size:13px}
+</style>
+</head>
+<body>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span class="sb-tool">ワンオラクル</span></div></div>
+
+<header>
+  <div class="wrap">
+    <h1>ワンオラクル <span class="accent">今日の1枚</span></h1>
+    <p>30枚のオリジナルカードから、今日のあなたへの1枚を引きます。カードはその日1日、同じ1枚が出ます。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>生年月日（任意）</h2>
+    <label class="flabel" for="dob">入れると、あなた寄りの1枚になります</label>
+    <input type="date" id="dob" min="1900-01-01" max="2100-12-31">
+    <div class="stage">
+      <div class="ocard" id="ocard">
+        <div class="face back">
+          <div class="moon">☾</div>
+          <div class="bt">ORACLE</div>
+        </div>
+        <div class="face front">
+          <div class="sym" id="cSym">✦</div>
+          <div class="ttl" id="cTitle">—</div>
+          <div class="theme" id="cTheme">カードを引くと、今日のメッセージがここに現れます。</div>
+          <div class="act"><div class="alab">今日のアクション</div><div class="aword" id="cAct">—</div></div>
+        </div>
+      </div>
+    </div>
+    <button class="draw" id="drawBtn" type="button">カードを引く</button>
+    <p class="note" style="text-align:center">同じ日・同じ条件では、引き直しても同じカードが出ます。</p>
+  </div>
+
+  <div class="card">
+    <h2>ワンオラクルについて</h2>
+    <p class="note" style="font-size:13px;color:var(--ink)">
+      オラクルカードは、タロットのような決まった体系ではなく、テーマごとのメッセージを直感で受け取るカードです。
+      出たカードの言葉を、今日の出来事に照らして読んでみてください。生年月日を入れると、その人専用の1枚として選ばれます。
+    </p>
+  </div>
+
+  <footer>
+    <div class="card">
+      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。
+    </div>
+    <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+// xmur3 string hash + mulberry32 PRNG for deterministic daily picks.
+function xmur3(str){
+  var h = 1779033703 ^ str.length;
+  for(var i = 0; i < str.length; i++){
+    h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+    h = (h << 13) | (h >>> 19);
+  }
+  return function(){
+    h = Math.imul(h ^ (h >>> 16), 2246822507);
+    h = Math.imul(h ^ (h >>> 13), 3266489909);
+    return (h ^= h >>> 16) >>> 0;
+  };
+}
+function mulberry32(a){
+  return function(){
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    var t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function todayStr(){
+  var d = new Date();
+  var m = d.getMonth() + 1, day = d.getDate();
+  return d.getFullYear() + "-" + (m < 10 ? "0" + m : m) + "-" + (day < 10 ? "0" + day : day);
+}
+
+var CARDS = [
+  {sym:"🚪", title:"扉", theme:"目の前に新しい扉が現れています。開けるかどうかを決めるのはあなたです。怖さより先に、向こう側への興味が育っているはず。その感覚を信じてください。", act:"気になっていた話に「興味がある」と伝える"},
+  {sym:"🗝", title:"鍵", theme:"ずっと探していた答えは、意外と身近なところにあります。新しい道具や知識ではなく、すでに持っているものを別の使い方で見ることが鍵です。", act:"持っているものを別の用途で使ってみる"},
+  {sym:"✨", title:"星屑", theme:"小さなきらめきが集まって、やがて大きな光になります。今日の小さな成功や偶然を、軽く扱わないでください。一つ一つが星座を形作る星です。", act:"今日の小さなラッキーをメモする"},
+  {sym:"🌊", title:"潮騒", theme:"遠くで波の音がしています。変化はまだ岸に届いていませんが、確実に近づいています。今は耳を澄まし、流れを読む時期です。", act:"静かな場所で10分ぼんやりする"},
+  {sym:"🗼", title:"灯台", theme:"暗い海にも、必ず光の目印があります。あなたが誰かの灯台になっている可能性もあります。自分の光を消さず、淡々と灯し続けてください。", act:"困っている人にさりげなく声をかける"},
+  {sym:"🌱", title:"種", theme:"蒔いた種は、土の中で静かに準備をしています。芽が出ないからといって、失敗ではありません。今日は水やりの日。焦らず世話を続けましょう。", act:"続けていることに小さな手入れをする"},
+  {sym:"🌈", title:"虹の橋", theme:"雨の後だからこそ架かる橋があります。嫌だった出来事にも、後から意味が見えることがあります。今日は向こう岸へ渡る準備の日に。", act:"嫌だった出来事の「良かった点」を探す"},
+  {sym:"🕯", title:"ともしび", theme:"小さな明かりでも、暗闇では十分な道しるべです。大きなことをしなくても、あなたの丁寧な日常が誰かを照らしています。火を守るように、自分を大切に。", act:"温かい飲み物をゆっくり飲む"},
+  {sym:"🧭", title:"羅針盤", theme:"針は北を指し続けています。情報が多すぎて迷うときは、自分の「好き」「心地よい」という感覚に針を合わせ直してください。答えは内側にあります。", act:"直感で行き先や店を決めてみる"},
+  {sym:"🎈", title:"風船", theme:"握りしめすぎると割れてしまうものがあります。力を抜いて糸を緩めると、思ったより高く飛ぶかもしれません。手放すことは、失うことではありません。", act:"抱え込んでいることを一つ人に頼る"},
+  {sym:"🌙", title:"月夜", theme:"月は満ち欠けしながらも、空から消えることはありません。今は欠けている時期でも、それは周期の一部。静かな夜の力を借りて、心を整えましょう。", act:"寝る前にスマホを置いて目を休める"},
+  {sym:"🌸", title:"花便り", theme:"季節の便りが届いています。周りの小さな変化に気づく余裕が、今日のあなたにはあります。急ぐ足を少し緩めると、見える景色が変わります。", act:"通勤・移動中に季節のものを一つ見つける"},
+  {sym:"📜", title:"手紙", theme:"言葉にして届けることにツキがあります。言えなかった感謝、伝えたかった誘い。文章にすると、思ったより素直になれるものです。", act:"短くてもいいので手紙やメッセージを書く"},
+  {sym:"⛵", title:"帆船", theme:"風は追い風に変わりつつあります。帆を張る準備ができている人から順に、船は進みます。目的地をもう一度確認して、出航の合図を待ちましょう。", act:"目標を一文で書き直す"},
+  {sym:"🪶", title:"羽根", theme:"軽やかさが今日のテーマです。重く考えすぎていたことも、視点を変えれば羽根のように軽くなります。深刻さより、軽さで進む日です。", act:"深刻な問題を一度ユーモアで言い直す"},
+  {sym:"🔔", title:"鐘の音", theme:"遠くの鐘が鳴っています。それは始まりの合図かもしれませんし、区切りの合図かもしれません。音が聞こえたら、まず一息ついて耳を澄ましてください。", act:"区切りたいことに小さな一線を引く"},
+  {sym:"🌿", title:"若葉", theme:"新しい芽吹きのエネルギーがあります。始めたばかりのことは、まだ弱くて当たり前。守りながら育てる時期です。人と比べず、自分の芽を見守りましょう。", act:"新しい習慣の記録をつける"},
+  {sym:"💧", title:"雫", theme:"一滴の水も、続ければ岩に跡を残します。今日の小さな一歩は地味でも、確実に積み重なっています。量より継続。雫のリズムを大切に。", act:"5分だけでも続けることをやる"},
+  {sym:"🏔", title:"山頂", theme:"登ってきた道のりの先に、見晴らしのいい場所があります。あと少しで視界が開けるかもしれません。休憩はOK。でも、引き返すのはまだ早いです。", act:"ここまで進んだ距離を振り返って認める"},
+  {sym:"🎁", title:"贈り物", theme:"思いがけない贈り物が届く予感。物とは限らず、言葉や時間、偶然の出会いかもしれません。受け取る準備として、まず自分から小さく贈ってみましょう。", act:"誰かに小さな差し入れや言葉を贈る"},
+  {sym:"🪞", title:"鏡", theme:"目の前の人は、あなたの鏡かもしれません。相手の気になる部分は、自分の内側の映し出しということがあります。責める前に、鏡の中を覗いてみてください。", act:"相手の良いところを一つ見つけて伝える"},
+  {sym:"🌅", title:"夜明け", theme:"長い夜にも必ず朝が来ます。状況が動き出す気配があります。朝の光のように、物事が少しずつ明らかになっていくでしょう。早起きにツキあり。", act:"いつもより少し早く起きて光を浴びる"},
+  {sym:"📚", title:"書庫", theme:"答えは過去の記録の中にあります。昔のメモ、本、経験。すでに学んだことの棚卸しが、今の問題を解く鍵になります。新しい学びより、復習の日。", act:"昔のメモや本を少し読み返す"},
+  {sym:"🦋", title:"蝶", theme:"姿を変える途中です。さなぎの時期は外から見えなくても、中では大きな変化が起きています。今の停滞は、変身の準備期間かもしれません。", act:"変化したい部分を一つ決めて宣言する"},
+  {sym:"🔥", title:"焚き火", theme:"火を囲むと、人は自然と集まってきます。あなたの情熱や温かさが、周りを巻き込む力になる日です。ただし燃え尽きないよう、薪の配分は考えて。", act:"好きなことに思い切り時間を使う"},
+  {sym:"❄", title:"雪解け", theme:"固まっていたものが、少しずつ溶け始めています。関係のわだかまりも、止まっていた計画も、温度が上がれば動き出します。温める工夫をしましょう。", act:"冷えていた相手に温かい一言をかける"},
+  {sym:"🎐", title:"風鈴", theme:"風が吹けば、音が鳴ります。あなたの周りでも、小さなサインが鳴っているはず。見逃しがちな合図に気づけるかどうかが、今日の分かれ目です。", act:"偶然の一致や小さなサインを記録する"},
+  {sym:"🌾", title:"実り", theme:"育ててきたものが実る時期です。収穫は一人占めせず、分け合うことで次の豊かさにつながります。感謝とともに受け取りましょう。", act:"成果を誰かと分け合う"},
+  {sym:"🛤", title:"分かれ道", theme:"道が二つに分かれています。どちらが正解かは、歩いてみなければ分かりません。地図を眺め続けるより、心が少しでも惹かれる方を選んでください。", act:"迷っている二択を、直感で仮決めする"},
+  {sym:"⭐", title:"一番星", theme:"夕空に最初に光る星のように、あなたの中の「これだ」という感覚が光り始めています。周りが暗くても、その星は見失わなければ大丈夫。", act:"一番やりたいことを今日の予定に入れる"}
+];
+
+var dobEl = document.getElementById("dob");
+var cardEl = document.getElementById("ocard");
+var btnEl = document.getElementById("drawBtn");
+var drawn = false;
+
+function pickIndex(){
+  var seedStr = "oracle:" + todayStr() + ":" + (dobEl.value || "none");
+  var seed = xmur3(seedStr)();
+  var rnd = mulberry32(seed);
+  return Math.floor(rnd() * CARDS.length);
+}
+
+function setupCard(){
+  var c = CARDS[pickIndex()];
+  document.getElementById("cSym").textContent = c.sym;
+  document.getElementById("cTitle").textContent = c.title;
+  document.getElementById("cTheme").textContent = c.theme;
+  document.getElementById("cAct").textContent = c.act;
+}
+
+function draw(){
+  setupCard();
+  if(!drawn){
+    drawn = true;
+    cardEl.classList.add("flipped");
+    btnEl.textContent = "今日のカードはこの1枚です";
+    btnEl.disabled = true;
+  }
+}
+
+btnEl.addEventListener("click", draw);
+// Changing the DOB changes the seed, so reset the draw state.
+function onDob(){
+  if(drawn){
+    drawn = false;
+    cardEl.classList.remove("flipped");
+    btnEl.textContent = "カードを引く";
+    btnEl.disabled = false;
+  }
+  setupCard();
+}
+dobEl.addEventListener("input", onDob);
+dobEl.addEventListener("change", onDob);
+setupCard();
+})();
+</script>
+</body>
+</html>

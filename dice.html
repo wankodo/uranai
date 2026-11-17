@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>サイコロ占い｜占いツール集</title>
+<meta name="description" content="サイコロ3個を振って合計の数字で運勢を占う無料のサイコロ占い。出た目の合計3〜18で今日の流れが分かります。ゾロ目には特別メッセージ付き。">
+<style>
+:root{
+  --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1d2733; --mut:#68707c;
+  --line:#ddd6c8; --red:#b03a2e; --green:#1e7d46; --soft:#fdf6e0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:22px 16px 18px;border-bottom:4px solid var(--amber)}
+header .wrap{max-width:980px;margin:0 auto}
+header h1{margin:0;font-size:24px;letter-spacing:.04em}
+header h1 .accent{color:var(--amber)}
+header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
+.wrap{max-width:980px;margin:0 auto;padding:0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 1px 3px rgba(18,40,63,.06)}
+.card h2{margin:0 0 10px;font-size:17px;color:var(--navy);border-left:5px solid var(--amber);padding-left:9px}
+.note{font-size:12.5px;color:var(--mut)}
+.dice-row{display:flex;gap:14px;justify-content:center;margin:18px 0 6px}
+.die{width:68px;height:68px;background:#fff;border:2px solid var(--navy);border-radius:12px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:9px;box-shadow:0 2px 5px rgba(18,40,63,.18)}
+.die .pip{display:flex;align-items:center;justify-content:center}
+.die .pip i{display:block;width:13px;height:13px;border-radius:50%;background:var(--navy)}
+.die .pip.red i{background:var(--red)}
+.die.rolling{animation:shake .12s infinite}
+@keyframes shake{
+  0%{transform:rotate(-7deg) translateY(0)}
+  50%{transform:rotate(6deg) translateY(-4px)}
+  100%{transform:rotate(-5deg) translateY(1px)}
+}
+.rollbtn{display:block;margin:14px auto 4px;background:var(--amber);color:#20150a;border:none;border-radius:9px;padding:12px 34px;font-size:16px;font-weight:800;cursor:pointer;letter-spacing:.05em;box-shadow:0 2px 4px rgba(18,40,63,.2)}
+.rollbtn:hover{background:var(--amber-d);color:#fff}
+.rollbtn:disabled{opacity:.55;cursor:default}
+.sumline{text-align:center;font-size:14px;color:var(--mut);margin:10px 0 0}
+.sumline b{font-size:22px;color:var(--navy);font-variant-numeric:tabular-nums}
+.result{background:var(--soft);border:1px solid #ecd27a;border-radius:10px;padding:14px 16px;margin:14px 0}
+.result .lab{font-size:12.5px;color:var(--mut)}
+.result .word{font-size:20px;font-weight:800;color:var(--navy)}
+.result .desc{font-size:13.5px;margin-top:4px}
+.result .action{margin-top:10px;font-size:13.5px;background:#fff;border:1px dashed var(--amber-d);border-radius:8px;padding:8px 11px}
+.result .action b{color:var(--amber-d)}
+.triple{display:none;margin-top:10px;background:var(--navy);color:#fff;border-radius:8px;padding:10px 12px;font-size:13.5px}
+.triple.show{display:block}
+.triple b{color:var(--amber)}
+footer{margin:26px 0 40px}
+footer .card{font-size:12.5px;color:var(--mut)}
+.credit{text-align:center;color:var(--mut);font-size:12px;margin:10px 0 30px}
+a{color:var(--navy)}
+.sitebar{background:var(--navy2);border-bottom:2px solid var(--amber)}
+.sitebar .sb-in{max-width:980px;margin:0 auto;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sitebar a{color:#fff;text-decoration:none;font-size:13px}
+.sitebar a:hover{color:var(--amber)}
+.sitebar .sb-name{font-weight:700;letter-spacing:.03em}
+.sitebar .sb-tool{color:#b9c8d8;font-size:13px}
+</style>
+</head>
+<body>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span class="sb-tool">サイコロ占い</span></div></div>
+
+<header>
+  <div class="wrap">
+    <h1>サイコロ占い <span class="accent">ダイスリーディング</span></h1>
+    <p>ボタンを押してサイコロ3個を振るだけ。出た目の合計で、今の運勢の流れを読みます。何度でも振り直せます。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>サイコロを振る</h2>
+    <div class="dice-row">
+      <div class="die" id="die0"></div>
+      <div class="die" id="die1"></div>
+      <div class="die" id="die2"></div>
+    </div>
+    <button class="rollbtn" id="rollBtn" type="button">サイコロを振る</button>
+    <p class="sumline">合計 <b id="sumVal">—</b></p>
+    <p class="note" style="text-align:center">占いは振った瞬間の出目で決まります。気になることがある時は、心の中で質問を思い浮かべてから振ってみてください。</p>
+  </div>
+
+  <div class="result">
+    <div class="lab">出目の合計 <span id="resSum">—</span></div>
+    <div class="word" id="resWord">まだ振っていません</div>
+    <div class="desc" id="resDesc">「サイコロを振る」ボタンを押すと、合計の数字に応じた運勢が出ます。</div>
+    <div class="action" id="resAction" style="display:none"><b>ラッキーアクション：</b><span id="resActionText"></span></div>
+    <div class="triple" id="tripleBox"><b>★ ゾロ目！</b> <span id="tripleText"></span></div>
+  </div>
+
+  <div class="card">
+    <h2>読み方</h2>
+    <p class="note" style="font-size:13px;color:var(--ink)">
+      サイコロ3個の合計は3〜18の16通り。数字が小さいほど「内向き・仕切り直し」、大きいほど「外向き・追い風」の流れを表すと読みます。
+      3個とも同じ目が出る「ゾロ目」は珍しい出目で、合計の運勢に加えて特別なメッセージが付きます。
+    </p>
+  </div>
+
+  <footer>
+    <div class="card">
+      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。
+    </div>
+    <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+// Fortune text for each total (3..18).
+var SUM_TEXT = {
+  3:{word:"仕切り直しの底", desc:"一番小さい出目です。今は無理に進むより、一度立ち止まって仕切り直す時期。焦って動くほど空回りしやすいので、抱えているものを一つ手放すところから始めてみましょう。", action:"机の上を片付けて、要らないものを一つ捨てる"},
+  4:{word:"地固めの時", desc:"派手な動きには向かない出目ですが、土台を固めるには良い流れです。手続きや確認作業など、地味なことを丁寧に片付けるほど後で効いてきます。", action:"後回しにしていた連絡を一件だけ済ませる"},
+  5:{word:"小さな変化の芽", desc:"止まっていたことに小さな動きが出てくる出目です。大きな決断より、まず試しにやってみる一歩が吉。反応を見てから次を決めれば大丈夫です。", action:"いつもと違う道や店を一つ試してみる"},
+  6:{word:"調和の兆し", desc:"人との関係がなめらかに回り始める出目です。意見がぶつかっていた相手とも、歩み寄りのきっかけがつかめそう。聞き役に回ると運が上がります。", action:"誰かの話を最後まで遮らずに聞く"},
+  7:{word:"ラッキーセブン", desc:"昔から縁起の良いとされる7の出目。直感が冴えていて、ふと思いついたことが当たりやすい時です。迷ったら最初にピンときた方を選んでみましょう。", action:"第一印象で気になったものを選んでみる"},
+  8:{word:"末広がりの日", desc:"末広がりの8は、物事が少しずつ広がっていく出目です。始めたことが人の輪や次の機会につながりやすい時。小さな誘いでも乗ってみる価値があります。", action:"誘いや紹介を一つ受けてみる"},
+  9:{word:"あと一歩のところ", desc:"ゴール手前まで来ているのに、最後の一押しが足りない出目です。諦めるには惜しい位置にいます。完璧を目指すより、まず形にして出すことを意識しましょう。", action:"止まっている作業を10分だけ進める"},
+  10:{word:"折り返し地点", desc:"ちょうど真ん中の出目。前半のやり方を見直すのに良いタイミングです。うまくいっていることと、そうでないことを分けて、後半の進め方を組み直しましょう。", action:"やることリストを見直して優先順位を付け直す"},
+  11:{word:"直感が冴える", desc:"ゾロ目に次いで珍しい並びに近い出目で、ひらめきが冴える時です。理屈で固めるより、違和感や「なんとなく」の感覚を信じた方がうまくいきます。", action:"気になる違和感をメモに残しておく"},
+  12:{word:"安定と実り", desc:"積み上げてきたことが形になる出目です。収入や評価など、目に見える形で返ってきやすい時。調子に乗りすぎず、実りを周りと分けると長続きします。", action:"お世話になった人に感謝を言葉で伝える"},
+  13:{word:"思いがけない追い風", desc:"13は不吉どころか、予想外の助けが入る出目です。計画通りにいかなくても、結果的に良い方向へ転ぶことがあります。変更を怖がらずに流れに乗りましょう。", action:"予定変更を受け入れて、代わりの案を楽しむ"},
+  14:{word:"コツコツ実る日", desc:"派手さはないものの、努力が着実に効いてくる出目です。今日の頑張りは少し遅れて実を結びます。焦らず、いつもの手順を丁寧に回すことが近道です。", action:"いつもの作業を一段だけ丁寧にやる"},
+  15:{word:"人気運アップ", desc:"人の目に留まりやすい出目です。発信や自己紹介、誘いの声かけに向いています。ただし調子に乗って約束を増やしすぎると後で苦しくなるので注意。", action:"近況を一言だけ発信してみる"},
+  16:{word:"注意深く進む日", desc:"勢い余って転びやすい出目です。大きな決断や契約ごとは、一晩置いてから決めるのが安全。確認を一つ挟むだけで、避けられるトラブルが増えます。", action:"大事な送信や申込みの前に内容を一度読み返す"},
+  17:{word:"星に手が届く", desc:"あと少しで満点という、大きな可能性を感じさせる出目です。目標を高めに置いても届く時。遠慮せずに希望を口に出すと、協力者が現れやすくなります。", action:"やりたいことを誰かに言葉で伝える"},
+  18:{word:"大当たりの満点", desc:"最大の出目で、運気は最高潮です。勝負ごとや大事な交渉にも向いています。ただし運が良い時ほど油断が出やすいので、浮かれすぎず丁寧に締めましょう。", action:"先延ばしにしていた勝負ごとに一歩踏み出す"}
+};
+
+// Special message when all three dice match (key = the face value).
+var TRIPLE_TEXT = {
+  1:"ピンのゾロ目は「原点回帰」の合図。全部ゼロからやり直す勇気が、今いちばんの武器になります。",
+  2:"2のゾロ目は「相方運」の合図。一人で抱えず、信頼できる誰かと組むと一気に進みます。",
+  3:"3のゾロ目は「表現」の合図。作ったもの・考えたことを外に出すと、思わぬ反響がありそうです。",
+  4:"4のゾロ目は「土台完成」の合図。積み上げてきた基礎が固まりました。次はその上に建てる番です。",
+  5:"5のゾロ目は「変化の風」の合図。環境が動き出す時。変化を拒むより、乗り方を工夫しましょう。",
+  6:"6のゾロ目は最大値の並びで「満願」の合図。願っていたことが実る気配が濃厚です。受け取る準備をしておきましょう。"
+};
+
+window.DICE_DATA = { SUM_TEXT: SUM_TEXT, TRIPLE_TEXT: TRIPLE_TEXT };
+
+// Pip positions in a 3x3 grid for each face.
+var PIPS = {
+  1:[4],
+  2:[0,8],
+  3:[0,4,8],
+  4:[0,2,6,8],
+  5:[0,2,4,6,8],
+  6:[0,2,3,5,6,8]
+};
+
+function drawDie(el, face){
+  el.innerHTML = "";
+  for(var i = 0; i < 9; i++){
+    var cell = document.createElement("span");
+    cell.className = "pip";
+    if(PIPS[face].indexOf(i) >= 0){
+      cell.appendChild(document.createElement("i"));
+      if(face === 1) cell.className = "pip red";
+    }
+    el.appendChild(cell);
+  }
+}
+
+function rollOne(){
+  return Math.floor(Math.random() * 6) + 1;
+}
+
+var diceEls = [document.getElementById("die0"), document.getElementById("die1"), document.getElementById("die2")];
+var rollBtn = document.getElementById("rollBtn");
+var rolling = false;
+
+function showResult(faces){
+  var sum = faces[0] + faces[1] + faces[2];
+  var t = SUM_TEXT[sum];
+  document.getElementById("sumVal").textContent = sum;
+  document.getElementById("resSum").textContent = sum + "（" + faces.join("・") + "）";
+  document.getElementById("resWord").textContent = t.word;
+  document.getElementById("resDesc").textContent = t.desc;
+  document.getElementById("resAction").style.display = "block";
+  document.getElementById("resActionText").textContent = t.action;
+  var box = document.getElementById("tripleBox");
+  if(faces[0] === faces[1] && faces[1] === faces[2]){
+    document.getElementById("tripleText").textContent = TRIPLE_TEXT[faces[0]];
+    box.className = "triple show";
+  } else {
+    box.className = "triple";
+  }
+}
+
+function roll(){
+  if(rolling) return;
+  rolling = true;
+  rollBtn.disabled = true;
+  rollBtn.textContent = "振っています…";
+  var finalFaces = [rollOne(), rollOne(), rollOne()];
+  diceEls.forEach(function(el){ el.classList.add("rolling"); });
+  var ticks = 0;
+  var timer = setInterval(function(){
+    ticks++;
+    diceEls.forEach(function(el){ drawDie(el, rollOne()); });
+    if(ticks >= 7){
+      clearInterval(timer);
+      diceEls.forEach(function(el, i){
+        el.classList.remove("rolling");
+        drawDie(el, finalFaces[i]);
+      });
+      showResult(finalFaces);
+      rollBtn.disabled = false;
+      rollBtn.textContent = "もう一度振る";
+      rolling = false;
+    }
+  }, 80);
+}
+
+rollBtn.addEventListener("click", roll);
+drawDie(diceEls[0], 1);
+drawDie(diceEls[1], 2);
+drawDie(diceEls[2], 3);
+})();
+</script>
+</body>
+</html>

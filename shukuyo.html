@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>宿曜占い｜占いツール集</title>
+<meta name="description" content="生年月日から本命宿（27宿）を出す無料の宿曜占いツール。旧暦に直して『宿曜経』の早見表の方式で計算し、今日の宿との関係（三九の秘法）で今日の運勢も出します。">
+<style>
+:root{
+  --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1d2733; --mut:#68707c;
+  --line:#ddd6c8; --red:#b03a2e; --green:#1e7d46; --soft:#fdf6e0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:22px 16px 18px;border-bottom:4px solid var(--amber)}
+header .wrap{max-width:980px;margin:0 auto}
+header h1{margin:0;font-size:24px;letter-spacing:.04em}
+header h1 .accent{color:var(--amber)}
+header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
+.wrap{max-width:980px;margin:0 auto;padding:0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 1px 3px rgba(18,40,63,.06)}
+.card h2{margin:0 0 10px;font-size:17px;color:var(--navy);border-left:5px solid var(--amber);padding-left:9px}
+.note{font-size:12.5px;color:var(--mut)}
+label.flabel{display:block;font-size:12.5px;color:var(--mut);margin:10px 0 3px}
+input[type="date"],input[type="text"]{
+  width:100%;padding:9px 10px;border:1px solid #c9c2b2;border-radius:7px;font-size:15px;background:#fff;color:var(--ink);
+}
+input:focus{outline:2px solid var(--amber);outline-offset:0;border-color:var(--amber)}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+.sumcard{background:var(--navy);color:#fff;border-radius:10px;padding:14px 16px}
+.sumcard .lab{font-size:12.5px;color:#b9c8d8}
+.sumcard .val{font-size:40px;font-weight:800;color:var(--amber);font-variant-numeric:tabular-nums;line-height:1.15}
+.sumcard .desc{font-size:12.5px;color:#e6edf4;margin-top:4px;line-height:1.55}
+.sumcard.white{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.sumcard.white .lab{color:var(--mut)}
+.sumcard.white .val{color:var(--navy);font-size:30px}
+.sumcard.white .desc{color:var(--ink)}
+.today{background:var(--soft);border:1px solid #ecd27a;border-radius:10px;padding:14px 16px;margin:14px 0}
+.today .lab{font-size:12.5px;color:var(--mut)}
+.today .word{font-size:19px;font-weight:800;color:var(--navy)}
+.today .desc{font-size:13.5px;margin-top:4px}
+footer{margin:26px 0 40px}
+footer .card{font-size:12.5px;color:var(--mut)}
+.credit{text-align:center;color:var(--mut);font-size:12px;margin:10px 0 30px}
+a{color:var(--navy)}
+.sitebar{background:var(--navy2);border-bottom:2px solid var(--amber)}
+.sitebar .sb-in{max-width:980px;margin:0 auto;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sitebar a{color:#fff;text-decoration:none;font-size:13px}
+.sitebar a:hover{color:var(--amber)}
+.sitebar .sb-name{font-weight:700;letter-spacing:.03em}
+.sitebar .sb-tool{color:#b9c8d8;font-size:13px}
+</style>
+</head>
+<body>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span class="sb-tool">宿曜占い</span></div></div>
+
+<header>
+  <div class="wrap">
+    <h1>宿曜占い <span class="accent">27宿</span></h1>
+    <p>生年月日を入れるだけ。生まれた日の月の宿「本命宿」と、今日の宿との関係から見た今日の運勢を出します。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>生年月日を入力</h2>
+    <label class="flabel" for="dob">生年月日</label>
+    <input type="date" id="dob" min="1900-01-01" max="2032-12-31">
+    <p class="note">入力すると自動で計算します。対応範囲は1900年〜2032年です（旧暦換算の都合による制限です）。</p>
+  </div>
+
+  <div class="summary">
+    <div class="sumcard">
+      <div class="lab">本命宿</div>
+      <div class="val" id="hostVal">—</div>
+      <div class="desc" id="hostDesc">未入力</div>
+    </div>
+    <div class="sumcard white">
+      <div class="lab">生まれた日の旧暦</div>
+      <div class="val" id="lunarVal">—</div>
+      <div class="desc" id="lunarDesc">未入力</div>
+    </div>
+    <div class="sumcard white">
+      <div class="lab">キーワードと長所</div>
+      <div class="val" id="hostKw" style="font-size:19px;line-height:1.4">—</div>
+      <div class="desc" id="hostMerit">未入力</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 id="personTitle">宿の性格</h2>
+    <p id="personText" style="margin:0">生年月日を入力すると、本命宿の性格が出ます。</p>
+  </div>
+
+  <div class="today">
+    <div class="lab">今日の運勢（今日の宿：<span id="todayHost">—</span>／本命宿との関係：<span id="todayRel">—</span>）</div>
+    <div class="word" id="todayWord">未入力</div>
+    <div class="desc" id="todayDesc">生年月日を入力すると、今日の運勢が出ます。</div>
+    <div class="desc" id="todayLucky"></div>
+  </div>
+
+  <div class="card">
+    <h2>計算方法</h2>
+    <p class="note" style="font-size:13px;color:var(--ink)">
+      本命宿は『宿曜経』以来の早見表の方式で出します。まず生年月日を旧暦（太陰太陽暦）に直し、旧暦の各月1日に決まっている宿（1月＝室宿、2月＝奎宿、3月＝胃宿、4月＝畢宿、5月＝参宿、6月＝鬼宿、7月＝張宿、8月＝角宿、9月＝氐宿、10月＝心宿、11月＝斗宿、12月＝虚宿）から、生まれた日まで1日に1宿ずつ進めた宿が本命宿です。閏月に生まれた場合は、同じ名前の月と同じ並びで数えます。
+      今日の運勢は、本命宿から数えた今日の宿の位置（三九の秘法：命・栄・衰・安・危・成・壊・友・親・業・胎）で読みます。
+    </p>
+    <p class="note">
+      ※このページの旧暦換算は、朔（新月）と中気を天文計算で近似した簡易方式です。公式の暦とは、境目の日で1日ずれる場合があります。月の実際の位置から出す流派とは結果が異なることがあります。
+    </p>
+  </div>
+
+  <footer>
+    <div class="card">
+      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。
+    </div>
+    <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+// 27 hosts in cycle order starting from Kaku (Mitsukaku order used by the lunar-day table).
+var HOSTS = [
+  {name:"角宿", yomi:"かくしゅく", kw:"開拓・創造・行動", merit:"発想力と行動力", person:"「龍の角」にあたる宿。新しい物事を切り開く開拓者タイプで、明るく行動力があります。先頭に立つと力を発揮しますが、熱しやすく冷めやすい一面もあります。"},
+  {name:"亢宿", yomi:"こうしゅく", kw:"信念・高潔・正義", merit:"意志の強さと誠実さ", person:"龍の喉にあたる宿。高潔で信念が強く、曲がったことが大嫌い。正義感が強く筋を通しますが、融通が利かず頑固に見られることもあります。"},
+  {name:"氐宿", yomi:"ていしゅく", kw:"安定・家庭・堅実", merit:"堅実さと包容力", person:"大地の土台にあたる宿。家庭的で安定を好む、縁の下の力持ち。穏やかで包容力があり、土台作りが得意です。派手さより確かさを大切にする人です。"},
+  {name:"房宿", yomi:"ぼうしゅく", kw:"華やかさ・人気・豊かさ", merit:"人気と人脈", person:"財を蓄える蔵にあたる宿。華やかで人を惹きつける魅力の持ち主。社交的で人気運があり、豊かさと縁が深いタイプです。"},
+  {name:"心宿", yomi:"しんしゅく", kw:"情熱・感受性・直感", merit:"情熱と直感", person:"龍の心臓にあたる宿。情熱的で感受性が鋭く、好き嫌いがはっきりしています。心が動いたことには全力で取り組む、熱い人です。"},
+  {name:"尾宿", yomi:"びしゅく", kw:"努力・面倒見・純粋", merit:"忍耐力と面倒見の良さ", person:"龍の尾にあたる宿。面倒見がよく、純粋さを持つ努力家。コツコツ積み上げて、年を重ねるほど実っていく晩年型です。"},
+  {name:"箕宿", yomi:"きしゅく", kw:"自由・楽天・行動", merit:"楽観性と行動の軽さ", person:"穀物をふるい分ける「み」にあたる宿。自由奔放な楽天家で、束縛を嫌います。風のように軽やかに動き回る行動派です。"},
+  {name:"斗宿", yomi:"としゅく", kw:"知恵・探究・分析", merit:"知性と分析力", person:"枡（ます）にあたる宿。知恵者で探究心が強く、物事の仕組みを見抜く研究者タイプ。専門分野を深く掘り下げることで力を発揮します。"},
+  {name:"女宿", yomi:"じょしゅく", kw:"努力・器用・誠実", merit:"勤勉さと誠実さ", person:"織姫にあたる宿。真面目で努力家、手先が器用な職人気質。誠実に積み重ねることで、周囲からの信頼を得ていくタイプです。"},
+  {name:"虚宿", yomi:"きょしゅく", kw:"精神性・洞察・静けさ", merit:"洞察力と精神性", person:"「虚」は精神世界を表す宿。物事の本質を見つめる洞察力があり、哲学や精神世界に惹かれます。一人の静かな時間を大切にする人です。"},
+  {name:"危宿", yomi:"きしゅく", kw:"冒険・大胆・変化", merit:"度胸と決断力", person:"屋根の上に立つようなスリルを表す宿。冒険心が強く、変化の多い人生を歩みがちです。大胆な決断が道を開くタイプです。"},
+  {name:"室宿", yomi:"しつしゅく", kw:"財運・蓄積・計画", merit:"財運と計画性", person:"宮室＝財を蓄える場所にあたる宿。財運に恵まれ、計画的に財産を築く堅実派。家庭を守る力も強いタイプです。"},
+  {name:"壁宿", yomi:"へきしゅく", kw:"学問・知識・文才", merit:"知識欲と文才", person:"書庫の壁にあたる宿。知識欲が旺盛で、学問や文学に縁が深い文化人タイプ。静かに蓄えた知識が財産になります。"},
+  {name:"奎宿", yomi:"けいしゅく", kw:"文学・芸術・知性", merit:"学問と芸術性", person:"文学・学問の神にあたる宿。知的で芸術的センスに恵まれ、美しいものへの感度が高い人。学ぶこと自体を楽しめるタイプです。"},
+  {name:"婁宿", yomi:"ろうしゅく", kw:"求心力・人望・統率", merit:"統率力と人望", person:"人や物を「結び集める」宿。求心力があり、面倒見のよいリーダータイプです。人が集まる場でこそ力を発揮します。"},
+  {name:"胃宿", yomi:"いしゅく", kw:"商才・食・蓄え", merit:"商才と現実感覚", person:"食糧を蓄える胃にあたる宿。現実感覚に優れた商売上手。食べることと豊かさに縁が深く、堅実に蓄える力があります。"},
+  {name:"昴宿", yomi:"ぼうしゅく", kw:"品格・審美眼・理想", merit:"美意識と気品", person:"昴（すばる）の星団にあたる宿。品の良さと審美眼を持つ、理想の高い人。美しいものを見抜く目があり、気品ある振る舞いが魅力です。"},
+  {name:"畢宿", yomi:"ひっしゅく", kw:"粘り強さ・安定・守る力", merit:"粘り強さと守る力", person:"狩りの網にあたる宿。一度つかんだら離さない粘り強さが武器です。安定感があり、大切なものを守り抜く力があります。"},
+  {name:"觜宿", yomi:"ししゅく", kw:"言葉・表現・弁舌", merit:"弁舌と表現力", person:"鳥のくちばしにあたる宿。言葉と表現の人で、弁が立ち議論にも強いタイプ。伝える力で道を切り開きます。"},
+  {name:"参宿", yomi:"しんしゅく", kw:"野心・実行・出世", merit:"野心と実行力", person:"オリオンの三つ星にあたる宿。野心と実行力をあわせ持つ出世タイプ。目標を定めたら一直線に進む推進力があります。"},
+  {name:"井宿", yomi:"せいしゅく", kw:"知恵・冷静・計画", merit:"知恵と冷静さ", person:"井戸にあたる宿。知恵の泉のように、冷静で計画的な知性派。物事を深く考え、筋道立てて進めるのが得意です。"},
+  {name:"鬼宿", yomi:"きしゅく", kw:"直感・霊感・神秘", merit:"直感と霊感", person:"鬼＝霊を表す宿。霊感や直感が鋭く、ミステリアスな雰囲気の持ち主。目に見えないものを感じ取る力があります。"},
+  {name:"柳宿", yomi:"りゅうしゅく", kw:"柔軟・適応・芸事", merit:"柔軟性と芸事の才", person:"しなやかな柳にあたる宿。柔軟で適応力が高く、芸事に縁が深いタイプ。受け止めるしなやかさが人間関係を円くします。"},
+  {name:"星宿", yomi:"せいしゅく", kw:"華やかさ・信念・注目", merit:"華やかさと信念", person:"輝く星にあたる宿。華やかで信念が強く、自然と注目を集める存在。自分の光を信じて進むことで道が開けます。"},
+  {name:"張宿", yomi:"ちょうしゅく", kw:"社交・明るさ・人気", merit:"社交性と明るさ", person:"弓を張る姿にあたる宿。明るく社交的で、宴や集まりを盛り上げる人気者。人に好かれる天性の愛嬌があります。"},
+  {name:"翼宿", yomi:"よくしゅく", kw:"誠実・穏やか・旅", merit:"誠実さと穏やかさ", person:"鳥の翼にあたる宿。穏やかで誠実、文学や旅に縁が深いタイプ。静かな努力を続け、遠くへ羽ばたく力を持ちます。"},
+  {name:"軫宿", yomi:"しんしゅく", kw:"情愛・奉仕・晩年の実り", merit:"情の深さと奉仕心", person:"車の台（荷台）にあたる宿。情に厚く、人のために尽くす奉仕の人。積み上げた徳が晩年に大きく実るタイプです。"}
+];
+
+// Host index of lunar month day 1, for lunar months 1..12.
+var MONTH_START = [11, 13, 15, 17, 19, 21, 24, 0, 2, 4, 7, 9];
+
+// Relations of today's host counted from one's own host (Sankyu no hiho).
+var REL_ORDER = ["栄", "衰", "安", "危", "成", "壊", "友", "親"];
+var REL_TEXT = {
+  "命":{word:"静かに過ごす日", desc:"今日はあなたの本命宿と同じ宿の日。『宿曜経』では命の日は「何ごとも新しく起こさない」のがよいとされます。無理に動かず、内側を整える日にしましょう。"},
+  "栄":{word:"追い風の日", desc:"栄の日は、役目に就く・目上の人に会う・商いを始める・新しい衣を着るなど、表に出る行動によいとされる日です。"},
+  "衰":{word:"癒やしの日", desc:"衰の日は、悪いものを払うことや療養によいとされます。遠出や大きな売買は控えめにして、体と心を休めましょう。"},
+  "安":{word:"基盤を動かせる日", desc:"安の日は、転居や遠出、住まいや身の回りを整えることによいとされます。自分のペースで物事を進めやすい日です。"},
+  "危":{word:"刺激のある日", desc:"危の日は人との交わりにはよい一方、遠出・転居・売買は控えるとされます。考え方の違いが刺激になる日です。"},
+  "成":{word:"実を結ぶ日", desc:"成の日は、学問や修行、薬を調えることによいとされます。積み重ねてきたことが形になりやすい日です。"},
+  "壊":{word:"変化の大きい日", desc:"壊の日は、災いを鎮めるような行いによいとされます。遠出・婚姻・大きな売買は控えめに。揺さぶりが変化のきっかけになります。"},
+  "友":{word:"交わりが楽しい日", desc:"友の日は、人と交わりを結ぶことや、宴・集まりによいとされます。気安い相手との時間が運を運びます。"},
+  "親":{word:"ご縁が深まる日", desc:"親の日は、人と交わりを結ぶことや、宴・集まりによいとされます。親しみと信頼が育ちやすい日です。"},
+  "業":{word:"深い縁の日", desc:"業の日は前世の縁とされる日。経典では解釈が分かれますが、することが成就しにくいともされます。大事な決断は急がないのが無難です。"},
+  "胎":{word:"静かに育む日", desc:"胎の日は来世の縁とされる日。『宿曜経』では命の日と同様、新しいことを起こさない方がよいとされます。次の準備に当てる日にしましょう。"}
+};
+
+var LUCKY = [
+  "朝、窓を開けて深呼吸する",
+  "財布の中を整理する",
+  "温かい飲み物をゆっくり飲む",
+  "近くの神社や、緑のある場所を歩く",
+  "机の上を5分だけ片付ける",
+  "夜、月や星を見る時間を作る",
+  "手書きでメモを取る",
+  "好きな香りを身につける",
+  "靴を磨く・揃える",
+  "旬のものを食べる",
+  "古い写真を見返す",
+  "寝る前に、今日の良かったことを1つ思い出す"
+];
+
+var DEG = Math.PI / 180;
+function sinD(x){ return Math.sin(x * DEG); }
+
+// Apparent solar longitude (deg, 0..360), low-precision astronomical formula.
+function sunLongitude(jd){
+  var T = (jd - 2451545.0) / 36525;
+  var L0 = 280.46646 + T * (36000.76983 + 0.0003032 * T);
+  var M = 357.52911 + T * (35999.05029 - 0.0001537 * T);
+  var C = (1.914602 - T * (0.004817 + 0.000014 * T)) * sinD(M)
+        + (0.019993 - 0.000101 * T) * sinD(2 * M)
+        + 0.000289 * sinD(3 * M);
+  var omega = 125.04 - 1934.136 * T;
+  var lambda = L0 + C - 0.00569 - 0.00478 * sinD(omega);
+  return ((lambda % 360) + 360) % 360;
+}
+
+// Julian ephemeris day of the new moon for lunation index k (k=0: 2000-01-06).
+function newMoonJDE(k){
+  var T = k / 1236.85;
+  var jde = 2451550.09766 + 29.530588861 * k + 0.00015437 * T * T
+          - 0.000000150 * T * T * T + 0.00000000073 * T * T * T * T;
+  var M = 2.5534 + 29.10535670 * k - 0.0000014 * T * T - 0.00000011 * T * T * T;
+  var Mp = 201.5643 + 385.81693528 * k + 0.0107582 * T * T + 0.00001238 * T * T * T - 0.000000058 * T * T * T * T;
+  var F = 160.7108 + 390.67050284 * k - 0.0016118 * T * T - 0.00000227 * T * T * T + 0.000000011 * T * T * T * T;
+  var Om = 124.7746 - 1.56375588 * k + 0.0020672 * T * T + 0.00000215 * T * T * T;
+  var E = 1 - 0.002516 * T - 0.0000074 * T * T;
+  var corr = -0.40720 * sinD(Mp) + 0.17241 * E * sinD(M) + 0.01608 * sinD(2 * Mp) + 0.01039 * sinD(2 * F)
+    + 0.00739 * E * sinD(Mp - M) - 0.00514 * E * sinD(Mp + M) + 0.00208 * E * E * sinD(2 * M)
+    - 0.00111 * sinD(Mp - 2 * F) - 0.00057 * sinD(Mp + 2 * F) + 0.00056 * E * sinD(2 * Mp + M)
+    - 0.00042 * sinD(3 * Mp) + 0.00042 * E * sinD(M + 2 * F) + 0.00038 * E * sinD(M - 2 * F)
+    - 0.00024 * E * sinD(2 * Mp - M) - 0.00017 * sinD(Om) - 0.00007 * sinD(Mp + 2 * M)
+    + 0.00004 * sinD(2 * Mp - 2 * F) + 0.00004 * sinD(3 * M) + 0.00003 * sinD(Mp + M - 2 * F)
+    + 0.00003 * sinD(2 * Mp + 2 * F) - 0.00003 * sinD(Mp + M + 2 * F) + 0.00003 * sinD(Mp - M + 2 * F)
+    - 0.00002 * sinD(Mp - M - 2 * F) - 0.00002 * sinD(3 * Mp + M) + 0.00002 * sinD(4 * Mp);
+  return jde + corr;
+}
+
+// JST calendar-date serial (days since 1970-01-01) of an ephemeris day.
+function jdeToJstSerial(jde){
+  var ms = (jde - 2440587.5) * 86400000 - 69000 + 9 * 3600000; // TT->UTC approx, then +9h
+  return Math.floor(ms / 86400000);
+}
+function jstMidnightJd(serial){
+  return serial + 2440587.5 - 9 / 24;
+}
+
+var lunarMonths = null;
+// Build the lunar month table: month starts, contained zhongqi, month numbers.
+// Numbering rule: the month containing the winter solstice is month 11;
+// in a 13-month span, the month without a zhongqi is the leap month.
+function buildLunar(){
+  if(lunarMonths) return lunarMonths;
+  var starts = [];
+  for(var k = -1270; k <= 440; k++) starts.push(jdeToJstSerial(newMoonJDE(k)));
+  var months = [];
+  for(var i = 0; i < starts.length - 1; i++){
+    var s0 = starts[i], s1 = starts[i + 1];
+    if(s1 <= s0) continue;
+    var lam0 = sunLongitude(jstMidnightJd(s0));
+    var lam1 = sunLongitude(jstMidnightJd(s1));
+    var delta = ((lam1 - lam0) % 360 + 360) % 360;
+    var zk = null;
+    if(Math.floor((lam0 + delta) / 30) > Math.floor(lam0 / 30)){
+      zk = (Math.floor(lam0 / 30) + 1) * 30 % 360;
+    }
+    months.push({start:s0, zhongqi:zk, num:0, leap:false, lyear:0});
+  }
+  var anchors = [];
+  for(var j = 0; j < months.length; j++) if(months[j].zhongqi === 270) anchors.push(j);
+  for(var a = 0; a < anchors.length - 1; a++){
+    var from = anchors[a], to = anchors[a + 1], len = to - from;
+    var gYear = new Date(months[from].start * 86400000).getUTCFullYear();
+    var prevNum = 11, leapDone = false;
+    months[from].num = 11; months[from].lyear = gYear + 1;
+    for(var t = from + 1; t < to; t++){
+      var mo = months[t];
+      if(len === 13 && !leapDone && mo.zhongqi === null){
+        mo.num = prevNum; mo.leap = true; leapDone = true;
+      } else {
+        mo.num = prevNum === 12 ? 1 : prevNum + 1;
+        prevNum = mo.num;
+      }
+      mo.lyear = gYear + 1;
+    }
+  }
+  lunarMonths = months;
+  return months;
+}
+
+function toLunar(y, m, d){
+  var months = buildLunar();
+  var serial = Math.floor(Date.UTC(y, m - 1, d) / 86400000);
+  var lo = 0, hi = months.length - 1, idx = -1;
+  while(lo <= hi){
+    var mid = (lo + hi) >> 1;
+    if(months[mid].start <= serial){ idx = mid; lo = mid + 1; } else { hi = mid - 1; }
+  }
+  if(idx < 0 || !months[idx].num) return null;
+  var mo = months[idx];
+  return {lyear:mo.lyear, month:mo.num, leap:mo.leap, day:serial - mo.start + 1};
+}
+
+function hostIndexOf(lunar){
+  return (MONTH_START[lunar.month - 1] + lunar.day - 1) % 27;
+}
+
+function relationOf(diff){
+  // diff: 0-based distance from own host (0 = same host)
+  if(diff === 0) return "命";
+  if(diff === 9) return "業";
+  if(diff === 18) return "胎";
+  return REL_ORDER[(diff - 1) % 8];
+}
+
+function hashStr(str){
+  var h = 2166136261;
+  for(var i = 0; i < str.length; i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return h >>> 0;
+}
+function mulberry32(a){
+  return function(){
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+var dobEl = document.getElementById("dob");
+
+function setEmpty(){
+  document.getElementById("hostVal").textContent = "—";
+  document.getElementById("hostDesc").textContent = "未入力";
+  document.getElementById("lunarVal").textContent = "—";
+  document.getElementById("lunarDesc").textContent = "未入力";
+  document.getElementById("hostKw").textContent = "—";
+  document.getElementById("hostMerit").textContent = "未入力";
+  document.getElementById("personTitle").textContent = "宿の性格";
+  document.getElementById("personText").textContent = "生年月日を入力すると、本命宿の性格が出ます。";
+  document.getElementById("todayHost").textContent = "—";
+  document.getElementById("todayRel").textContent = "—";
+  document.getElementById("todayWord").textContent = "未入力";
+  document.getElementById("todayDesc").textContent = "生年月日を入力すると、今日の運勢が出ます。";
+  document.getElementById("todayLucky").textContent = "";
+}
+
+function calc(){
+  var v = dobEl.value;
+  if(!v){ setEmpty(); return; }
+  var parts = v.split("-");
+  if(parts.length !== 3){ setEmpty(); return; }
+  var y = parseInt(parts[0], 10), m = parseInt(parts[1], 10), d = parseInt(parts[2], 10);
+  if(!y || !m || !d || y < 1900 || y > 2032){ setEmpty(); return; }
+
+  var lunar = toLunar(y, m, d);
+  if(!lunar){ setEmpty(); return; }
+  var hi = hostIndexOf(lunar);
+  var host = HOSTS[hi];
+
+  document.getElementById("hostVal").textContent = host.name;
+  document.getElementById("hostDesc").textContent = host.yomi + "。キーワードは「" + host.kw + "」です。";
+  document.getElementById("lunarVal").textContent = (lunar.leap ? "閏" : "") + lunar.month + "月" + lunar.day + "日";
+  document.getElementById("lunarDesc").textContent = "旧暦" + lunar.lyear + "年" + (lunar.leap ? "閏" : "") + lunar.month + "月" + lunar.day + "日生まれとして計算しました。";
+  document.getElementById("hostKw").textContent = host.kw;
+  document.getElementById("hostMerit").textContent = "長所：" + host.merit;
+  document.getElementById("personTitle").textContent = host.name + "の性格";
+  document.getElementById("personText").textContent = host.person;
+
+  var now = new Date();
+  var tl = toLunar(now.getFullYear(), now.getMonth() + 1, now.getDate());
+  if(tl){
+    var ti = hostIndexOf(tl);
+    var diff = ((ti - hi) % 27 + 27) % 27;
+    var rel = relationOf(diff);
+    var rt = REL_TEXT[rel];
+    document.getElementById("todayHost").textContent = HOSTS[ti].name;
+    document.getElementById("todayRel").textContent = rel;
+    document.getElementById("todayWord").textContent = rt.word;
+    document.getElementById("todayDesc").textContent = rt.desc;
+    var seed = hashStr(now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate() + "|" + v);
+    var rnd = mulberry32(seed);
+    var lucky = LUCKY[Math.floor(rnd() * LUCKY.length)];
+    document.getElementById("todayLucky").textContent = "ラッキーアクション：" + lucky;
+  }
+}
+
+dobEl.addEventListener("input", calc);
+dobEl.addEventListener("change", calc);
+setEmpty();
+})();
+</script>
+</body>
+</html>

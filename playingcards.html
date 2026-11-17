@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>トランプ占い｜占いツール集</title>
+<meta name="description" content="52枚のトランプから今日の1枚を引く無料のカード占い。その日1日固定の結果で、カードの意味と今日への一言をお伝えします。">
+<style>
+:root{
+  --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1d2733; --mut:#68707c;
+  --line:#ddd6c8; --red:#b03a2e; --green:#1e7d46; --soft:#fdf6e0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:22px 16px 18px;border-bottom:4px solid var(--amber)}
+header .wrap{max-width:980px;margin:0 auto}
+header h1{margin:0;font-size:24px;letter-spacing:.04em}
+header h1 .accent{color:var(--amber)}
+header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
+.wrap{max-width:980px;margin:0 auto;padding:0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 1px 3px rgba(18,40,63,.06)}
+.card h2{margin:0 0 10px;font-size:17px;color:var(--navy);border-left:5px solid var(--amber);padding-left:9px}
+.note{font-size:12.5px;color:var(--mut)}
+label.flabel{display:block;font-size:12.5px;color:var(--mut);margin:10px 0 3px}
+input[type="date"]{
+  width:100%;padding:9px 10px;border:1px solid #c9c2b2;border-radius:7px;font-size:15px;background:#fff;color:var(--ink);
+}
+input:focus{outline:2px solid var(--amber);outline-offset:0;border-color:var(--amber)}
+.btn{
+  display:inline-block;background:var(--amber);color:#231a00;font-weight:800;font-size:16px;
+  border:none;border-radius:9px;padding:12px 26px;cursor:pointer;letter-spacing:.03em;
+  box-shadow:0 2px 5px rgba(18,40,63,.18);
+}
+.btn:hover{background:var(--amber-d);color:#fff}
+.btn:active{transform:translateY(1px)}
+.center{text-align:center}
+.playcard{
+  width:200px;height:280px;margin:18px auto;background:#fff;border:2px solid #c9c2b2;border-radius:14px;
+  position:relative;box-shadow:0 4px 14px rgba(18,40,63,.15);color:#1d2733;
+}
+.playcard.red{color:#c22f24}
+.playcard .corner{position:absolute;top:10px;left:12px;text-align:center;line-height:1.05}
+.playcard .corner .rk{font-size:30px;font-weight:800}
+.playcard .corner .st{font-size:24px}
+.playcard .corner.br{top:auto;left:auto;bottom:10px;right:12px;transform:rotate(180deg)}
+.playcard .big{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:96px}
+.playcard .qmark{font-size:80px;color:var(--mut);font-weight:800}
+.kw{display:inline-block;background:var(--navy);color:#fff;border-radius:999px;padding:3px 14px;font-size:13px;font-weight:700;margin:6px 0 2px}
+.today{background:var(--soft);border:1px solid #ecd27a;border-radius:10px;padding:14px 16px;margin:14px 0}
+.today .lab{font-size:12.5px;color:var(--mut)}
+.today .word{font-size:19px;font-weight:800;color:var(--navy)}
+.today .desc{font-size:13.5px;margin-top:4px}
+.mean{font-size:14.5px;margin:10px 0 0}
+footer{margin:26px 0 40px}
+footer .card{font-size:12.5px;color:var(--mut)}
+.credit{text-align:center;color:var(--mut);font-size:12px;margin:10px 0 30px}
+a{color:var(--navy)}
+.sitebar{background:var(--navy2);border-bottom:2px solid var(--amber)}
+.sitebar .sb-in{max-width:980px;margin:0 auto;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sitebar a{color:#fff;text-decoration:none;font-size:13px}
+.sitebar a:hover{color:var(--amber)}
+.sitebar .sb-name{font-weight:700;letter-spacing:.03em}
+.sitebar .sb-tool{color:#b9c8d8;font-size:13px}
+</style>
+</head>
+<body>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span class="sb-tool">トランプ占い</span></div></div>
+
+<header>
+  <div class="wrap">
+    <h1>トランプ占い <span class="accent">カードリーディング</span></h1>
+    <p>52枚のトランプから、今日のあなたへの1枚を引きます。結果はその日1日固定です。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>今日のカードを引く</h2>
+    <label class="flabel" for="dob">生年月日（任意）</label>
+    <input type="date" id="dob" min="1900-01-01" max="2100-12-31">
+    <p class="note">生年月日を入れると、その人専用の1枚になります。入れなくても引けます。</p>
+    <p class="center" style="margin:16px 0 4px">
+      <button class="btn" id="drawBtn" type="button">カードを引く</button>
+    </p>
+  </div>
+
+  <div class="card" id="resultCard" style="display:none">
+    <h2 id="resTitle">今日のカード</h2>
+    <div class="playcard" id="pcBox">
+      <div class="corner"><div class="rk" id="pcRank">?</div><div class="st" id="pcSuit1">？</div></div>
+      <div class="big" id="pcBig">？</div>
+      <div class="corner br"><div class="rk" id="pcRank2">?</div><div class="st" id="pcSuit2">？</div></div>
+    </div>
+    <p class="center"><span class="kw" id="resKw"></span></p>
+    <p class="mean" id="resMean"></p>
+    <div class="today">
+      <div class="lab">今日への一言</div>
+      <div class="desc" id="resAdvice" style="font-size:14.5px"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>占い方</h2>
+    <p class="note" style="font-size:13px;color:var(--ink)">
+      トランプ占いは、カードのスート（マーク）と数字に意味を持たせて読む西洋の占いです。
+      スペードは知性と試練、ハートは愛情と心、ダイヤはお金と仕事、クラブは成長と人の縁を表します。
+      このツールでは、今日の日付（と任意の生年月日）から決定的に1枚を選ぶため、その日は何度開いても同じカードが出ます。
+    </p>
+  </div>
+
+  <footer>
+    <div class="card">
+      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。
+    </div>
+    <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+// xmur3-style string hash -> seed for mulberry32
+function hashSeed(str){
+  var h = 1779033703 ^ str.length;
+  for(var i = 0; i < str.length; i++){
+    h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+    h = (h << 13) | (h >>> 19);
+  }
+  return h >>> 0;
+}
+function mulberry32(a){
+  return function(){
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    var t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function todayStr(){
+  var d = new Date();
+  var m = String(d.getMonth() + 1).padStart(2, "0");
+  var day = String(d.getDate()).padStart(2, "0");
+  return d.getFullYear() + "-" + m + "-" + day;
+}
+
+// Card data: [keyword, meaning, advice] for ranks A,2..10,J,Q,K
+var SUITS = [
+  { key:"spade", symbol:"\u2660", name:"スペード", red:false, cards:[
+    ["転機","大きな決断や人生の転機を告げるカード。迷いを断ち切る勇気が、今日のあなたに求められています。","先延ばしにしていた決断を、今日こそ一つ片付けましょう。"],
+    ["選択","二つの道の前で揺れる心を示します。どちらにも良さがあるからこそ、慎重な見極めが必要です。","人の意見より、自分の本音を優先して選んでください。"],
+    ["言葉","小さなすれ違いや言葉の行き違いに注意のカード。悪気のない一言が誤解を招くかもしれません。","大事な話ほど、短く丁寧に伝えるのが吉です。"],
+    ["休息","立ち止まって立て直す時期を示します。焦って動くより、休むことが次への力になります。","今日は無理をせず、早めに切り上げる勇気を。"],
+    ["競争","ライバルとの張り合いや、意見のぶつかり合いを示します。勝ち負けにこだわりすぎないことが大切です。","張り合うより自分のペースを守ると、結果がついてきます。"],
+    ["前進","つらい状況から離れ、前へ進む動きを示します。移動や環境の変化が追い風になります。","いつもと違う道を通ると、気分も運も切り替わります。"],
+    ["工夫","正面突破より工夫と戦略が効くカード。回り道に見える方法が、実は一番の近道です。","やり方を一つ変えるだけで、驚くほど進みます。"],
+    ["停滞","思い込みで身動きが取れなくなっている状態を示します。実は選択肢は思うより多いはずです。","できない理由より、できる方法を一つ探してみて。"],
+    ["不安","考えすぎて頭がいっぱいになる不安を示します。心配事の大半は、実際には起こらないものです。","不安は紙に書き出すと、小さくなります。"],
+    ["区切り","重荷や長引いた問題に区切りがつくカード。終わらせることで新しい余白が生まれます。","終わらせる勇気が、次の始まりを連れてきます。"],
+    ["情報","情報通で頭の回転の速い若い人物、または鋭い知らせを示します。言葉の裏を読む力が試されます。","届いた情報は、鵜呑みにせず一度確かめて。"],
+    ["冷静","冷静で判断力のある人物、または自分の鋭い直感を示します。感情より事実で判断すると上手くいきます。","一呼吸おいてから返事をすると、評価が上がります。"],
+    ["権威","厳しさと頼りがいをあわせ持つ年長者や、筋を通す姿勢を示します。甘えを捨てる場面がありそうです。","筋を通す態度が、信頼を勝ち取ります。"]
+  ]},
+  { key:"heart", symbol:"\u2665", name:"ハート", red:true, cards:[
+    ["愛の始まり","新しい愛や喜びの始まりを示す、ハートのエース。心が温かくなる出来事が近づいています。","素直な一言が、相手の心を開きます。"],
+    ["相性","良いパートナーシップや相性の良さを示します。二人で進めることが上手くいく日です。","一人の判断より、二人で話し合うと吉。"],
+    ["友情","友人との楽しい時間や、嬉しい集まりを示します。人との輪が運を運んできます。","誘われたら、迷わず顔を出してみて。"],
+    ["安定","穏やかな安定を示しますが、少し退屈に感じるかもしれません。小さな変化が刺激になります。","いつもの場所に、新しい楽しみを一つ足してみて。"],
+    ["揺れる心","気持ちの揺れや、ささいな嫉妬に注意のカード。相手を信じることが関係を守ります。","比べる気持ちが湧いたら、深呼吸を。"],
+    ["再会","懐かしい人との再会や、過去の思い出がよみがえる出来事を示します。","昔の写真や連絡先を見返すと、嬉しい発見が。"],
+    ["夢見","選択肢が多くて夢見がちになる状態を示します。地に足のついた一歩が大切です。","理想は大きく、今日の一歩は小さく具体的に。"],
+    ["誘い","嬉しい誘いや楽しい出来事が舞い込むカード。人との縁が広がります。","小さな誘いほど、良い縁につながります。"],
+    ["願望成就","願いが叶うことを示す、幸運のカード。長く望んでいたことに光が差します。","願いは言葉にすると、近づいてきます。"],
+    ["幸福","家族や仲間との幸福な時間を示します。満ち足りた気持ちが次の運を呼びます。","幸せは分け合うと、倍になって返ってきます。"],
+    ["好意","優しい若い人物や、あなたへの好意のサインを示します。素直な気持ちが伝わる日です。","好意は隠さず、笑顔で受け取って。"],
+    ["包容力","包容力のある相談相手や、自分の優しさを示します。聞き役に回ると信頼が深まります。","アドバイスより、共感の一言が力になります。"],
+    ["理解者","温かく見守ってくれる年長者や理解者を示します。甘えられる相手が近くにいます。","困ったら、頼れる人に早めに相談を。"]
+  ]},
+  { key:"diamond", symbol:"\u2666", name:"ダイヤ", red:true, cards:[
+    ["嬉しい知らせ","お金や仕事に関する嬉しい知らせを示します。新しい収入の芽が出るかもしれません。","届いた連絡は早めに返すと、話が進みます。"],
+    ["バランス","収支や条件のバランスを取る場面を示します。交渉ごとは互いの利益を意識するとまとまります。","お金の貸し借りは、今日は避けるのが無難です。"],
+    ["評価","仕事の成果が評価される、成長のカード。小さな積み重ねが認められます。","地味な作業ほど丁寧に。見ている人はいます。"],
+    ["守り","貯蓄や守りの姿勢が功を奏するカード。無駄遣いを控えると安心感が増します。","買う前に一晩置くと、本当に要るものが見えます。"],
+    ["変化","引っ越しや異動など、環境の変化の気配を示します。変化はチャンスの顔をしてやってきます。","変化の話が来たら、まず話だけでも聞いてみて。"],
+    ["助け合い","人との助け合いや、貸し借りの清算が進むカード。持ちつ持たれつが上手く回ります。","受けた親切は、今日のうちにお礼を。"],
+    ["見直し","お金の使い方の見直しを示します。契約や定期支出に無駄が隠れているかもしれません。","明細を一度眺めるだけで、改善点が見つかります。"],
+    ["実り","努力がお金や成果に結びつくカード。スキルアップへの投資が実を結びます。","学びに使った時間とお金は、無駄になりません。"],
+    ["自立","経済的な自立や、思い切った決断を示します。自分の稼ぎ方に自信が持てる日です。","欲しかったものへの計画を、今日立ててみて。"],
+    ["豊かさ","大きな実りや豊かさを示すカード。仕事の成果が形になって返ってきます。","成果は独り占めせず、周りに分けると巡ります。"],
+    ["活発","仕事の知らせや、活発で商売上手な人物を示します。スピード感のある展開が期待できます。","返事の速さが、そのまま信頼になります。"],
+    ["実務","実務に強いビジネスパートナーや、自分の手腕を示します。数字に強い面が評価されます。","見積もりや条件は、数字で確認すると安心です。"],
+    ["実力者","経済力と実力を兼ね備えた人物、または大きな商機を示します。堂々とした態度が効きます。","大きな話ほど、条件をはっきりさせるのが吉。"]
+  ]},
+  { key:"club", symbol:"\u2663", name:"クラブ", red:false, cards:[
+    ["挑戦","新しい挑戦やひらめきの始まりを示します。やる気が満ちる、スタートのカードです。","思いついたら、今日のうちに最初の一歩を。"],
+    ["計画","計画を立てたり、話し合いで方向を決める場面を示します。段取りが成功の鍵です。","始める前に終わりの形を決めておくと、迷いません。"],
+    ["協力","チームワークや協力体制が実を結ぶカード。一人ではできないことが進みます。","役割分担をはっきりさせると、驚くほど進みます。"],
+    ["地盤","日常の充実や地盤固めを示します。派手さはなくても、確かな手応えがあります。","足元の整理が、大きな運を支えます。"],
+    ["勝負心","ライバルの存在が勝負心に火をつけるカード。負けず嫌いが良い方向に働きます。","相手より、昨日の自分に勝つのが目標です。"],
+    ["成功","努力が認められ、成功へ前進するカード。追い風が吹いています。","好調な時ほど、感謝と確認を忘れずに。"],
+    ["粘り","粘り強さが議論や交渉を制するカード。最後まで諦めない姿勢が実を結びます。","あと一押しの場面。引かずに粘って。"],
+    ["忙しさ","仕事や用事が立て込む忙しさを示します。段取り次第で充実した一日になります。","優先順位を朝のうちに決めると回ります。"],
+    ["目前","ゴール目前の踏ん張りどころを示します。あと少しで成果が見えてきます。","最後の詰めを丁寧に。手応えは近いです。"],
+    ["充実","責任は重くても、実りの多い充実した状態を示します。頼られることが増えそうです。","抱え込みすぎず、任せる勇気も持ちましょう。"],
+    ["仲間","行動力のある若者や、頼れる仲間を示します。一緒に動くと物事が加速します。","誘う側に回ると、良い流れが作れます。"],
+    ["社交","面倒見がよく社交的な人物や、自分の人望を示します。世話役が評価されます。","人の橋渡しをすると、自分の縁も広がります。"],
+    ["リーダー","頼れるリーダーや指導者、または自分の統率力を示します。全体を見る目が冴える日です。","決める場面では、堂々と結論を出して。"]
+  ]}
+];
+var RANKS = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"];
+
+var dobEl = document.getElementById("dob");
+
+function draw(){
+  var rng = mulberry32(hashSeed("playingcards|" + todayStr() + "|" + (dobEl.value || "")));
+  var idx = Math.floor(rng() * 52);
+  var suit = SUITS[Math.floor(idx / 13)];
+  var ri = idx % 13;
+  var card = suit.cards[ri];
+  var rank = RANKS[ri];
+
+  document.getElementById("resTitle").textContent = suit.name + "の" + rank;
+  var box = document.getElementById("pcBox");
+  box.className = "playcard" + (suit.red ? " red" : "");
+  document.getElementById("pcRank").textContent = rank;
+  document.getElementById("pcRank2").textContent = rank;
+  document.getElementById("pcSuit1").textContent = suit.symbol;
+  document.getElementById("pcSuit2").textContent = suit.symbol;
+  document.getElementById("pcBig").textContent = suit.symbol;
+  document.getElementById("resKw").textContent = "キーワード：" + card[0];
+  document.getElementById("resMean").textContent = card[1];
+  document.getElementById("resAdvice").textContent = card[2];
+  document.getElementById("resultCard").style.display = "block";
+}
+
+document.getElementById("drawBtn").addEventListener("click", draw);
+window.CARDS_DATA = { suits: SUITS, ranks: RANKS };
+})();
+</script>
+</body>
+</html>

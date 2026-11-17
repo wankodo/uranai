@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>風水（簡易）｜占いツール集</title>
+<meta name="description" content="生年月日と性別から八宅派の本命卦（命卦）と吉方位・凶方位を出す無料の風水（簡易版）ツール。今日のラッキー方位つき。">
+<style>
+:root{
+  --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1d2733; --mut:#68707c;
+  --line:#ddd6c8; --red:#b03a2e; --green:#1e7d46; --soft:#fdf6e0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:22px 16px 18px;border-bottom:4px solid var(--amber)}
+header .wrap{max-width:980px;margin:0 auto}
+header h1{margin:0;font-size:24px;letter-spacing:.04em}
+header h1 .accent{color:var(--amber)}
+header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
+.wrap{max-width:980px;margin:0 auto;padding:0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 1px 3px rgba(18,40,63,.06)}
+.card h2{margin:0 0 10px;font-size:17px;color:var(--navy);border-left:5px solid var(--amber);padding-left:9px}
+.note{font-size:12.5px;color:var(--mut)}
+label.flabel{display:block;font-size:12.5px;color:var(--mut);margin:10px 0 3px}
+input[type="date"],input[type="text"]{
+  width:100%;padding:9px 10px;border:1px solid #c9c2b2;border-radius:7px;font-size:15px;background:#fff;color:var(--ink);
+}
+input:focus{outline:2px solid var(--amber);outline-offset:0;border-color:var(--amber)}
+.seg{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px}
+.seg button{flex:1 1 70px;padding:12px 6px;font-size:17px;font-weight:800;border:2px solid var(--line);border-radius:9px;background:#fff;color:var(--navy);cursor:pointer}
+.seg button small{display:block;font-size:11px;font-weight:400;color:var(--mut)}
+.seg button.on{background:var(--navy);color:#fff;border-color:var(--amber)}
+.seg button.on small{color:#cfd9e4}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+.sumcard{background:var(--navy);color:#fff;border-radius:10px;padding:14px 16px}
+.sumcard .lab{font-size:12.5px;color:#b9c8d8}
+.sumcard .val{font-size:40px;font-weight:800;color:var(--amber);font-variant-numeric:tabular-nums;line-height:1.15}
+.sumcard .desc{font-size:12.5px;color:#e6edf4;margin-top:4px;line-height:1.55}
+.dir-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:10px 0}
+.dir-cell{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#fff}
+.dir-cell.good{border-color:#ecd27a;background:var(--soft)}
+.dir-cell.bad{border-color:#e3c4bd;background:#fdf1ee}
+.dir-cell .d-star{font-size:13px;font-weight:700;color:var(--navy)}
+.dir-cell .d-dir{font-size:26px;font-weight:800;color:var(--navy);line-height:1.25}
+.dir-cell .d-desc{font-size:12.5px;color:var(--mut);line-height:1.55}
+.adv-row{margin:9px 0}
+.adv-row .a-lab{display:inline-block;min-width:5.2em;font-weight:700;color:var(--navy)}
+.today{background:var(--soft);border:1px solid #ecd27a;border-radius:10px;padding:14px 16px;margin:14px 0}
+.today .lab{font-size:12.5px;color:var(--mut)}
+.today .word{font-size:19px;font-weight:800;color:var(--navy)}
+.today .desc{font-size:13.5px;margin-top:4px}
+footer{margin:26px 0 40px}
+footer .card{font-size:12.5px;color:var(--mut)}
+.credit{text-align:center;color:var(--mut);font-size:12px;margin:10px 0 30px}
+a{color:var(--navy)}
+.sitebar{background:var(--navy2);border-bottom:2px solid var(--amber)}
+.sitebar .sb-in{max-width:980px;margin:0 auto;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sitebar a{color:#fff;text-decoration:none;font-size:13px}
+.sitebar a:hover{color:var(--amber)}
+.sitebar .sb-name{font-weight:700;letter-spacing:.03em}
+.sitebar .sb-tool{color:#b9c8d8;font-size:13px}
+</style>
+</head>
+<body>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span class="sb-tool">風水（簡易）</span></div></div>
+
+<header>
+  <div class="wrap">
+    <h1>風水 <span class="accent">簡易・八宅派の命卦</span></h1>
+    <p>生年月日と性別を入れるだけ。あなたの「本命卦」と、吉方位・凶方位、今日のラッキー方位を出します。これは八宅派の簡易版です。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>生年月日と性別を入力</h2>
+    <label class="flabel" for="dob">生年月日</label>
+    <input type="date" id="dob" min="1900-01-01" max="2100-12-31">
+    <label class="flabel">性別</label>
+    <div class="seg" id="seg">
+      <button type="button" data-sex="M">男性<small>11から引く式</small></button>
+      <button type="button" data-sex="F">女性<small>4を足す式</small></button>
+    </div>
+    <p class="note">入力すると自動で計算します。年の切り替わりは立春の目安として2月4日で区切っています（2月3日以前の生まれは前年生まれとして計算）。実際の立春の日時は年によって前後するため、境目前後の方は目安としてご覧ください。</p>
+  </div>
+
+  <div class="summary">
+    <div class="sumcard">
+      <div class="lab">本命卦（命卦）</div>
+      <div class="val" id="guaVal">—</div>
+      <div class="desc" id="guaDesc">未入力</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>あなたの吉方位</h2>
+    <div class="dir-grid">
+      <div class="dir-cell good"><div class="d-star">生気（せいき）</div><div class="d-dir" id="gSeiki">—</div><div class="d-desc">最も強い吉方位。仕事運・発展運を高めます。</div></div>
+      <div class="dir-cell good"><div class="d-star">延年（えんねん）</div><div class="d-dir" id="gEnnen">—</div><div class="d-desc">人間関係・恋愛・結婚運に良い方位。</div></div>
+      <div class="dir-cell good"><div class="d-star">天医（てんい）</div><div class="d-dir" id="gTeni">—</div><div class="d-desc">健康運を守る方位。療養や体調管理にも。</div></div>
+      <div class="dir-cell good"><div class="d-star">伏位（ふくい）</div><div class="d-dir" id="gFukui">—</div><div class="d-desc">自分の卦と同じ方位。安定と落ち着きをもたらします。</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>あなたの凶方位</h2>
+    <div class="dir-grid">
+      <div class="dir-cell bad"><div class="d-star">絶命（ぜつめい）</div><div class="d-dir" id="bZetsumei">—</div><div class="d-desc">最も避けたい凶方位。玄関や寝室には不向きです。</div></div>
+      <div class="dir-cell bad"><div class="d-star">五鬼（ごき）</div><div class="d-dir" id="bGoki">—</div><div class="d-desc">思わぬトラブルに注意の方位。火の元にも気を配ります。</div></div>
+      <div class="dir-cell bad"><div class="d-star">六殺（ろくさつ）</div><div class="d-dir" id="bRokusatsu">—</div><div class="d-desc">人間関係のもつれや誘惑に注意の方位。</div></div>
+      <div class="dir-cell bad"><div class="d-star">禍害（かがい）</div><div class="d-dir" id="bKagai">—</div><div class="d-desc">小さな災いや口の災いに注意の方位。</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>用途別アドバイス</h2>
+    <div id="advBody">
+      <p class="note">生年月日と性別を入力すると、本命卦に合わせたアドバイスが出ます。</p>
+    </div>
+  </div>
+
+  <div class="today">
+    <div class="lab">今日のラッキー方位</div>
+    <div class="word" id="luckyWord">未入力</div>
+    <div class="desc" id="luckyDesc">生年月日と性別を入力すると、あなたの吉方位の中から今日のおすすめが出ます。</div>
+  </div>
+
+  <div class="card">
+    <h2>計算方法</h2>
+    <p class="note" style="font-size:13px;color:var(--ink)">
+      本命卦は八宅派の標準方式で出します。まず生まれ年（2月4日の立春目安で調整）の数字を一桁になるまで足します。
+      男性は「11 − その数」、女性は「その数 ＋ 4」とし、二桁になったら一桁に直します。
+      結果が5になった場合は、男性は坤（2）、女性は艮（8）に置き換えます。
+      数字と卦の対応は、1＝坎・2＝坤・3＝震・4＝巽・6＝乾・7＝兌・8＝艮・9＝離です。
+      坎・震・巽・離は「東四命」、乾・坤・艮・兌は「西四命」で、吉方位は同じグループの4方位、凶方位は相手グループの4方位になります。
+      これは八宅派の簡易版です。本来の風水では家の坐向や間取りなども合わせて見ます。
+    </p>
+  </div>
+
+  <footer>
+    <div class="card">
+      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。
+    </div>
+    <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+// Bazhai (Eight Mansions) data: good/bad directions per life trigram (gua).
+var GUA = {
+  1:{name:"坎", reading:"かん", elem:"水", dir:"北", group:"東四命",
+     trait:"柔軟で思慮深く、流れを読む力があるタイプ。知恵と人脈が運の源になります。",
+     good:{"生気":"南東","延年":"南","天医":"東","伏位":"北"},
+     bad:{"絶命":"南西","五鬼":"東北","六殺":"北西","禍害":"西"}},
+  2:{name:"坤", reading:"こん", elem:"土", dir:"南西", group:"西四命",
+     trait:"包容力と面倒見の良さが持ち味。コツコツ積み上げる堅実さで信頼を集めるタイプです。",
+     good:{"生気":"東北","延年":"西","天医":"北西","伏位":"南西"},
+     bad:{"絶命":"北","五鬼":"南東","六殺":"東","禍害":"南"}},
+  3:{name:"震", reading:"しん", elem:"木", dir:"東", group:"東四命",
+     trait:"行動力と発展の気を持つタイプ。思い立ったらすぐ動く勢いが運を開きます。",
+     good:{"生気":"南","延年":"北","天医":"南東","伏位":"東"},
+     bad:{"絶命":"西","五鬼":"北西","六殺":"東北","禍害":"南西"}},
+  4:{name:"巽", reading:"そん", elem:"木", dir:"南東", group:"東四命",
+     trait:"風のように柔軟で、信用と商才に恵まれるタイプ。人との縁そのものが財産になります。",
+     good:{"生気":"北","延年":"南","天医":"東","伏位":"南東"},
+     bad:{"絶命":"東北","五鬼":"南西","六殺":"西","禍害":"北西"}},
+  6:{name:"乾", reading:"けん", elem:"金", dir:"北西", group:"西四命",
+     trait:"リーダー気質で理想が高いタイプ。責任ある立場に立つほど力を発揮します。",
+     good:{"生気":"西","延年":"東北","天医":"南西","伏位":"北西"},
+     bad:{"絶命":"南","五鬼":"東","六殺":"南東","禍害":"北"}},
+  7:{name:"兌", reading:"だ", elem:"金", dir:"西", group:"西四命",
+     trait:"明るく社交的で楽しみ上手なタイプ。笑顔と会話が運を運んできます。",
+     good:{"生気":"北西","延年":"南西","天医":"東北","伏位":"西"},
+     bad:{"絶命":"東","五鬼":"南","六殺":"北","禍害":"南東"}},
+  8:{name:"艮", reading:"ごん", elem:"土", dir:"東北", group:"西四命",
+     trait:"継続と蓄積の気を持つタイプ。変化より安定を好み、貯める・守ることが得意です。",
+     good:{"生気":"南西","延年":"北西","天医":"西","伏位":"東北"},
+     bad:{"絶命":"南東","五鬼":"北","六殺":"南","禍害":"東"}},
+  9:{name:"離", reading:"り", elem:"火", dir:"南", group:"東四命",
+     trait:"華やかで直感が鋭いタイプ。美意識とひらめきが武器になります。",
+     good:{"生気":"東","延年":"南東","天医":"北","伏位":"南"},
+     bad:{"絶命":"北西","五鬼":"西","六殺":"南西","禍害":"東北"}}
+};
+
+function digitSum(n){
+  var s = 0;
+  while(n > 0){ s += n % 10; n = Math.floor(n / 10); }
+  return s;
+}
+function reduceDigit(n){
+  while(n > 9) n = digitSum(n);
+  return n;
+}
+
+// Life trigram (ming gua): standard Bazhai formula, Risshun cut at Feb 4.
+function lifeGua(y, m, d, sex){
+  var adjYear = (m >= 3 || (m === 2 && d >= 4)) ? y : y - 1;
+  var s = reduceDigit(adjYear);
+  var n;
+  if(sex === "M"){
+    n = reduceDigit(11 - s);
+    if(n === 5) n = 2;
+  }else{
+    n = reduceDigit(s + 4);
+    if(n === 5) n = 8;
+  }
+  return n;
+}
+
+// Deterministic pick from date string.
+function dateSeed(str){
+  var h = 2166136261;
+  for(var i = 0; i < str.length; i++){
+    h ^= str.charCodeAt(i);
+    h = (h * 16777619) >>> 0;
+  }
+  return h;
+}
+
+var dobEl = document.getElementById("dob");
+var segEl = document.getElementById("seg");
+var sex = "";
+
+function setDirs(g){
+  document.getElementById("gSeiki").textContent = g ? g.good["生気"] : "—";
+  document.getElementById("gEnnen").textContent = g ? g.good["延年"] : "—";
+  document.getElementById("gTeni").textContent = g ? g.good["天医"] : "—";
+  document.getElementById("gFukui").textContent = g ? g.good["伏位"] : "—";
+  document.getElementById("bZetsumei").textContent = g ? g.bad["絶命"] : "—";
+  document.getElementById("bGoki").textContent = g ? g.bad["五鬼"] : "—";
+  document.getElementById("bRokusatsu").textContent = g ? g.bad["六殺"] : "—";
+  document.getElementById("bKagai").textContent = g ? g.bad["禍害"] : "—";
+}
+
+function setEmpty(msg){
+  document.getElementById("guaVal").textContent = "—";
+  document.getElementById("guaDesc").textContent = msg || "未入力";
+  setDirs(null);
+  document.getElementById("advBody").innerHTML =
+    '<p class="note">生年月日と性別を入力すると、本命卦に合わせたアドバイスが出ます。</p>';
+  document.getElementById("luckyWord").textContent = "未入力";
+  document.getElementById("luckyDesc").textContent =
+    "生年月日と性別を入力すると、あなたの吉方位の中から今日のおすすめが出ます。";
+}
+
+function calc(){
+  var v = dobEl.value;
+  if(!v){ setEmpty(); return; }
+  var parts = v.split("-");
+  if(parts.length !== 3){ setEmpty(); return; }
+  var y = parseInt(parts[0], 10), m = parseInt(parts[1], 10), d = parseInt(parts[2], 10);
+  if(!y || !m || !d || y < 1900 || y > 2100){ setEmpty(); return; }
+  if(!sex){ setEmpty("性別を選んでください"); return; }
+
+  var n = lifeGua(y, m, d, sex);
+  var g = GUA[n];
+  document.getElementById("guaVal").textContent = g.name + "（" + n + "）";
+  document.getElementById("guaDesc").textContent =
+    g.name + "（" + g.reading + "）＝ 五行「" + g.elem + "」・本方位は" + g.dir + " ― " + g.group + "。" + g.trait;
+  setDirs(g);
+
+  document.getElementById("advBody").innerHTML =
+    '<div class="adv-row"><span class="a-lab">玄関</span>' +
+      "生気の" + g.good["生気"] + "が理想です。玄関がその方角にある・向いていると、運気の入口が開くと言われます。絶命の" + g.bad["絶命"] + "は避けたい配置です。</div>" +
+    '<div class="adv-row"><span class="a-lab">寝室</span>' +
+      "天医の" + g.good["天医"] + "に寝室を置き、延年の" + g.good["延年"] + "へ頭を向けて寝ると、健康運と人間関係運の両方に良いとされます。</div>" +
+    '<div class="adv-row"><span class="a-lab">仕事机</span>' +
+      "生気の" + g.good["生気"] + "を向いて座ると集中力と発展運が上がります。長時間座る場所は、伏位の" + g.good["伏位"] + "も落ち着ける選択です。</div>";
+
+  var now = new Date();
+  var key = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();
+  var stars = ["生気", "延年", "天医", "伏位"];
+  var star = stars[dateSeed(key) % 4];
+  document.getElementById("luckyWord").textContent = g.good[star] + "（" + star + "）";
+  document.getElementById("luckyDesc").textContent =
+    "今日はあなたの吉方位の中でも「" + star + "」の" + g.good[star] +
+    "がおすすめ。その方角のお店や散歩コースを選ぶと、小さなツキが拾えます。";
+}
+
+segEl.querySelectorAll("button").forEach(function(b){
+  b.addEventListener("click", function(){
+    sex = b.getAttribute("data-sex");
+    segEl.querySelectorAll("button").forEach(function(x){
+      x.classList.toggle("on", x === b);
+    });
+    calc();
+  });
+});
+dobEl.addEventListener("input", calc);
+dobEl.addEventListener("change", calc);
+setEmpty();
+})();
+</script>
+</body>
+</html>

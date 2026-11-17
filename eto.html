@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>干支占い｜占いツール集</title>
+<meta name="description" content="生まれ年・生年月日から十二支を出し、性格、今日の運勢、干支同士の相性を表示する無料の干支占いツール。立春（2月4日）境界に対応。">
+<style>
+:root{
+  --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1d2733; --mut:#68707c;
+  --line:#ddd6c8; --red:#b03a2e; --green:#1e7d46; --soft:#fdf6e0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:22px 16px 18px;border-bottom:4px solid var(--amber)}
+header .wrap{max-width:980px;margin:0 auto}
+header h1{margin:0;font-size:24px;letter-spacing:.04em}
+header h1 .accent{color:var(--amber)}
+header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
+.wrap{max-width:980px;margin:0 auto;padding:0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 1px 3px rgba(18,40,63,.06)}
+.card h2{margin:0 0 10px;font-size:17px;color:var(--navy);border-left:5px solid var(--amber);padding-left:9px}
+.note{font-size:12.5px;color:var(--mut)}
+label.flabel{display:block;font-size:12.5px;color:var(--mut);margin:10px 0 3px}
+input[type="date"],input[type="number"]{
+  width:100%;padding:9px 10px;border:1px solid #c9c2b2;border-radius:7px;font-size:15px;background:#fff;color:var(--ink);
+}
+input:focus{outline:2px solid var(--amber);outline-offset:0;border-color:var(--amber)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.frow{grid-template-columns:1fr}}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:14px 0}
+.sumcard{background:var(--navy);color:#fff;border-radius:10px;padding:14px 16px}
+.sumcard .lab{font-size:12.5px;color:#b9c8d8}
+.sumcard .val{font-size:40px;font-weight:800;color:var(--amber);line-height:1.15}
+.sumcard .sub{font-size:13px;color:#b9c8d8}
+.sumcard .desc{font-size:12.5px;color:#e6edf4;margin-top:4px;line-height:1.55}
+.today{background:var(--soft);border:1px solid #ecd27a;border-radius:10px;padding:14px 16px;margin:14px 0}
+.today .lab{font-size:12.5px;color:var(--mut)}
+.today .stars{font-size:22px;color:var(--amber-d);letter-spacing:.15em;margin:2px 0}
+.today .word{font-size:15.5px;font-weight:700;color:var(--navy)}
+.today .desc{font-size:13.5px;margin-top:4px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{flex:1 1 15%;background:#e9e4d8;border:1px solid var(--line);border-radius:8px;padding:9px 4px;font-size:15px;cursor:pointer;color:var(--ink)}
+.seg button.on{background:var(--navy);color:#fff;font-weight:700;border-color:var(--navy)}
+.compat{margin-top:12px;background:var(--soft);border:1px solid #ecd27a;border-radius:10px;padding:12px 14px;font-size:14.5px}
+.compat .clab{font-size:12.5px;color:var(--mut)}
+.compat .ctext{font-weight:700;color:var(--navy);margin-top:2px}
+footer{margin:26px 0 40px}
+footer .card{font-size:12.5px;color:var(--mut)}
+.credit{text-align:center;color:var(--mut);font-size:12px;margin:10px 0 30px}
+a{color:var(--navy)}
+.sitebar{background:var(--navy2);border-bottom:2px solid var(--amber)}
+.sitebar .sb-in{max-width:980px;margin:0 auto;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sitebar a{color:#fff;text-decoration:none;font-size:13px}
+.sitebar a:hover{color:var(--amber)}
+.sitebar .sb-name{font-weight:700;letter-spacing:.03em}
+.sitebar .sb-tool{color:#b9c8d8;font-size:13px}
+</style>
+</head>
+<body>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span class="sb-tool">干支占い</span></div></div>
+
+<header>
+  <div class="wrap">
+    <h1>干支 <span class="accent">占い</span></h1>
+    <p>あなたの十二支から、性格・今日の運勢・干支同士の相性を出します。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>生年月日または生まれ年を入力</h2>
+    <div class="frow">
+      <div>
+        <label class="flabel" for="dob">生年月日（分かる場合）</label>
+        <input type="date" id="dob" min="1900-01-01" max="2100-12-31">
+      </div>
+      <div>
+        <label class="flabel" for="byear">生まれ年（年のみの場合）</label>
+        <input type="number" id="byear" min="1900" max="2100" placeholder="例：1990">
+      </div>
+    </div>
+    <p class="note">入力すると自動で計算します。干支は本来、立春（2月4日ごろ）で切り替わります。このツールでは簡易に「2月4日」を境界としており、生年月日を入れた場合は立春前なら前年の干支で判定します。年のみの入力の場合は、その年の干支として表示します（1月1日〜2月3日生まれの方は前年の干支になる場合があります）。両方入れた場合は生年月日を優先します。</p>
+  </div>
+
+  <div class="summary">
+    <div class="sumcard">
+      <div class="lab">あなたの干支</div>
+      <div class="val" id="etoVal">—</div>
+      <div class="sub" id="etoSub">未入力</div>
+      <div class="desc" id="etoDesc">生年月日または生まれ年を入力すると、干支と性格が表示されます。</div>
+    </div>
+  </div>
+
+  <div class="today">
+    <div class="lab">今日の運勢</div>
+    <div class="stars" id="fStars">—</div>
+    <div class="word" id="fWord">未入力</div>
+    <div class="desc" id="fDesc">干支が決まると、今日の運勢が出ます。その日であれば、何度開いても同じ結果です。</div>
+  </div>
+
+  <div class="card">
+    <h2>干支同士の相性</h2>
+    <p class="note" style="margin-top:0">相手の干支を選ぶと、あなたの干支との相性を表示します。</p>
+    <div class="seg" id="partnerSeg"></div>
+    <div class="compat" id="compatBox" hidden>
+      <div class="clab" id="cPair"></div>
+      <div class="ctext" id="cText"></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="card">
+      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。
+    </div>
+    <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+// Order: 0=子 1=丑 2=寅 3=卯 4=辰 5=巳 6=午 7=未 8=申 9=酉 10=戌 11=亥
+var ETO = [
+  { kanji: "子", yomi: "ねずみ", animal: "鼠", desc: "機転が利いて適応力が高い人。お金や情報への感度が鋭く、ピンチでも上手に切り抜けます。人当たりの良さで周りに好かれるタイプです。" },
+  { kanji: "丑", yomi: "うし", animal: "牛", desc: "粘り強く、コツコツ努力を積み上げる人。一度決めたことは最後までやり抜く責任感があります。慎重な分、決断には少し時間がかかります。" },
+  { kanji: "寅", yomi: "とら", animal: "虎", desc: "行動力と度胸のあるリーダータイプ。正義感が強く、弱い者を放っておけません。勢い任せにならないよう一呼吸おくと、さらに頼れる存在になります。" },
+  { kanji: "卯", yomi: "うさぎ", animal: "兎", desc: "穏やかで人当たりがよく、場の空気を和ませる人。争いを避ける平和主義者で、芸術的なセンスにも恵まれます。決断を先延ばしにしがちな一面もあります。" },
+  { kanji: "辰", yomi: "たつ", animal: "龍", desc: "スケールの大きな夢を追う、エネルギッシュな人。自信にあふれ、周りを引っ張るカリスマ性があります。プライドが高い分、失敗を引きずらない切り替えが鍵です。" },
+  { kanji: "巳", yomi: "へび", animal: "蛇", desc: "洞察力が鋭く、物事の本質を見抜く人。情熱を内に秘め、目標に向けて静かに粘ります。警戒心が強く、心を開くまでには時間がかかります。" },
+  { kanji: "午", yomi: "うま", animal: "馬", desc: "明るく開放的で、行動が速い人。自由を愛し、束縛を嫌います。熱しやすく冷めやすい面は、目標を細かく区切ることで長所に変わります。" },
+  { kanji: "未", yomi: "ひつじ", animal: "羊", desc: "優しく協調性のある平和主義者。人の気持ちに寄り添うのが上手で、芸術センスも豊かです。優柔不断になりがちなので、小さな決断から練習するとよいでしょう。" },
+  { kanji: "申", yomi: "さる", animal: "猿", desc: "頭の回転が速く、器用で機知に富む人。新しいことを次々とこなすマルチな才能があります。飽きっぽさとは上手に付き合うのがコツです。" },
+  { kanji: "酉", yomi: "とり", animal: "鳥", desc: "几帳面で観察眼が鋭い人。美的センスと計画性に優れ、仕事は丁寧で正確です。細部にこだわりすぎて疲れないよう、力の抜きどころも大切です。" },
+  { kanji: "戌", yomi: "いぬ", animal: "犬", desc: "義理堅く誠実で、信頼される人。正義感が強く、仲間を守るためには労を惜しみません。心配性な面があり、考えすぎる前に相談すると楽になります。" },
+  { kanji: "亥", yomi: "いのしし", animal: "猪", desc: "真っ直ぐで情に厚い一直線タイプ。決めた目標にはまっしぐらに挑みます。純粋な分、人を信じやすいので、大事な約束ごとは確認を忘れずに。" }
+];
+
+function etoIndexOfYear(year){
+  return ((year - 4) % 12 + 12) % 12;
+}
+
+// Risshun boundary: simplified to Feb 4. Dates before Feb 4 belong to the previous year.
+function etoIndexOfDate(y, m, d){
+  var yy = (m < 2 || (m === 2 && d < 4)) ? y - 1 : y;
+  return etoIndexOfYear(yy);
+}
+function effectiveYearOfDate(y, m, d){
+  return (m < 2 || (m === 2 && d < 4)) ? y - 1 : y;
+}
+
+// Compatibility relation between two eto indexes.
+function relation(a, b){
+  if(a === b) return "same";
+  var pair = [Math.min(a, b), Math.max(a, b)].join("-");
+  var ROKUGO = { "0-1": 1, "2-11": 1, "3-10": 1, "4-9": 1, "5-8": 1, "6-7": 1 };
+  var GAI = { "0-7": 1, "1-6": 1, "2-5": 1, "3-4": 1, "8-11": 1, "9-10": 1 };
+  if(ROKUGO[pair]) return "rokugo";
+  if(((a + 6) % 12) === b) return "chu";
+  if(GAI[pair]) return "gai";
+  var SANGO = [[0, 4, 8], [1, 5, 9], [2, 6, 10], [3, 7, 11]];
+  for(var i = 0; i < SANGO.length; i++){
+    if(SANGO[i].indexOf(a) >= 0 && SANGO[i].indexOf(b) >= 0) return "sango";
+  }
+  return "normal";
+}
+
+var REL_TEXT = {
+  rokugo: "六合（りくごう）の好相性。自然と息が合い、支え合える関係です。",
+  sango: "三合（さんごう）の好相性。価値観が近く、一緒にいると物事が大きく進みます。",
+  chu: "正反対の組み合わせ（沖）。刺激的で成長し合えますが、歩み寄りが鍵です。",
+  gai: "すれ違いやすい組み合わせ（害）。言葉を丁寧に選ぶと上手くいきます。",
+  same: "同じ干支同士。気心は知れますが、似た者同士で意地を張らないようにしましょう。",
+  normal: "穏やかな相性。お互いのペースを尊重すれば、長く続く関係になります。"
+};
+
+var FORTUNE_WORDS = [
+  "小さな幸運が重なる日。笑顔で過ごしましょう",
+  "思い切った一歩が実を結ぶ日",
+  "人との会話にヒントあり。耳を傾けてみて",
+  "丁寧な仕事が評価される日",
+  "懐かしい人との縁が温まる日",
+  "新しいことに挑戦すると流れが変わる日",
+  "焦らず進めば結果がついてくる日",
+  "身の回りを整えると運気も整う日",
+  "直感が冴える日。最初のひらめきを信じて",
+  "感謝を言葉にすると、良いことが巡ってくる日"
+];
+var LUCKY_ITEMS = ["ハンカチ", "青い小物", "温かい飲み物", "新しいメモ帳", "季節の花", "磨いた靴", "読みかけの本", "お気に入りの音楽", "深呼吸", "湯船につかること"];
+
+function hashStr(s){
+  var h = 2166136261;
+  for(var i = 0; i < s.length; i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return h >>> 0;
+}
+function mulberry32(a){
+  return function(){
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    var t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function dateStrOf(d){
+  var m = ("0" + (d.getMonth() + 1)).slice(-2), day = ("0" + d.getDate()).slice(-2);
+  return d.getFullYear() + "-" + m + "-" + day;
+}
+
+// Today's fortune for an eto index. Deterministic per (date, eto).
+function fortuneFor(etoIdx, ds){
+  var rng = mulberry32(hashStr("eto-fortune:" + ds + ":" + etoIdx));
+  var stars = 1 + Math.floor(rng() * 5);
+  var word = FORTUNE_WORDS[Math.floor(rng() * FORTUNE_WORDS.length)];
+  var item = LUCKY_ITEMS[Math.floor(rng() * LUCKY_ITEMS.length)];
+  return { stars: stars, word: word, item: item };
+}
+function starText(n){
+  var s = "";
+  for(var i = 0; i < 5; i++) s += (i < n ? "★" : "☆");
+  return s;
+}
+
+var dobEl = document.getElementById("dob");
+var yearEl = document.getElementById("byear");
+var seg = document.getElementById("partnerSeg");
+var compatBox = document.getElementById("compatBox");
+var myEto = -1;
+var partnerEto = -1;
+
+ETO.forEach(function(e, i){
+  var b = document.createElement("button");
+  b.type = "button";
+  b.textContent = e.kanji;
+  b.addEventListener("click", function(){
+    partnerEto = i;
+    var btns = seg.querySelectorAll("button");
+    btns.forEach(function(x, j){ x.classList.toggle("on", j === i); });
+    showCompat();
+  });
+  seg.appendChild(b);
+});
+
+function showCompat(){
+  if(myEto < 0 || partnerEto < 0){ compatBox.hidden = true; return; }
+  document.getElementById("cPair").textContent =
+    "あなた（" + ETO[myEto].kanji + "） × 相手（" + ETO[partnerEto].kanji + "）";
+  document.getElementById("cText").textContent = REL_TEXT[relation(myEto, partnerEto)];
+  compatBox.hidden = false;
+}
+
+function setEmpty(){
+  myEto = -1;
+  document.getElementById("etoVal").textContent = "—";
+  document.getElementById("etoSub").textContent = "未入力";
+  document.getElementById("etoDesc").textContent = "生年月日または生まれ年を入力すると、干支と性格が表示されます。";
+  document.getElementById("fStars").textContent = "—";
+  document.getElementById("fWord").textContent = "未入力";
+  document.getElementById("fDesc").textContent = "干支が決まると、今日の運勢が出ます。その日であれば、何度開いても同じ結果です。";
+  compatBox.hidden = true;
+}
+
+function render(idx, subText){
+  myEto = idx;
+  var e = ETO[idx];
+  document.getElementById("etoVal").textContent = e.kanji + "（" + e.yomi + "）";
+  document.getElementById("etoSub").textContent = subText;
+  document.getElementById("etoDesc").textContent = e.desc;
+  var f = fortuneFor(idx, dateStrOf(new Date()));
+  document.getElementById("fStars").textContent = starText(f.stars);
+  document.getElementById("fWord").textContent = f.word;
+  document.getElementById("fDesc").textContent = "ラッキーアイテム：" + f.item;
+  showCompat();
+}
+
+function calc(){
+  var v = dobEl.value;
+  if(v){
+    var parts = v.split("-");
+    if(parts.length === 3){
+      var y = parseInt(parts[0], 10), m = parseInt(parts[1], 10), d = parseInt(parts[2], 10);
+      if(y >= 1900 && y <= 2100 && m >= 1 && m <= 12 && d >= 1 && d <= 31){
+        var ey = effectiveYearOfDate(y, m, d);
+        var sub = y + "年" + m + "月" + d + "日生まれ";
+        if(ey !== y) sub += "（立春前のため " + ey + "年の干支で判定）";
+        render(etoIndexOfDate(y, m, d), sub);
+        return;
+      }
+    }
+  }
+  var yv = parseInt(yearEl.value, 10);
+  if(yv >= 1900 && yv <= 2100){
+    render(etoIndexOfYear(yv), yv + "年生まれ（その年の干支として表示）");
+    return;
+  }
+  setEmpty();
+}
+
+dobEl.addEventListener("input", calc);
+dobEl.addEventListener("change", calc);
+yearEl.addEventListener("input", calc);
+yearEl.addEventListener("change", calc);
+setEmpty();
+
+window.ETO = { etoIndexOfYear: etoIndexOfYear, etoIndexOfDate: etoIndexOfDate, fortuneFor: fortuneFor, relation: relation, ETO: ETO };
+})();
+</script>
+</body>
+</html>

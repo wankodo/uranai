@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>携帯番号占い｜占いツール集</title>
+<meta name="description" content="携帯番号の下4桁の合計（0〜36）で運勢を占う無料の携帯番号占い。吉数・凶数、大吉数（15・24・31・32）とサポートナンバーが分かります。">
+<style>
+:root{
+  --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1d2733; --mut:#68707c;
+  --line:#ddd6c8; --red:#b03a2e; --green:#1e7d46; --soft:#fdf6e0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:22px 16px 18px;border-bottom:4px solid var(--amber)}
+header .wrap{max-width:980px;margin:0 auto}
+header h1{margin:0;font-size:24px;letter-spacing:.04em}
+header h1 .accent{color:var(--amber)}
+header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
+.wrap{max-width:980px;margin:0 auto;padding:0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 1px 3px rgba(18,40,63,.06)}
+.card h2{margin:0 0 10px;font-size:17px;color:var(--navy);border-left:5px solid var(--amber);padding-left:9px}
+.note{font-size:12.5px;color:var(--mut)}
+label.flabel{display:block;font-size:12.5px;color:var(--mut);margin:10px 0 3px}
+input[type="tel"],input[type="text"]{
+  width:100%;padding:9px 10px;border:1px solid #c9c2b2;border-radius:7px;font-size:17px;background:#fff;color:var(--ink);letter-spacing:.08em;
+}
+input:focus{outline:2px solid var(--amber);outline-offset:0;border-color:var(--amber)}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+.sumcard{background:var(--navy);color:#fff;border-radius:10px;padding:14px 16px}
+.sumcard .lab{font-size:12.5px;color:#b9c8d8}
+.sumcard .val{font-size:40px;font-weight:800;color:var(--amber);font-variant-numeric:tabular-nums;line-height:1.15}
+.sumcard .desc{font-size:12.5px;color:#e6edf4;margin-top:4px;line-height:1.55}
+.sumcard.white{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.sumcard.white .lab{color:var(--mut)}
+.sumcard.white .val{color:var(--navy)}
+.sumcard.white .desc{color:var(--ink)}
+.badge{display:inline-block;font-size:12px;font-weight:700;border-radius:20px;padding:2px 10px;margin-left:8px;vertical-align:middle}
+.badge.dai{background:var(--amber);color:#231a00}
+.badge.kichi{background:var(--green);color:#fff}
+.badge.kyo{background:var(--red);color:#fff}
+.today{background:var(--soft);border:1px solid #ecd27a;border-radius:10px;padding:14px 16px;margin:14px 0}
+.today .lab{font-size:12.5px;color:var(--mut)}
+.today .word{font-size:19px;font-weight:800;color:var(--navy)}
+.today .desc{font-size:13.5px;margin-top:4px}
+table.numlist{width:100%;border-collapse:collapse;font-size:13px}
+table.numlist th,table.numlist td{border:1px solid var(--line);padding:4px 6px;text-align:center}
+table.numlist th{background:var(--navy);color:#fff;font-weight:700}
+table.numlist td.kw{text-align:left}
+table.numlist tr.hl td{background:var(--soft);font-weight:700}
+.mini{display:inline-block;min-width:34px;font-size:11.5px;font-weight:700;border-radius:10px;padding:1px 6px;color:#fff}
+.mini.dai{background:var(--amber);color:#231a00}
+.mini.kichi{background:var(--green)}
+.mini.kyo{background:var(--red)}
+footer{margin:26px 0 40px}
+footer .card{font-size:12.5px;color:var(--mut)}
+.credit{text-align:center;color:var(--mut);font-size:12px;margin:10px 0 30px}
+a{color:var(--navy)}
+.sitebar{background:var(--navy2);border-bottom:2px solid var(--amber)}
+.sitebar .sb-in{max-width:980px;margin:0 auto;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sitebar a{color:#fff;text-decoration:none;font-size:13px}
+.sitebar a:hover{color:var(--amber)}
+.sitebar .sb-name{font-weight:700;letter-spacing:.03em}
+.sitebar .sb-tool{color:#b9c8d8;font-size:13px}
+</style>
+</head>
+<body>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span class="sb-tool">携帯番号占い</span></div></div>
+
+<header>
+  <div class="wrap">
+    <h1>携帯番号占い <span class="accent">下4桁の合計で見る運勢</span></h1>
+    <p>携帯番号を入れるだけ。下4桁の合計（0〜36）があなたの「運命ナンバー」です。吉数・凶数とサポートナンバーを出します。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>携帯番号を入力</h2>
+    <label class="flabel" for="tel">携帯電話番号（ハイフンは自動で取り除きます）</label>
+    <input type="tel" id="tel" inputmode="numeric" autocomplete="off" placeholder="例：090-1234-5678">
+    <p class="note">入力すると自動で計算します。番号はこのページの中だけで計算し、保存も送信もされません。</p>
+  </div>
+
+  <div class="summary">
+    <div class="sumcard">
+      <div class="lab">下4桁の合計（運命ナンバー）<span id="luckBadge"></span></div>
+      <div class="val" id="mainVal">—</div>
+      <div class="desc" id="mainCalc">未入力</div>
+    </div>
+    <div class="sumcard white">
+      <div class="lab">キーワード</div>
+      <div class="val" id="kwVal" style="font-size:26px">—</div>
+      <div class="desc" id="kwDesc">番号を入力すると、数字の意味が出ます。</div>
+    </div>
+    <div class="sumcard white">
+      <div class="lab">サポートナンバー</div>
+      <div class="val" id="supVal">—</div>
+      <div class="desc" id="supDesc">未入力</div>
+    </div>
+  </div>
+
+  <div class="today">
+    <div class="lab">番号全体から見た補助メッセージ（全体の合計 <span id="allVal">—</span>）</div>
+    <div class="word" id="allWord">未入力</div>
+    <div class="desc" id="allDesc">番号全体の数字も足すと、もう一つの数字が見えてきます。</div>
+  </div>
+
+  <div class="card">
+    <h2>計算方法</h2>
+    <p class="note" style="font-size:13px;color:var(--ink)">
+      携帯番号占い（数意学）は、番号の下4桁の数字をすべて足した合計（0〜36）をそのまま読みます。数秘術のように1桁にはまとめません。
+      合計37通りのうち、吉数は21個（1・3・5・6・7・8・11・13・15・16・17・18・21・23・24・25・29・31・32・33・35）、凶数は16個（0・2・4・9・10・12・14・19・20・22・26・27・28・30・34・36）とされ、
+      とくに 15・24・31・32 は「大吉数」と呼ばれます。凶数だった場合は、その数字の弱い面を補う「サポートナンバー」を待ち受け画像や暗証番号の合計などに取り入れる方法が紹介されています。
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>数字の一覧（0〜36）</h2>
+    <div id="listWrap"></div>
+  </div>
+
+  <footer>
+    <div class="card">
+      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。
+    </div>
+    <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+// luck: "dai" = great lucky number (15, 24, 31, 32), "kichi" = lucky, "kyo" = unlucky
+// sup: support number from the published phone-number fortune table
+var NUMS = {
+  0:{luck:"kyo", kw:"無気力", sup:5, desc:"やる気が湧きにくく、物事が停滞しやすい数字。スタートダッシュが苦手で、流れに乗るまで時間がかかります。", adv:"まずは小さな目標を1つ片付けて、勢いを取り戻しましょう。"},
+  1:{luck:"kichi", kw:"リーダー", sup:15, desc:"先頭に立って道を切り開く数字。決断力と統率力に恵まれ、周りを引っ張る場面で力を発揮します。", adv:"迷ったら自分で決めて動くことが開運の鍵です。"},
+  2:{luck:"kyo", kw:"優柔不断", sup:21, desc:"迷いやすく、決断を先延ばしにしがちな数字。人に合わせすぎて、自分の意見が後回しになることもあります。", adv:"選択肢は2つまでに絞り、期限を決めて選ぶと楽になります。"},
+  3:{luck:"kichi", kw:"愛され力", sup:25, desc:"明るさと愛嬌で人を引きつける数字。無邪気な魅力が周りを和ませ、助けてもらいやすい運を持ちます。", adv:"笑顔と感謝の言葉を増やすほど運気が上がります。"},
+  4:{luck:"kyo", kw:"他力本願", sup:8, desc:"つい人任せになりやすい数字。楽な方へ流れると、チャンスも一緒に流れていってしまいます。", adv:"小さなことでも「自分でやる」を意識すると流れが変わります。"},
+  5:{luck:"kichi", kw:"バランサー", sup:17, desc:"全体のバランスを取るのが上手な数字。調整役として信頼され、場を穏やかにまとめる力があります。", adv:"周りへの配慮と自分の本音、両方を大切にしましょう。"},
+  6:{luck:"kichi", kw:"神のご加護", sup:3, desc:"目に見えない守りに恵まれる数字。困ったときに不思議と助けが入る、強運の持ち主です。", adv:"感謝の気持ちを忘れないことが、守りを長続きさせます。"},
+  7:{luck:"kichi", kw:"抜群のセンス", sup:15, desc:"美的感覚とひらめきに優れた数字。おしゃれや発信の分野で個性が光ります。", adv:"自分の「好き」を素直に選ぶとツキが巡ります。"},
+  8:{luck:"kichi", kw:"職人肌", sup:23, desc:"一つのことを極める職人気質の数字。コツコツした努力が、確かな成果に結びつきます。", adv:"丁寧な仕事ぶりを続けることが一番の近道です。"},
+  9:{luck:"kyo", kw:"目立ちたがり", sup:15, desc:"注目されたい気持ちが強く出やすい数字。アピールが空回りすると疲れてしまいます。", adv:"目立つより「役に立つ」を意識すると評価が安定します。"},
+  10:{luck:"kyo", kw:"空回り", sup:31, desc:"頑張っているのに結果に結びつきにくい数字。力の入れどころがずれていることがあります。", adv:"やることを減らして一点集中すると、歯車が噛み合います。"},
+  11:{luck:"kichi", kw:"天恵", sup:15, desc:"天からの恵みを受けやすい数字。直感が冴え、思わぬ幸運に恵まれることがあります。", adv:"ひらめきはメモに残し、すぐ試してみましょう。"},
+  12:{luck:"kyo", kw:"家族間のトラブル", sup:31, desc:"身内との行き違いが起きやすい数字。近い関係ほど、言葉が足りなくなりがちです。", adv:"家族には先に感謝を伝えることがトラブル予防になります。"},
+  13:{luck:"kichi", kw:"チャンスに強い", sup:25, desc:"ここぞという場面で力を発揮する数字。決断の速さが幸運を引き寄せます。", adv:"誘われたら即答するくらいの勢いが吉です。"},
+  14:{luck:"kyo", kw:"金銭トラブル", sup:24, desc:"お金の出入りで揉めやすい数字。貸し借りや衝動買いには注意が必要です。", adv:"大きな買い物は一晩寝かせてから決めましょう。"},
+  15:{luck:"dai", kw:"魅力抜群", sup:31, desc:"人気運に恵まれる大吉数。人を引きつける魅力があり、周りからの助けや引き立てを受けやすい数字です。", adv:"笑顔で人に親切にすると、さらに運が巡ります。"},
+  16:{luck:"kichi", kw:"義理人情", sup:13, desc:"義理堅く人情に厚い数字。困っている人を放っておけない優しさが信頼を集めます。", adv:"恩は忘れず、でも抱え込みすぎないバランスを。"},
+  17:{luck:"kichi", kw:"タレント性", sup:32, desc:"華やかな才能に恵まれる数字。人前に出ることや表現活動で輝けます。", adv:"自分の得意を一つ、表に出してみましょう。"},
+  18:{luck:"kichi", kw:"バイタリティ", sup:24, desc:"エネルギーに満ちた数字。体力と行動力で困難を押し切る力があります。", adv:"動きながら考えるスタイルが合っています。休息も計画に入れて。"},
+  19:{luck:"kyo", kw:"異性問題", sup:7, desc:"恋愛がらみの行き違いが起きやすい数字。感情の波に振り回されがちです。", adv:"大切な話は感情が落ち着いてから切り出しましょう。"},
+  20:{luck:"kyo", kw:"体調不良", sup:32, desc:"疲れがたまりやすい数字。無理を重ねると体調に出やすい傾向があります。", adv:"睡眠と食事を最優先に。休むことも仕事のうちです。"},
+  21:{luck:"kichi", kw:"ビジネスセンス", sup:17, desc:"商才に恵まれる数字。時代の流れを読む勘が鋭く、仕事で成果を出しやすい運を持ちます。", adv:"数字とデータを味方につけるとさらに伸びます。"},
+  22:{luck:"kyo", kw:"逆ギレ", sup:15, desc:"感情の起伏が出やすい数字。思い通りにならないときに、態度へ出てしまうことがあります。", adv:"カッとなったら6秒待つ。それだけで印象が変わります。"},
+  23:{luck:"kichi", kw:"天才肌", sup:31, desc:"独創的な発想に恵まれる数字。専門分野を深めると大きな成果につながります。", adv:"「変なアイデア」こそ大事に育ててみましょう。"},
+  24:{luck:"dai", kw:"金運", sup:15, desc:"金運に恵まれる大吉数。お金を生み出す勘が鋭く、財を築きやすい数字です。ただし、お金への執着が強すぎると運が逃げます。", adv:"得たものは周りにも回すと、金運が長続きします。"},
+  25:{luck:"kichi", kw:"エリート", sup:21, desc:"知性と品格を備えた数字。学び続ける姿勢が評価され、出世運にも恵まれます。", adv:"資格や勉強への投資が将来大きく返ってきます。"},
+  26:{luck:"kyo", kw:"自信過剰", sup:11, desc:"自分を大きく見せすぎて足をすくわれやすい数字。過信が判断を鈍らせることがあります。", adv:"「念のため確認」を習慣にすると安定します。"},
+  27:{luck:"kyo", kw:"クール", sup:15, desc:"冷静で切れ者な一面と、無駄遣いしない堅実さを持つ数字。一方で、体力面や身内との距離感が課題になりやすい面もあります。", adv:"冷たさではなく落ち着きとして伝わるよう、一言添えましょう。"},
+  28:{luck:"kyo", kw:"身内のトラブル", sup:7, desc:"近い人との揉め事が起きやすい数字。身内だからこその甘えが衝突の原因になります。", adv:"身内ほど丁寧な言葉遣いを心がけましょう。"},
+  29:{luck:"kichi", kw:"権力", sup:23, desc:"人を束ねる力に恵まれる数字。リーダーの資質があり、大きな仕事を任されやすい運です。", adv:"力は人のために使うほど、周りの信頼が集まります。"},
+  30:{luck:"kyo", kw:"お調子者", sup:24, desc:"ノリの良さが裏目に出やすい数字。軽い約束や言い過ぎで信用を落とすことがあります。", adv:"約束はできることだけ。守ることが信用を育てます。"},
+  31:{luck:"dai", kw:"気立ての良さ", sup:32, desc:"ツキと才能に恵まれる大吉数。気立てが良く、仕事と家庭を両立しやすい数字です。", adv:"謙虚さを忘れなければ、運はさらに安定します。"},
+  32:{luck:"dai", kw:"幸運の連鎖", sup:17, desc:"幸運が連鎖する大吉数。良縁に恵まれ、棚からぼた餅的なチャンスも舞い込みやすい数字です。", adv:"日頃の地道な努力と謙虚さが、連鎖の起点になります。"},
+  33:{luck:"kichi", kw:"ダイナミック", sup:15, desc:"スケールの大きな動きができる数字。思い切った行動が大きな成果につながります。", adv:"やるなら大きく。ただし準備だけは怠らずに。"},
+  34:{luck:"kyo", kw:"予期せぬ不運", sup:7, desc:"思いがけないトラブルに遭いやすい数字。予定外の出来事への備えが大切です。", adv:"保険や予備の計画など「備え」を厚くしておきましょう。"},
+  35:{luck:"kichi", kw:"母性的", sup:29, desc:"包容力に恵まれる数字。器用で面倒見がよく、周りの人を安心させる力があります。", adv:"人のために動くときほど、自分の休息も確保して。"},
+  36:{luck:"kyo", kw:"キャパオーバー", sup:13, desc:"抱え込みすぎて容量オーバーになりやすい数字。頼まれごとを断るのが苦手です。", adv:"「今は無理」と言う勇気が、自分も周りも守ります。"}
+};
+
+var LUCK_LABEL = { dai:"大吉数", kichi:"吉数", kyo:"凶数" };
+
+function digitSumStr(str){
+  var s = 0;
+  for(var i = 0; i < str.length; i++){
+    var c = str.charCodeAt(i);
+    if(c >= 48 && c <= 57) s += c - 48;
+  }
+  return s;
+}
+
+function reduceTo36(n){
+  while(n > 36){ var s = 0, m = n; while(m > 0){ s += m % 10; m = Math.floor(m / 10); } n = s; }
+  return n;
+}
+
+function renderList(current){
+  var html = '<table class="numlist"><tr><th>数字</th><th>吉凶</th><th>キーワード</th><th>サポート</th></tr>';
+  for(var n = 0; n <= 36; n++){
+    var d = NUMS[n];
+    html += '<tr' + (n === current ? ' class="hl"' : '') + '><td>' + n + '</td><td><span class="mini ' + d.luck + '">' + LUCK_LABEL[d.luck] + '</span></td><td class="kw">' + d.kw + '</td><td>' + d.sup + '</td></tr>';
+  }
+  html += '</table>';
+  document.getElementById("listWrap").innerHTML = html;
+}
+
+var telEl = document.getElementById("tel");
+
+function setEmpty(){
+  document.getElementById("mainVal").textContent = "—";
+  document.getElementById("mainCalc").textContent = "未入力";
+  document.getElementById("luckBadge").innerHTML = "";
+  document.getElementById("kwVal").textContent = "—";
+  document.getElementById("kwDesc").textContent = "番号を入力すると、数字の意味が出ます。";
+  document.getElementById("supVal").textContent = "—";
+  document.getElementById("supDesc").textContent = "未入力";
+  document.getElementById("allVal").textContent = "—";
+  document.getElementById("allWord").textContent = "未入力";
+  document.getElementById("allDesc").textContent = "番号全体の数字も足すと、もう一つの数字が見えてきます。";
+  renderList(-1);
+}
+
+function calc(){
+  var digits = telEl.value.replace(/[^0-9]/g, "");
+  if(digits.length < 4){ setEmpty(); return; }
+  var last4 = digits.slice(-4);
+  var sum = digitSumStr(last4);
+  var d = NUMS[sum];
+  var parts = [];
+  for(var i = 0; i < 4; i++) parts.push(last4.charAt(i));
+  document.getElementById("mainVal").textContent = sum;
+  document.getElementById("mainCalc").textContent = "下4桁 " + last4 + " → " + parts.join("＋") + "＝" + sum;
+  document.getElementById("luckBadge").innerHTML = '<span class="badge ' + d.luck + '">' + LUCK_LABEL[d.luck] + '</span>';
+  document.getElementById("kwVal").textContent = d.kw;
+  document.getElementById("kwDesc").textContent = d.desc + " " + d.adv;
+  document.getElementById("supVal").textContent = d.sup;
+  document.getElementById("supDesc").textContent = "数字「" + d.sup + "」（" + NUMS[d.sup].kw + "）が、この数字の弱い面を補うとされるサポートナンバーです。待ち受け画像や暗証番号の合計などに取り入れる方法が紹介されています。";
+
+  var total = digitSumStr(digits);
+  var aux = reduceTo36(total);
+  var ad = NUMS[aux];
+  document.getElementById("allVal").textContent = total;
+  document.getElementById("allWord").textContent = "補助ナンバーは「" + aux + "」（" + ad.kw + "・" + LUCK_LABEL[ad.luck] + "）";
+  document.getElementById("allDesc").textContent = "番号全体の合計 " + total + " を補助の数字に直すと " + aux + " になります。" + ad.desc;
+  renderList(sum);
+}
+
+telEl.addEventListener("input", calc);
+telEl.addEventListener("change", calc);
+setEmpty();
+
+window.PHONE_DATA = { nums: NUMS, digitSumStr: digitSumStr, reduceTo36: reduceTo36 };
+})();
+</script>
+</body>
+</html>

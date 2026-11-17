@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>姓名判断｜占いツール集</title>
+<meta name="description" content="姓と名の画数から五格（天格・人格・地格・外格・総格）と吉凶を出す無料の姓名判断ツール。収録外の文字は画数を手入力して計算できます。">
+<style>
+:root{
+  --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1d2733; --mut:#68707c;
+  --line:#ddd6c8; --red:#b03a2e; --green:#1e7d46; --soft:#fdf6e0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:22px 16px 18px;border-bottom:4px solid var(--amber)}
+header .wrap{max-width:980px;margin:0 auto}
+header h1{margin:0;font-size:24px;letter-spacing:.04em}
+header h1 .accent{color:var(--amber)}
+header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
+.wrap{max-width:980px;margin:0 auto;padding:0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 1px 3px rgba(18,40,63,.06)}
+.card h2{margin:0 0 10px;font-size:17px;color:var(--navy);border-left:5px solid var(--amber);padding-left:9px}
+.note{font-size:12.5px;color:var(--mut)}
+label.flabel{display:block;font-size:12.5px;color:var(--mut);margin:10px 0 3px}
+input[type="text"]{
+  width:100%;padding:9px 10px;border:1px solid #c9c2b2;border-radius:7px;font-size:15px;background:#fff;color:var(--ink);
+}
+input:focus{outline:2px solid var(--amber);outline-offset:0;border-color:var(--amber)}
+.namegrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.namegrid{grid-template-columns:1fr}}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+.sumcard{background:var(--navy);color:#fff;border-radius:10px;padding:14px 16px}
+.sumcard .lab{font-size:12.5px;color:#b9c8d8}
+.sumcard .val{font-size:40px;font-weight:800;color:var(--amber);font-variant-numeric:tabular-nums;line-height:1.15}
+.sumcard .desc{font-size:12.5px;color:#e6edf4;margin-top:4px;line-height:1.55}
+.sumcard.white{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.sumcard.white .lab{color:var(--mut)}
+.sumcard.white .val{color:var(--navy)}
+.sumcard.white .desc{color:var(--ink)}
+.today{background:var(--soft);border:1px solid #ecd27a;border-radius:10px;padding:14px 16px;margin:14px 0}
+.today .lab{font-size:12.5px;color:var(--mut)}
+.today .word{font-size:19px;font-weight:800;color:var(--navy)}
+.today .desc{font-size:13.5px;margin-top:4px}
+footer{margin:26px 0 40px}
+footer .card{font-size:12.5px;color:var(--mut)}
+.credit{text-align:center;color:var(--mut);font-size:12px;margin:10px 0 30px}
+a{color:var(--navy)}
+.sitebar{background:var(--navy2);border-bottom:2px solid var(--amber)}
+.sitebar .sb-in{max-width:980px;margin:0 auto;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sitebar a{color:#fff;text-decoration:none;font-size:13px}
+.sitebar a:hover{color:var(--amber)}
+.sitebar .sb-name{font-weight:700;letter-spacing:.03em}
+.sitebar .sb-tool{color:#b9c8d8;font-size:13px}
+.badge{display:inline-block;font-size:12px;font-weight:800;border-radius:20px;padding:1px 10px;margin-left:8px;vertical-align:middle}
+.badge.t4{background:var(--amber);color:#231a00}
+.badge.t3{background:#dcefe2;color:var(--green);border:1px solid var(--green)}
+.badge.t2{background:#eef1f4;color:var(--navy);border:1px solid #b9c8d8}
+.badge.t1{background:#f7e3df;color:var(--red);border:1px solid #d8a49c}
+.badge.t0{background:var(--red);color:#fff}
+.derv{font-size:12px;color:var(--mut);margin-top:2px}
+.sumcard .derv{color:#b9c8d8}
+.sumcard.white .derv{color:var(--mut)}
+.chargroup{margin:8px 0 2px}
+.chargroup .cg-lab{font-size:12.5px;color:var(--mut);margin:6px 0 4px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:5px 8px;font-size:15px}
+.chip .ch{font-weight:700;font-size:17px}
+.chip input[type="number"]{width:58px;padding:4px 6px;border:1px solid #c9c2b2;border-radius:6px;font-size:14px;color:var(--ink)}
+.chip.unknown{border-color:var(--red);background:#fdf0ee}
+.chip.unknown input[type="number"]{border-color:var(--red)}
+.chip .rep{font-size:11.5px;color:var(--mut)}
+.warn{display:none;background:#fdf0ee;border:1px solid #d8a49c;color:var(--red);border-radius:8px;padding:9px 12px;font-size:13px;margin:10px 0 2px}
+</style>
+</head>
+<body>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span class="sb-tool">姓名判断</span></div></div>
+
+<header>
+  <div class="wrap">
+    <h1>姓名判断 <span class="accent">五格占い</span></h1>
+    <p>姓と名を入れるだけ。各文字の画数から五格（天格・人格・地格・外格・総格）と吉凶を出します。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>名前を入力</h2>
+    <div class="namegrid">
+      <div>
+        <label class="flabel" for="surname">姓（漢字・かな）</label>
+        <input type="text" id="surname" placeholder="例：山田" autocomplete="off">
+      </div>
+      <div>
+        <label class="flabel" for="givenName">名（漢字・かな）</label>
+        <input type="text" id="givenName" placeholder="例：太郎" autocomplete="off">
+      </div>
+    </div>
+    <p class="note">入力すると自動で計算します。画数は下の「文字ごとの画数」で確認でき、違う流派の数え方に合わせたい場合はその場で直せます。</p>
+    <div id="charArea"></div>
+    <div class="warn" id="unknownWarn">収録外の文字があります。その文字の画数を入力すると計算できます。</div>
+  </div>
+
+  <div class="summary">
+    <div class="sumcard">
+      <div class="lab">天格（家運）</div>
+      <div class="val"><span id="tenVal">—</span><span id="tenBadge"></span></div>
+      <div class="derv" id="tenDerv"></div>
+      <div class="desc" id="tenDesc">未入力</div>
+    </div>
+    <div class="sumcard">
+      <div class="lab">人格（中心運）</div>
+      <div class="val"><span id="jinVal">—</span><span id="jinBadge"></span></div>
+      <div class="derv" id="jinDerv"></div>
+      <div class="desc" id="jinDesc">未入力</div>
+    </div>
+    <div class="sumcard white">
+      <div class="lab">地格（若年運）</div>
+      <div class="val"><span id="chiVal">—</span><span id="chiBadge"></span></div>
+      <div class="derv" id="chiDerv"></div>
+      <div class="desc" id="chiDesc">未入力</div>
+    </div>
+    <div class="sumcard white">
+      <div class="lab">外格（対人運）</div>
+      <div class="val"><span id="gaiVal">—</span><span id="gaiBadge"></span></div>
+      <div class="derv" id="gaiDerv"></div>
+      <div class="desc" id="gaiDesc">未入力</div>
+    </div>
+    <div class="sumcard">
+      <div class="lab">総格（晩年・総運）</div>
+      <div class="val"><span id="soVal">—</span><span id="soBadge"></span></div>
+      <div class="derv" id="soDerv"></div>
+      <div class="desc" id="soDesc">未入力</div>
+    </div>
+  </div>
+
+  <div class="today">
+    <div class="lab">総合</div>
+    <div class="word" id="allWord">未入力</div>
+    <div class="desc" id="allDesc">姓と名を入力すると、五格の吉凶バランスが出ます。</div>
+  </div>
+
+  <div class="card">
+    <h2>計算方法と画数の考え方</h2>
+    <p class="note" style="font-size:13px;color:var(--ink)">
+      天格は姓の画数の合計、人格は「姓の最後の文字＋名の最初の文字」、地格は名の画数の合計、外格は総格から人格を引いた数、総格は姓名すべての画数の合計です。
+      姓または名が1文字だけの場合は、その格に「霊数」として1を加えます（例：姓が1文字なら天格に+1）。
+      画数は、姓名判断で一般的な旧字体の画数（康熙字典ベース）を基本にしています。部首を元の字で数える流派の考え方を取り入れ、たとえば「氵（さんずい）」は水として4画、「艹（くさかんむり）」は艸として6画、「阝（おおざと）」は邑として7画で数えています。
+      ただし画数の数え方には流派による違いがあります。このツールの収録値と違う数え方をする場合は、「文字ごとの画数」の欄で直接直してください。
+      収録していない文字は画数が空欄になります。空欄のままでは計算できないので、その文字の画数を入力してください。「々」は直前の文字と同じ画数で数えます。
+      吉凶は81画数理に基づき、82画以上は81までの数に読み替えて（80を引いて）判定しています。
+    </p>
+  </div>
+
+  <footer>
+    <div class="card">
+      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。
+    </div>
+    <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+// Stroke counts. Kanji use old-form (Kangxi-based) counts as used in seimei handan.
+var HIRA = "あ3 い2 う2 え2 お3 か3 き3 く1 け3 こ2 さ3 し1 す2 せ3 そ3 た4 ち2 つ3 て1 と2 な4 に3 ぬ2 ね2 の1 は3 ひ1 ふ4 へ1 ほ4 ま3 み3 む3 め2 も3 や3 ゆ2 よ2 ら2 り2 る2 れ2 ろ1 わ2 ゐ2 ゑ3 を3 ん1 ぁ3 ぃ2 ぅ2 ぇ2 ぉ3 ゃ3 ゅ2 ょ2 っ3 が4 ぎ4 ぐ2 げ4 ご3 ざ4 じ2 ず3 ぜ4 ぞ4 だ5 ぢ3 づ4 で2 ど3 ば4 び2 ぶ5 べ2 ぼ5 ぱ4 ぴ2 ぷ5 ぺ2 ぽ5";
+var KATA = "ア2 イ2 ウ3 エ3 オ3 カ2 キ3 ク3 ケ3 コ2 サ3 シ3 ス2 セ3 ソ3 タ3 チ3 ツ3 テ3 ト2 ナ2 ニ2 ヌ3 ネ3 ノ1 ハ3 ヒ2 フ2 ヘ1 ホ4 マ3 ミ3 ム2 メ2 モ3 ヤ3 ユ2 ヨ3 ラ3 リ2 ル2 レ2 ロ3 ワ2 ヰ2 ヱ3 ヲ3 ン2 ァ2 ィ2 ゥ3 ェ3 ォ3 ャ3 ュ2 ョ3 ッ3 ガ3 ギ4 グ3 ゲ4 ゴ3 ザ4 ジ3 ズ3 ゼ4 ゾ4 ダ4 ヂ3 ヅ4 デ4 ド3 バ4 ビ3 ブ3 ベ3 ボ5 パ4 ピ3 プ3 ペ3 ポ5 ー1";
+var KANJI =
+"一1 乙1 二2 人2 入2 丁2 力2 刀2 乃2 又2 卜2 " +
+"三3 山3 川3 口3 子3 女3 小3 大3 弓3 工3 才3 万3 上3 下3 千3 夕3 士3 干3 久3 丸3 刃3 勺3 凡3 巳3 亡3 与3 及3 叉3 寸3 巾3 己3 也3 之3 " +
+"木4 月4 日4 心4 天4 太4 文4 方4 火4 水4 犬4 王4 元4 公4 分4 切4 化4 午4 友4 仁4 介4 今4 仏4 予4 互4 井4 丹4 中4 内4 尹4 四4 戸4 手4 毛4 氏4 比4 片4 牙4 斤4 斗4 升4 少4 引4 欠4 止4 牛4 夫4 孔4 尺4 屯4 巴4 幻4 父4 " +
+"正5 生5 石5 本5 目5 立5 白5 左5 右5 布5 平5 末5 未5 民5 永5 玉5 句5 古5 司5 台5 史5 冊5 弘5 弁5 母5 氷5 玄5 矢5 尼5 市5 広5 占5 出5 札5 仙5 代5 令5 以5 冬5 刊5 加5 叶5 巧5 卯5 五5 田5 北5 包5 央5 幼5 仕5 半5 他5 付5 兄5 由5 矛5 示5 礼5 " +
+"竹6 米6 糸6 光6 先6 早6 寺6 字6 宇6 安6 吉6 向6 合6 同6 名6 各6 吏6 吐6 壮6 羽6 考6 老6 耳6 肉6 自6 至6 舌6 年6 伏6 休6 仲6 伝6 伍6 刑6 列6 圭6 朴6 朱6 西6 六6 有6 朽6 匠6 庄6 旭6 旬6 伎6 任6 亘6 成6 印6 叫6 吟6 吸6 妃6 宅6 守6 州6 羊6 多6 凪6 地6 衣6 行6 " +
+"男7 町7 村7 条7 杉7 志7 忍7 我7 攻7 改7 近7 迎7 作7 佐7 助7 君7 坂7 均7 妙7 孝7 宏7 宋7 完7 寿7 局7 尾7 岐7 希7 序7 廷7 形7 役7 忘7 応7 秀7 私7 利7 初7 判7 別7 励7 努7 労7 医7 卵7 伯7 伴7 伸7 伺7 似7 杜7 材7 来7 杏7 李7 束7 亜7 軒7 谷7 豆7 赤7 走7 足7 身7 車7 言7 辛7 辰7 里7 克7 池7 江7 汐7 佃7 佑7 七7 良7 吾7 " +
+"林8 明8 青8 空8 金8 長8 門8 岡8 岩8 岳8 岸8 幸8 忠8 念8 旺8 昇8 昌8 坤8 坪8 奈8 奉8 奇8 始8 姓8 委8 季8 孤8 学8 宗8 官8 宙8 定8 宜8 宝8 実8 昔8 易8 朋8 服8 育8 肩8 肯8 典8 承8 佳8 侑8 依8 侃8 侍8 供8 併8 免8 函8 刻8 卓8 叔8 取8 受8 周8 味8 呼8 命8 和8 固8 国8 坦8 垂8 夜8 妹8 姉8 孟8 尚8 弥8 弦8 彼8 往8 放8 政8 斉8 昆8 果8 枝8 松8 板8 析8 枕8 枚8 枢8 杯8 歩8 武8 欣8 東8 沢8 沖8 沙8 京8 享8 八8 快8 知8 直8 房8 " +
+"春9 秋9 星9 音9 風9 飛9 食9 首9 勇9 俊9 信9 侯9 保9 俐9 則9 前9 南9 厚9 叙9 客9 宣9 宮9 峠9 峡9 帝9 幽9 度9 建9 彦9 律9 後9 怒9 思9 急9 眉9 看9 紀9 約9 紅9 級9 美9 耐9 昭9 昱9 栄9 染9 柔9 柱9 柳9 柚9 泉9 祈9 咲9 奏9 威9 姫9 姿9 姻9 娃9 孩9 宥9 室9 帥9 拝9 拓9 河9 治9 泳9 沼9 浅9 亮9 施9 柘9 柯9 査9 柿9 栃9 柴9 冠9 垣9 俣9 柊9 柑9 香9 九9 怜9 法9 砂9 皇9 相9 哉9 省9 柏9 " +
+"夏10 島10 峯10 城10 恭10 恵10 悟10 桃10 桜10 梅10 桑10 桂10 桐10 桔10 高10 席10 座10 庫10 庭10 恋10 恩10 悦10 朗10 晃10 晋10 時10 書10 朔10 泰10 素10 純10 紗10 紘10 翁10 般10 航10 財10 貢10 哲10 員10 孫10 宰10 家10 容10 花10 海10 洋10 津10 洗10 洞10 派10 活10 祐10 祖10 恕10 晏10 独10 洪10 洸10 倫10 俳10 倒10 値10 個10 借10 剛10 剣10 剖10 剤10 勅10 埋10 宵10 射10 将10 屑10 展10 峰10 息10 秘10 秦10 紋10 透10 隼10 馬10 拳10 根10 格10 校10 株10 栞10 桧10 耿10 倉10 凌10 栗10 十10 神10 真10 拾10 持10 竜10 畑10 玲10 恒10 晟10 原10 芦10 芹10 芳10 芸10 " +
+"雪11 康11 健11 停11 側11 偶11 産11 略11 細11 組11 終11 習11 梓11 梨11 彩11 彫11 斎11 章11 啓11 唯11 唱11 問11 堅11 堀11 堂11 基11 崎11 埼11 婦11 宿11 寄11 尉11 崇11 巣11 帯11 常11 彬11 彪11 悠11 敏11 教11 敦11 斜11 旋11 埜11 庵11 苗11 茂11 英11 若11 流11 浦11 浜11 浪11 浮11 酒11 振11 盛11 術11 規11 貫11 進11 逸11 頌11 祥11 祭11 笙11 笛11 紹11 絃11 野11 亀11 張11 強11 望11 得11 梧11 梢11 椛11 曹11 曽11 寅11 密11 紬11 雫11 魚11 鳥11 麻11 黄11 珠11 爽11 浩11 苑11 茅11 " +
+"森12 晶12 景12 晴12 智12 暁12 雅12 順12 須12 飯12 飲12 富12 寒12 寛12 就12 嵐12 貴12 軸12 達12 運12 遍12 遊12 偉12 傑12 凱12 創12 勝12 博12 善12 喬12 場12 塚12 媛12 彭12 惣12 敬12 棟12 植12 椎12 程12 絵12 結12 絢12 統12 越12 登12 遥12 堯12 尭12 尊12 朝12 阪12 琴12 賀12 雄12 雰12 翔12 間12 奥12 淳12 深12 淑12 渉12 渓12 添12 涼12 情12 理12 授12 探12 惇12 猪12 梶12 那12 邦12 球12 皓12 黒12 清12 斐12 渋12 茜12 茨12 荘12 " +
+"聖13 勤13 塩13 嵩13 椿13 嗣13 慈13 楓13 楠13 煌13 睦13 稚13 義13 群13 詩13 誠13 誉13 豊13 靖13 零13 新13 幹13 愛13 荷13 莉13 温13 湧13 渡13 瑛13 愉13 揚13 郁13 鉄13 鼓13 歳13 荻13 茉13 湊13 裕13 " +
+"嘉14 様14 綾14 暦14 境14 寧14 彰14 徳14 歌14 槙14 綱14 緋14 翠14 遠14 颯14 鳴14 端14 華14 菊14 菜14 菖14 碧14 福14 維14 瑞14 漢14 源14 滝14 溝14 聡14 熊14 郎14 関14 増14 横14 慎14 榎14 樋14 緒14 静14 鳳14 瑚14 鈴14 菱14 " +
+"葉15 葵15 嬉15 慧15 諒15 輝15 縁15 養15 駒15 慶15 徹15 影15 郭15 都15 瑠15 瑶15 萩15 葛15 榊15 儀15 凛15 穂15 摩15 " +
+"樺16 樹16 橋16 橘16 興16 衡16 賢16 龍16 憲16 潔16 陳16 陸16 陶16 部16 蒼16 霖16 篠16 蓮16 萱16 蒲16 " +
+"優17 瞳17 謙17 霜17 隆17 陽17 錬17 操17 蔦17 澪17 苺17 霞17 翼17 駿17 璃17 菅17 " +
+"藤18 曜18 織18 環18 韓18 蔵18 " +
+"麗19 羅19 韻19 蕾19 薫19 濱19 辺19 " +
+"馨20 譲20 麿20 瀬20 鶴21 藍21 響22 鷹22 蘇22 蘭23";
+
+var STROKES = {};
+function loadData(str){
+  var toks = str.split(/\s+/);
+  for(var i = 0; i < toks.length; i++){
+    var m = toks[i].match(/^([\s\S]+?)(\d+)$/);
+    if(m) STROKES[m[1]] = parseInt(m[2], 10);
+  }
+}
+loadData(HIRA); loadData(KATA); loadData(KANJI);
+
+// 81-number fortune table: [tier, text]. tier: 4=daikichi 3=kichi 2=chukichi 1=kyo 0=daikyo
+var TIER_NAME = ["大凶", "凶", "中吉", "吉", "大吉"];
+var LUCK = [null,
+[4,"発展の始まり。リーダーシップを発揮し、物事を切り開く力があります。"],
+[0,"分離と不安定の数。協力者との縁が薄くなりがちで、忍耐が求められます。"],
+[4,"才能と活発さの数。表現力に恵まれ、明るく前進する運です。"],
+[0,"苦労と停滞の数。地道な努力を積み重ねることで道が開けます。"],
+[4,"福徳と円満の数。人望があり、家庭も仕事も調和する幸運数です。"],
+[4,"安泰と裕福の数。安定した基盤に恵まれ、着実に発展します。"],
+[4,"剛毅と独立の数。強い意志で困難を突破する力があります。"],
+[2,"堅実と忍耐の数。コツコツ努力を続ければ着実に実を結びます。"],
+[1,"波乱と孤独の数。才能はあっても活かしにくく、周囲との調和が鍵です。"],
+[0,"空虚と衰退の数。虚栄を捨て、足元を固めることが大切です。"],
+[4,"再興と発展の数。周囲の信頼を得て、着実に勢いを取り戻します。"],
+[1,"薄弱と挫折の数。計画倒れに注意し、支援者を得ることが大切です。"],
+[4,"知略と人気の数。頭の回転が速く、人から慕われる運です。"],
+[0,"離別と苦難の数。家族や協力者との縁を大切に守りましょう。"],
+[4,"福寿と円満の数。人徳があり、穏やかで豊かな人生を歩めます。"],
+[4,"人徳と名声の数。人望を集め、指導者として成功する運です。"],
+[3,"剛強と突破の数。積極性が実を結びますが、強引さには注意。"],
+[3,"意志と成功の数。困難に屈しない精神力で目標を達成します。"],
+[1,"苦労と障害の数。才能はあっても障害が多く、忍耐が試されます。"],
+[0,"空虚と災いの数。無理な拡大を避け、守りを固める時期です。"],
+[4,"独立と名誉の数。自力で道を開き、名声を得る大吉数です。"],
+[0,"薄弱と不運の数。周囲の助けを借りる謙虚さが開運の鍵です。"],
+[4,"隆盛と発展の数。勢いがあり、大きく伸びる運を持ちます。"],
+[4,"金運と成功の数。実業に強く、財産を築く力があります。"],
+[3,"才能と個性の数。知性と個性が光りますが、協調性も大切に。"],
+[2,"波乱と変転の数。浮き沈みはありますが、経験が財産になります。"],
+[2,"自尊と中途の数。自立心が強く、途中で投げ出さない粘りが鍵です。"],
+[1,"波乱と離別の数。人間関係の変化が多く、心の安定が大切です。"],
+[4,"知謀と成功の数。知恵と計画性で成功をつかむ運です。"],
+[2,"吉凶混交の数。一か八かの運で、慎重な判断が実を守ります。"],
+[4,"統率と繁栄の数。人をまとめる力があり、組織で成功します。"],
+[4,"幸運と発展の数。思わぬ幸運に恵まれ、順調に伸びる運です。"],
+[4,"隆盛と名声の数。強い運勢で名声を得ますが、過信は禁物です。"],
+[0,"破滅と災難の数。急な変化に注意し、堅実な歩みが身を守ります。"],
+[3,"平和と温和の数。穏やかな人柄で周囲と調和し、安定した運です。"],
+[1,"波乱と苦労の数。義侠心が裏目に出やすく、冷静さが必要です。"],
+[4,"忠実と独立の数。信念を貫き、信用を積み上げて成功します。"],
+[2,"芸術と平凡の数。芸術的センスがあり、穏やかな人生を歩めます。"],
+[4,"富貴と繁栄の数。知性と運に恵まれ、豊かな成功を収めます。"],
+[2,"浮動と変化の数。変化が多い分、柔軟な対応が運を呼びます。"],
+[4,"実力と成功の数。実力と人望を兼ね備えた、最高格の大吉数です。"],
+[2,"多芸と不安定の数。多才ですが、一つの道に絞ると実を結びます。"],
+[2,"虚栄と散漫の数。見栄を張らず実を取ることで運が安定します。"],
+[0,"破壊と衰退の数。無理な計画は避け、地道な再建が大切です。"],
+[4,"順風と発展の数。知恵と行動力で順風満帆に発展する運です。"],
+[1,"困窮と低迷の数。苦境でも希望を捨てない粘り強さが鍵です。"],
+[4,"開花と成功の数。努力が花開き、実り多い成果を得られます。"],
+[4,"知恵と繁栄の数。知性と人徳で周囲に慕われ、繁栄する運です。"],
+[2,"吉凶転変の数。変化の波を読み、先手を打つことが大切です。"],
+[2,"成敗混交の数。成功と失敗が隣り合わせ。油断しない姿勢を。"],
+[2,"盛衰混交の数。盛んな時期の備えが、後の安定を守ります。"],
+[4,"先見と成功の数。先見の明があり、計画的に成功を築きます。"],
+[2,"内憂と波乱の数。内側の不安を整えることで外の運も安定します。"],
+[0,"破滅と苦難の数。大きな試練の数。堅実さと忍耐が唯一の道です。"],
+[2,"外華と内実の数。外見は華やかでも、内実を充実させる努力を。"],
+[1,"衰退と苦労の数。停滞しやすい分、小さな成功を積み重ねて。"],
+[4,"努力と発展の数。努力が実を結び、着実に発展していく運です。"],
+[2,"先苦後楽の数。前半の苦労が後半の実りに変わる運です。"],
+[2,"不安定と決断の数。決断力が試されます。迷ったら原点に戻って。"],
+[0,"暗黒と混迷の数。方向を見失いやすく、信頼できる指針が必要です。"],
+[4,"名利と繁栄の数。名誉と利益の両方に恵まれる大吉数です。"],
+[1,"衰退と基礎難の数。基礎が揺らぎやすく、土台固めが最優先です。"],
+[4,"隆盛と福徳の数。勢いと福を兼ね備え、大きく栄える運です。"],
+[0,"破滅と離散の数。人や財産が離れやすく、守りの姿勢が大切です。"],
+[4,"富貴と長寿の数。穏やかで豊か、長寿にも恵まれる大吉数です。"],
+[1,"内外不和の数。内と外の不調和に注意し、歩み寄る姿勢を。"],
+[4,"順調と発展の数。物事が順調に進み、幸運が続く運です。"],
+[4,"発明と成功の数。新しい発想が実を結び、成功をつかみます。"],
+[1,"不安定と停滞の数。落ち着かない運。腰を据えることが開運の鍵。"],
+[0,"空虚と孤独の数。精神的な支えを持つことが大切な数です。"],
+[2,"努力と中途の数。努力は実りますが、最後までやり切る粘りを。"],
+[1,"陰陽混交の数。表裏の差が大きく、心の安定が求められます。"],
+[2,"平凡と安泰の数。派手さはなくても、穏やかで安定した運です。"],
+[1,"不遇と苦労の数。恵まれにくい分、人一倍の努力が実を結びます。"],
+[2,"保守と安泰の数。守りを固めることで安定した人生を歩めます。"],
+[0,"離別と破綻の数。大切なものとの別れに注意し、絆を守って。"],
+[2,"先苦後楽の数。後半に運が開ける型。焦らず積み重ねて。"],
+[2,"先盛後衰の数。絶頂期の備えが晩年を守る、注意深い運です。"],
+[2,"忍耐と極盛の数。忍耐の先に大きな盛運が待っています。"],
+[2,"潜伏と成就の数。力を蓄える時期を経て、静かに成就します。"],
+[4,"還元と大成の数。最高の吉数。物事が成就し、大きな実りを迎えます。"]
+];
+
+var KAKU_MEANING = {
+  ten: "家運・先祖から受け継ぐ運を表します。姓そのものの数で、若年期の環境に影響するとされます。",
+  jin: "姓名の中心となる運です。性格・才能・社会での成功を左右する、最も重要な数とされます。",
+  chi: "名の数で、若年期の運と基礎運を表します。幼少期から青年期にかけて影響するとされます。",
+  gai: "対人運・社交運を表します。家族や友人、職場など周囲との関係に影響するとされます。",
+  so: "晩年運と生涯を通じた総運を表します。人生全体の実りに影響するとされます。"
+};
+
+var surnameEl = document.getElementById("surname");
+var givenEl = document.getElementById("givenName");
+var charArea = document.getElementById("charArea");
+var warnEl = document.getElementById("unknownWarn");
+
+// Manual stroke entries, kept across rebuilds: key = side:index:char
+var manualCache = {};
+// Current parsed characters per side: [{ch, known|null, repeat}]
+var cur = { s: [], g: [] };
+
+function parseSide(text){
+  var clean = (text || "").replace(/\s/g, "");
+  var chars = Array.from(clean);
+  var out = [];
+  for(var i = 0; i < chars.length; i++){
+    var ch = chars[i];
+    if(ch === "々"){
+      out.push({ ch: ch, known: null, repeat: true });
+    } else {
+      out.push({ ch: ch, known: (ch in STROKES) ? STROKES[ch] : null, repeat: false });
+    }
+  }
+  return out;
+}
+
+function renderChars(){
+  charArea.innerHTML = "";
+  var anyUnknown = false;
+  [["s", "姓", cur.s], ["g", "名", cur.g]].forEach(function(cfg){
+    var side = cfg[0], label = cfg[1], arr = cfg[2];
+    if(arr.length === 0) return;
+    var group = document.createElement("div");
+    group.className = "chargroup";
+    var lab = document.createElement("div");
+    lab.className = "cg-lab";
+    lab.textContent = label + "の文字ごとの画数";
+    group.appendChild(lab);
+    var chips = document.createElement("div");
+    chips.className = "chips";
+    arr.forEach(function(item, idx){
+      var chip = document.createElement("span");
+      chip.className = "chip";
+      var chSpan = document.createElement("span");
+      chSpan.className = "ch";
+      chSpan.textContent = item.ch;
+      chip.appendChild(chSpan);
+      if(item.repeat){
+        var rep = document.createElement("span");
+        rep.className = "rep";
+        rep.textContent = "（前の字と同じ）";
+        chip.appendChild(rep);
+      } else {
+        var inp = document.createElement("input");
+        inp.type = "number";
+        inp.min = "1"; inp.max = "99";
+        inp.setAttribute("data-side", side);
+        inp.setAttribute("data-idx", String(idx));
+        var key = side + ":" + idx + ":" + item.ch;
+        if(key in manualCache) inp.value = manualCache[key];
+        else if(item.known !== null) inp.value = item.known;
+        else { chip.className += " unknown"; anyUnknown = true; }
+        inp.addEventListener("input", function(){
+          manualCache[key] = inp.value;
+          compute();
+        });
+        chip.appendChild(inp);
+        var unit = document.createElement("span");
+        unit.textContent = "画";
+        chip.appendChild(unit);
+      }
+      chips.appendChild(chip);
+    });
+    group.appendChild(chips);
+    charArea.appendChild(group);
+  });
+  warnEl.style.display = anyUnknown ? "block" : "none";
+}
+
+// Resolve current counts for one side; returns null if any is unresolved.
+function resolveCounts(side){
+  var arr = cur[side];
+  var inputs = charArea.querySelectorAll('input[data-side="' + side + '"]');
+  var byIdx = {};
+  inputs.forEach(function(inp){ byIdx[inp.getAttribute("data-idx")] = inp.value; });
+  var counts = [];
+  for(var i = 0; i < arr.length; i++){
+    if(arr[i].repeat){
+      if(i === 0 || counts[i - 1] === null) counts.push(null);
+      else counts.push(counts[i - 1]);
+    } else {
+      var v = parseInt(byIdx[String(i)], 10);
+      counts.push((v >= 1 && v <= 99) ? v : null);
+    }
+  }
+  return counts;
+}
+
+function luckOf(n){
+  var m = ((n - 1) % 80) + 1;
+  return LUCK[m];
+}
+
+function setCard(prefix, val, derv, desc){
+  document.getElementById(prefix + "Val").textContent = val;
+  document.getElementById(prefix + "Derv").textContent = derv || "";
+  document.getElementById(prefix + "Desc").textContent = desc;
+  var badge = document.getElementById(prefix + "Badge");
+  if(typeof val === "number"){
+    var lk = luckOf(val);
+    badge.textContent = TIER_NAME[lk[0]];
+    badge.className = "badge t" + lk[0];
+  } else {
+    badge.textContent = "";
+    badge.className = "";
+  }
+}
+
+function setEmpty(msg){
+  ["ten", "jin", "chi", "gai", "so"].forEach(function(p){
+    setCard(p, "—", "", msg || "未入力");
+  });
+  document.getElementById("allWord").textContent = msg || "未入力";
+  document.getElementById("allDesc").textContent = "姓と名を入力すると、五格の吉凶バランスが出ます。";
+}
+
+function sum(arr){ var s = 0; for(var i = 0; i < arr.length; i++) s += arr[i]; return s; }
+
+function dervText(chars, counts, extra){
+  var parts = [];
+  for(var i = 0; i < chars.length; i++) parts.push(chars[i].ch + "(" + counts[i] + ")");
+  return parts.join("＋") + (extra ? "＋霊数1" : "");
+}
+
+function compute(){
+  if(cur.s.length === 0 || cur.g.length === 0){ setEmpty(); return; }
+  var S = resolveCounts("s");
+  var G = resolveCounts("g");
+  if(S.indexOf(null) >= 0 || G.indexOf(null) >= 0){
+    setEmpty("画数が未入力の文字があります");
+    document.getElementById("allDesc").textContent = "「文字ごとの画数」で空欄の文字に画数を入力すると、五格が出ます。";
+    return;
+  }
+  var m = S.length, n = G.length;
+  var ten = sum(S) + (m === 1 ? 1 : 0);
+  var chi = sum(G) + (n === 1 ? 1 : 0);
+  var jin = S[m - 1] + G[0];
+  var so = sum(S) + sum(G);
+  var gai = so - jin + (m === 1 ? 1 : 0) + (n === 1 ? 1 : 0);
+
+  setCard("ten", ten, dervText(cur.s, S, m === 1) + " ＝ " + ten, KAKU_MEANING.ten + " " + luckOf(ten)[1]);
+  setCard("jin", jin, cur.s[m - 1].ch + "(" + S[m - 1] + ")＋" + cur.g[0].ch + "(" + G[0] + ") ＝ " + jin, KAKU_MEANING.jin + " " + luckOf(jin)[1]);
+  setCard("chi", chi, dervText(cur.g, G, n === 1) + " ＝ " + chi, KAKU_MEANING.chi + " " + luckOf(chi)[1]);
+  setCard("gai", gai, "総格" + so + "－人格" + jin + ((m === 1 || n === 1) ? "＋霊数" + ((m === 1 ? 1 : 0) + (n === 1 ? 1 : 0)) : "") + " ＝ " + gai, KAKU_MEANING.gai + " " + luckOf(gai)[1]);
+  setCard("so", so, dervText(cur.s, S, false) + "＋" + dervText(cur.g, G, false) + " ＝ " + so, KAKU_MEANING.so + " " + luckOf(so)[1]);
+
+  var tiers = [luckOf(ten)[0], luckOf(jin)[0], luckOf(chi)[0], luckOf(gai)[0], luckOf(so)[0]];
+  var counts = [0, 0, 0, 0, 0];
+  tiers.forEach(function(t){ counts[t]++; });
+  document.getElementById("allWord").textContent =
+    "大吉 " + counts[4] + " ・ 吉 " + counts[3] + " ・ 中吉 " + counts[2] + " ・ 凶 " + counts[1] + " ・ 大凶 " + counts[0];
+  var jinT = tiers[1], soT = tiers[4];
+  var comment;
+  if(jinT >= 3 && soT >= 3) comment = "中心運（人格）と総運（総格）がともに吉数で、全体のバランスが良い名前です。";
+  else if(jinT >= 3 || soT >= 3) comment = "人格か総格のどちらかが吉数です。他の格の意味と合わせて眺めてみてください。";
+  else if(counts[1] + counts[0] === 0) comment = "大きな凶数がなく、穏やかなバランスの名前です。";
+  else comment = "凶数を含む格があります。その格が表す分野（家運・対人運など）を意識すると、補い方のヒントになります。";
+  document.getElementById("allDesc").textContent = comment;
+}
+
+function refresh(){
+  cur.s = parseSide(surnameEl.value);
+  cur.g = parseSide(givenEl.value);
+  renderChars();
+  compute();
+}
+
+surnameEl.addEventListener("input", refresh);
+givenEl.addEventListener("input", refresh);
+refresh();
+})();
+</script>
+</body>
+</html>

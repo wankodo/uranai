@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>誕生石・誕生花｜占いツール集</title>
+<meta name="description" content="誕生日から誕生石（2021年改訂の日本のリスト全29種）・誕生花・誕生日カラーを出す無料ツール。2月29日にも対応しています。">
+<style>
+:root{
+  --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1d2733; --mut:#68707c;
+  --line:#ddd6c8; --red:#b03a2e; --green:#1e7d46; --soft:#fdf6e0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:22px 16px 18px;border-bottom:4px solid var(--amber)}
+header .wrap{max-width:980px;margin:0 auto}
+header h1{margin:0;font-size:24px;letter-spacing:.04em}
+header h1 .accent{color:var(--amber)}
+header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
+.wrap{max-width:980px;margin:0 auto;padding:0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 1px 3px rgba(18,40,63,.06)}
+.card h2{margin:0 0 10px;font-size:17px;color:var(--navy);border-left:5px solid var(--amber);padding-left:9px}
+.note{font-size:12.5px;color:var(--mut)}
+label.flabel{display:block;font-size:12.5px;color:var(--mut);margin:10px 0 3px}
+select{
+  width:100%;padding:9px 10px;border:1px solid #c9c2b2;border-radius:7px;font-size:15px;background:#fff;color:var(--ink);
+}
+select:focus{outline:2px solid var(--amber);outline-offset:0;border-color:var(--amber)}
+.selrow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+.sumcard{background:var(--navy);color:#fff;border-radius:10px;padding:14px 16px}
+.sumcard .lab{font-size:12.5px;color:#b9c8d8}
+.sumcard .val{font-size:40px;font-weight:800;color:var(--amber);font-variant-numeric:tabular-nums;line-height:1.15}
+.sumcard .desc{font-size:12.5px;color:#e6edf4;margin-top:4px;line-height:1.55}
+.sumcard.white{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.sumcard.white .lab{color:var(--mut)}
+.sumcard.white .val{color:var(--navy)}
+.sumcard.white .desc{color:var(--ink)}
+.stone{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.stone:last-child{border-bottom:none}
+.dot{flex:0 0 auto;width:22px;height:22px;border-radius:50%;margin-top:3px;border:1px solid rgba(0,0,0,.18);box-shadow:inset -3px -4px 6px rgba(0,0,0,.18)}
+.stone .sname{font-weight:800;color:var(--navy);font-size:16px}
+.stone .swords{font-size:12.5px;color:var(--mut)}
+.today{background:var(--soft);border:1px solid #ecd27a;border-radius:10px;padding:14px 16px;margin:14px 0}
+.today .lab{font-size:12.5px;color:var(--mut)}
+.today .word{font-size:19px;font-weight:800;color:var(--navy)}
+.today .desc{font-size:13.5px;margin-top:4px}
+.swatch{display:inline-block;width:20px;height:20px;border-radius:5px;border:1px solid rgba(0,0,0,.2);vertical-align:-4px;margin-right:7px}
+table.stonelist{width:100%;border-collapse:collapse;font-size:13px}
+table.stonelist th,table.stonelist td{border:1px solid var(--line);padding:4px 7px;text-align:left}
+table.stonelist th{background:var(--navy);color:#fff;font-weight:700;text-align:center}
+table.stonelist tr.hl td{background:var(--soft);font-weight:700}
+footer{margin:26px 0 40px}
+footer .card{font-size:12.5px;color:var(--mut)}
+.credit{text-align:center;color:var(--mut);font-size:12px;margin:10px 0 30px}
+a{color:var(--navy)}
+.sitebar{background:var(--navy2);border-bottom:2px solid var(--amber)}
+.sitebar .sb-in{max-width:980px;margin:0 auto;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sitebar a{color:#fff;text-decoration:none;font-size:13px}
+.sitebar a:hover{color:var(--amber)}
+.sitebar .sb-name{font-weight:700;letter-spacing:.03em}
+.sitebar .sb-tool{color:#b9c8d8;font-size:13px}
+</style>
+</head>
+<body>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span class="sb-tool">誕生石・誕生花</span></div></div>
+
+<header>
+  <div class="wrap">
+    <h1>誕生石・誕生花 <span class="accent">誕生日で調べる</span></h1>
+    <p>誕生日（月日）を選ぶだけ。あなたの誕生石・誕生花・誕生日カラーを出します。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>誕生日を選ぶ</h2>
+    <div class="selrow">
+      <div>
+        <label class="flabel" for="month">月</label>
+        <select id="month">
+          <option value="">月を選ぶ</option>
+        </select>
+      </div>
+      <div>
+        <label class="flabel" for="day">日</label>
+        <select id="day">
+          <option value="">日を選ぶ</option>
+        </select>
+      </div>
+    </div>
+    <p class="note">選ぶと自動で表示します。誕生石は2021年に改訂された日本の誕生石リスト（全29種）に基づきます。誕生花の日ごとの表示は、月と日の組み合わせで出す簡易版です。</p>
+  </div>
+
+  <div class="card">
+    <h2><span id="stoneTitle">誕生石</span></h2>
+    <div id="stoneList"><p class="note">月を選ぶと、その月の誕生石が表示されます。</p></div>
+  </div>
+
+  <div class="summary">
+    <div class="sumcard white">
+      <div class="lab">その月の代表花</div>
+      <div class="val" id="mfVal" style="font-size:26px">—</div>
+      <div class="desc" id="mfDesc">未入力</div>
+    </div>
+    <div class="sumcard white">
+      <div class="lab">その日の誕生花（簡易版）</div>
+      <div class="val" id="dfVal" style="font-size:26px">—</div>
+      <div class="desc" id="dfDesc">未入力</div>
+    </div>
+    <div class="sumcard white">
+      <div class="lab">誕生日カラー</div>
+      <div class="val" id="colVal" style="font-size:26px">—</div>
+      <div class="desc" id="colDesc">未入力</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>誕生石の一覧（月別）</h2>
+    <div id="allStones"></div>
+    <p class="note">石言葉には諸説あります。ここでは一般的に知られているものを載せています。</p>
+  </div>
+
+  <footer>
+    <div class="card">
+      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。
+    </div>
+    <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+// Japan birthstone list (2021 revision, 29 stones). words = common stone words.
+var STONES = {
+  1:[{name:"ガーネット", words:"真実・友愛", color:"#7b1e2b"}],
+  2:[{name:"アメジスト", words:"誠実・心の平和", color:"#7d5ba6"},
+     {name:"クリソベリル・キャッツアイ", words:"守護", color:"#b8a24a"}],
+  3:[{name:"アクアマリン", words:"聡明・沈着", color:"#7fc4c9"},
+     {name:"サンゴ", words:"長寿・幸福", color:"#f08080"},
+     {name:"ブラッドストーン", words:"献身・勇敢", color:"#2e4b3f"},
+     {name:"アイオライト", words:"誠実・道しるべ", color:"#5a5f9e"}],
+  4:[{name:"ダイヤモンド", words:"永遠の絆・純潔", color:"#dfe9ec"},
+     {name:"モルガナイト", words:"優美・愛情", color:"#f4c2c2"}],
+  5:[{name:"エメラルド", words:"幸運・幸福", color:"#1f9e6e"},
+     {name:"ヒスイ", words:"長寿", color:"#57a773"}],
+  6:[{name:"パール", words:"健康・長寿", color:"#f2ede4"},
+     {name:"ムーンストーン", words:"幸運・恋の予感", color:"#cfd8dc"},
+     {name:"アレキサンドライト", words:"情熱・秘めた想い", color:"#7a4f7e"}],
+  7:[{name:"ルビー", words:"情熱・仁愛", color:"#c01030"},
+     {name:"スフェーン", words:"永久不変", color:"#a8a04a"}],
+  8:[{name:"ペリドット", words:"夫婦愛・幸福", color:"#9ab54e"},
+     {name:"サードオニックス", words:"夫婦の幸福", color:"#b5542d"},
+     {name:"スピネル", words:"成功・内面の充実", color:"#a03050"}],
+  9:[{name:"サファイア", words:"慈愛・誠実", color:"#1f4e9e"},
+     {name:"クンツァイト", words:"無償の愛", color:"#e3a7c8"}],
+  10:[{name:"オパール", words:"希望・純真", color:"#e8e2f2"},
+      {name:"トルマリン", words:"友情・無邪気", color:"#d1608a"}],
+  11:[{name:"トパーズ", words:"友情・希望", color:"#d9a441"},
+      {name:"シトリン", words:"繁栄・富", color:"#e3c565"}],
+  12:[{name:"トルコ石", words:"成功・繁栄", color:"#3aa6b9"},
+      {name:"ラピスラズリ", words:"幸運・真実", color:"#27408b"},
+      {name:"タンザナイト", words:"高貴・冷静", color:"#5b5ea6"},
+      {name:"ジルコン", words:"安らぎ", color:"#c8b8a2"}]
+};
+
+var MONTH_FLOWER = {
+  1:{name:"スイセン", words:"自己愛・神秘"},
+  2:{name:"フリージア", words:"あどけなさ・純潔"},
+  3:{name:"チューリップ", words:"思いやり・愛の告白"},
+  4:{name:"サクラ", words:"精神美・優美な女性"},
+  5:{name:"スズラン", words:"再び幸せが訪れる・純粋"},
+  6:{name:"バラ", words:"愛・美"},
+  7:{name:"ユリ", words:"純粋・威厳"},
+  8:{name:"ヒマワリ", words:"憧れ・情熱"},
+  9:{name:"コスモス", words:"調和・乙女の純真"},
+  10:{name:"ガーベラ", words:"希望・常に前進"},
+  11:{name:"キク", words:"高貴・高尚"},
+  12:{name:"ポインセチア", words:"祝福・幸運を祈る"}
+};
+
+// Simplified daily flower pool (31), picked by month x day combination.
+var DAY_FLOWERS = [
+  {name:"カトレア", words:"成熟した大人の魅力"},
+  {name:"マーガレット", words:"恋占い・真実の愛"},
+  {name:"ラナンキュラス", words:"とても魅力的"},
+  {name:"デイジー", words:"純潔・美人"},
+  {name:"カーネーション", words:"無垢で深い愛"},
+  {name:"アイリス", words:"良い便り・希望"},
+  {name:"パンジー", words:"もの思い・私を思って"},
+  {name:"スミレ", words:"謙虚・誠実"},
+  {name:"ネモフィラ", words:"成功・可憐"},
+  {name:"ワスレナグサ", words:"私を忘れないで・真実の愛"},
+  {name:"ヒヤシンス", words:"スポーツ・遊び心"},
+  {name:"カスミソウ", words:"清らかな心・感謝"},
+  {name:"アネモネ", words:"はかない恋・期待"},
+  {name:"ダリア", words:"華麗・優雅"},
+  {name:"ペチュニア", words:"あなたと一緒なら心が和らぐ"},
+  {name:"ラベンダー", words:"沈黙・私に答えてください"},
+  {name:"ハナミズキ", words:"永続性・返礼"},
+  {name:"キンポウゲ", words:"子供らしさ・栄誉"},
+  {name:"クレマチス", words:"精神の美・旅人の喜び"},
+  {name:"シャクヤク", words:"恥じらい・はにかみ"},
+  {name:"アジサイ", words:"団らん・家族愛"},
+  {name:"スイートピー", words:"門出・優しい思い出"},
+  {name:"ミモザ", words:"感謝・友情"},
+  {name:"カラー", words:"華麗なる美・乙女のしとやかさ"},
+  {name:"ハイビスカス", words:"繊細な美・新しい恋"},
+  {name:"ブルーベル", words:"謙遜・変わらぬ心"},
+  {name:"ツツジ", words:"節度・慎み"},
+  {name:"ポピー", words:"慰め・いたわり"},
+  {name:"サルビア", words:"尊敬・知恵"},
+  {name:"ジャスミン", words:"優美・愛らしさ"},
+  {name:"キキョウ", words:"永遠の愛・誠実"}
+];
+
+var COLORS = [
+  {name:"ディープレッド", hex:"#8e1f2f", note:"情熱的で、芯の強さを持つ人の色です。"},
+  {name:"コーラルピンク", hex:"#f08080", note:"親しみやすく、場を明るくする人の色です。"},
+  {name:"サンセットオレンジ", hex:"#e8873a", note:"行動力があり、周りを元気にする人の色です。"},
+  {name:"ゴールデンイエロー", hex:"#e3b505", note:"好奇心旺盛で、知的な輝きを持つ人の色です。"},
+  {name:"レモンイエロー", hex:"#e8d44d", note:"明るく軽やかで、発想が豊かな人の色です。"},
+  {name:"ライムグリーン", hex:"#9ab54e", note:"若々しく、成長し続ける人の色です。"},
+  {name:"エメラルドグリーン", hex:"#1f9e6e", note:"癒やしの力があり、人を安心させる人の色です。"},
+  {name:"ティール", hex:"#2a7f7f", note:"冷静さと優しさをあわせ持つ人の色です。"},
+  {name:"スカイブルー", hex:"#6db3d9", note:"爽やかで、自由を愛する人の色です。"},
+  {name:"サファイアブルー", hex:"#27408b", note:"誠実で、深く考える人の色です。"},
+  {name:"ラベンダー", hex:"#9a86c8", note:"上品で、繊細な感性を持つ人の色です。"},
+  {name:"バイオレット", hex:"#6d4c9f", note:"個性的で、神秘的な魅力を持つ人の色です。"},
+  {name:"ローズピンク", hex:"#d1608a", note:"愛情深く、華やかな人の色です。"},
+  {name:"チェリーピンク", hex:"#e58bb1", note:"可愛らしく、素直な人の色です。"},
+  {name:"ワインレッド", hex:"#7b2d43", note:"大人の余裕と情熱をあわせ持つ人の色です。"},
+  {name:"チョコレートブラウン", hex:"#6b4226", note:"落ち着きがあり、信頼される人の色です。"},
+  {name:"アイボリー", hex:"#f2ede4", note:"純粋で、穏やかな人の色です。"},
+  {name:"シルバーグレー", hex:"#b9c0c7", note:"洗練されていて、観察力のある人の色です。"},
+  {name:"チャコール", hex:"#3a3f44", note:"意志が強く、ぶれない人の色です。"},
+  {name:"ミッドナイトネイビー", hex:"#12283f", note:"知性的で、静かな存在感を持つ人の色です。"},
+  {name:"ターコイズ", hex:"#3aa6b9", note:"冒険心があり、人との縁を大切にする人の色です。"},
+  {name:"ピーチ", hex:"#f6c39a", note:"温かく、包容力のある人の色です。"},
+  {name:"ミントグリーン", hex:"#a8d8b9", note:"優しく、爽やかな感性を持つ人の色です。"},
+  {name:"プラム", hex:"#7d3c5e", note:"気品があり、深い愛情を持つ人の色です。"}
+];
+
+// Deterministic hash -> mulberry32 PRNG
+function hashSeed(str){
+  var h = 2166136261;
+  for(var i = 0; i < str.length; i++){
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+function mulberry32(a){
+  return function(){
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    var t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function dayFlowerFor(m, d){
+  return DAY_FLOWERS[(m * 13 + d * 7) % DAY_FLOWERS.length];
+}
+function colorFor(m, d){
+  var rnd = mulberry32(hashSeed(m + "-" + d));
+  return COLORS[Math.floor(rnd() * COLORS.length)];
+}
+
+var DAYS_IN_MONTH = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+var monthEl = document.getElementById("month");
+var dayEl = document.getElementById("day");
+
+for(var mi = 1; mi <= 12; mi++){
+  var o = document.createElement("option");
+  o.value = mi; o.textContent = mi + "月";
+  monthEl.appendChild(o);
+}
+
+function rebuildDays(){
+  var m = parseInt(monthEl.value, 10);
+  var prev = parseInt(dayEl.value, 10);
+  var max = m ? DAYS_IN_MONTH[m - 1] : 31;
+  dayEl.innerHTML = '<option value="">日を選ぶ</option>';
+  for(var di = 1; di <= max; di++){
+    var o = document.createElement("option");
+    o.value = di; o.textContent = di + "日";
+    dayEl.appendChild(o);
+  }
+  if(prev && prev <= max) dayEl.value = prev;
+}
+
+function renderAllStones(current){
+  var html = '<table class="stonelist"><tr><th>月</th><th>誕生石</th><th>石言葉</th></tr>';
+  for(var m = 1; m <= 12; m++){
+    var names = [], words = [];
+    STONES[m].forEach(function(s){ names.push(s.name); words.push(s.words); });
+    html += '<tr' + (m === current ? ' class="hl"' : '') + '><td style="text-align:center">' + m + '月</td><td>' + names.join("、") + '</td><td>' + words.join(" ／ ") + '</td></tr>';
+  }
+  html += '</table>';
+  document.getElementById("allStones").innerHTML = html;
+}
+
+function setEmpty(){
+  document.getElementById("stoneTitle").textContent = "誕生石";
+  document.getElementById("stoneList").innerHTML = '<p class="note">月を選ぶと、その月の誕生石が表示されます。</p>';
+  document.getElementById("mfVal").textContent = "—";
+  document.getElementById("mfDesc").textContent = "未入力";
+  document.getElementById("dfVal").textContent = "—";
+  document.getElementById("dfDesc").textContent = "未入力";
+  document.getElementById("colVal").textContent = "—";
+  document.getElementById("colDesc").textContent = "未入力";
+  renderAllStones(0);
+}
+
+function calc(){
+  var m = parseInt(monthEl.value, 10);
+  var d = parseInt(dayEl.value, 10);
+  if(!m){ setEmpty(); return; }
+
+  document.getElementById("stoneTitle").textContent = m + "月の誕生石";
+  var html = "";
+  STONES[m].forEach(function(s){
+    html += '<div class="stone"><span class="dot" style="background:' + s.color + '"></span><div><div class="sname">' + s.name + '</div><div class="swords">石言葉：' + s.words + '</div></div></div>';
+  });
+  document.getElementById("stoneList").innerHTML = html;
+
+  var mf = MONTH_FLOWER[m];
+  document.getElementById("mfVal").textContent = mf.name;
+  document.getElementById("mfDesc").textContent = "花言葉：" + mf.words;
+
+  if(d){
+    var df = dayFlowerFor(m, d);
+    document.getElementById("dfVal").textContent = df.name;
+    document.getElementById("dfDesc").textContent = m + "月" + d + "日の誕生花（簡易版）。花言葉：" + df.words;
+    var c = colorFor(m, d);
+    document.getElementById("colVal").innerHTML = '<span class="swatch" style="background:' + c.hex + '"></span>' + c.name;
+    document.getElementById("colDesc").textContent = c.note;
+  } else {
+    document.getElementById("dfVal").textContent = "—";
+    document.getElementById("dfDesc").textContent = "日を選ぶと、その日の誕生花が出ます。";
+    document.getElementById("colVal").textContent = "—";
+    document.getElementById("colDesc").textContent = "日を選ぶと、誕生日カラーが出ます。";
+  }
+  renderAllStones(m);
+}
+
+monthEl.addEventListener("change", function(){ rebuildDays(); calc(); });
+monthEl.addEventListener("input", function(){ rebuildDays(); calc(); });
+dayEl.addEventListener("change", calc);
+dayEl.addEventListener("input", calc);
+rebuildDays();
+setEmpty();
+
+window.BSTONE_DATA = { stones: STONES, monthFlower: MONTH_FLOWER, dayFlowerFor: dayFlowerFor, colorFor: colorFor };
+})();
+</script>
+</body>
+</html>
