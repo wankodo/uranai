@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+<script>try{var _t=localStorage.getItem("ido_theme_v1");if(_t==="andy"||_t==="kuma")document.documentElement.dataset.theme=_t;}catch(e){}</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>携帯番号占い｜占いツール集</title>
@@ -65,9 +66,49 @@ a{color:var(--navy)}
 .sitebar .sb-name{font-weight:700;letter-spacing:.03em}
 .sitebar .sb-tool{color:#b9c8d8;font-size:13px}
 </style>
+<style id="hud-theme-style">
+/* ===== DEF/HUD テーマ切替（共通） ===== */
+.ido-theme-switch{position:relative;z-index:1;display:flex;gap:4px;padding:4px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(255,255,255,.07);flex:none}
+.ido-theme-switch button{border:0;border-radius:999px;padding:6px 13px;background:transparent;box-shadow:none;color:#cfe2f3;font:inherit;font-size:12.5px;font-weight:800;line-height:1.25;cursor:pointer}
+.ido-theme-switch button[aria-pressed="true"]{background:linear-gradient(180deg,#ffc44d,var(--amber));color:#14273c}
+html[data-theme="andy"] .ido-theme-switch button[aria-pressed="true"]{background:linear-gradient(180deg,#8ff2ff,#46d9ec);color:#03222e;box-shadow:0 0 16px rgba(70,217,236,.55)}
+:root[data-theme="andy"]{color-scheme:dark;--navy:#1d4568;--navy2:#02070d;--amber:#46d9ec;--amber-d:#8ff2ff;--bg:#04090f;--card:#081623;--ink:#d8f1f6;--mut:#a9c9d9;--line:rgba(110,205,230,.32);--red:#ff6b61;--green:#3ddc97;--soft:rgba(70,217,236,.10);--good:#3ddc97;--bad:#ff6b61;--sat:#7cc7ff;--sun:#ff6b61}
+html[data-theme="andy"]{background:#04090f}
+html[data-theme="andy"] body{background:radial-gradient(900px 480px at 85% -120px,rgba(70,217,236,.13),rgba(70,217,236,0) 60%),repeating-linear-gradient(0deg,rgba(140,230,255,.022) 0 1px,transparent 1px 4px),linear-gradient(rgba(110,205,230,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(110,205,230,.045) 1px,transparent 1px),linear-gradient(180deg,#030a12,#04090f);background-size:auto,auto,52px 52px,52px 52px,auto}
+html[data-theme="andy"] a{color:#ffcf4d}
+html[data-theme="andy"] .sitebar a{color:#fff}
+/* 濃色文字（--navy）を担う見出し・数値類は明色に固定 */
+html[data-theme="andy"] :is(.card h2,.card h3,.tool-card h2,.today .word,.today.word,.result .word,.sumcard .val,.sumcard.white.val,.count,.date-line,.plan .pname,.plan.pname,.pname .pn,.prod .pname,.prod h4,.vs h3,.total3 h3,.bar-row .b-lab,.bar-row .bar-head .cat,.penline .amt,.bd-fixed,.stone .sname,.plabel,details summary,.adv-row .a-lab,.cal-title,.compat .ctext,.detail-rk,.detail-word,.dir-cell .d-dir,.dir-cell .d-star,.dnav .dlabel,.fortune-name,.grade,.kv dt,.lp-line .lp b,.person h3,.pos-name,.rank .bt,.read-head .pname,.result-word,.rname,.star-row .s-lab,.star-row .s-name,.sumline b){color:#d8f1f6}
+/* 白・淡色の面は背景と文字色をセットでダークパネル化 */
+html[data-theme="andy"] :is(.suggest,.chip,.plan,.rank li,.dir-cell,.hexbox.sub,.result .action,.checks label,.badges span,.rank-num,.prod .cond,.prod .nodatabox,.chips button,.tabs button,.cal-nav button,.btn-ghost,.btn.ghost,.presets button,.lp-line .lp,button.dbtn,.plan.dim){background:#0a1e30;color:#d8f1f6;border-color:rgba(110,205,230,.32)}
+html[data-theme="andy"] .btn-del{background:#0a1e30;border-color:rgba(110,205,230,.32)}
+html[data-theme="andy"] .sumcard.white{background:#0a1e30;color:#d8f1f6}
+html[data-theme="andy"] .seg button{background:#0a1e30;color:#d8f1f6;border-color:rgba(110,205,230,.32)}
+html[data-theme="andy"] .seg button.active{background:#1d4568;color:#fff}
+html[data-theme="andy"] :is(th,table.anchors th){background:#0d2a42;color:#d8f1f6}
+html[data-theme="andy"] table.cal td{background:#0a1e30;color:#d8f1f6}
+html[data-theme="andy"] table.cal td.empty{background:#060f18;color:#a9c9d9}
+html[data-theme="andy"] tr.total td{background:rgba(70,217,236,.12)}
+html[data-theme="andy"] :is(.bar-track,.bar-row .b-track){background:rgba(110,205,230,.15)}
+html[data-theme="andy"] :is(.warn,.sumcard.alert,.chip.unknown){background:rgba(255,82,82,.13)}
+html[data-theme="andy"] :is(.total3 .plan.win,.vs .side.win){background:rgba(61,220,151,.12)}
+html[data-theme="andy"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),html[data-theme="andy"] select,html[data-theme="andy"] textarea{background-color:#0a1a29;color:#d8f1f6;border-color:rgba(110,205,230,.42)}
+/* アンバー地に白文字だったバッジ類は濃色文字に */
+html[data-theme="andy"] :is(.badge,.best-b,.birthday-banner,.rank-num.top,.chip.active,button.draw,.mini.kyo,.mini.kichi){color:#03222e}
+html[data-theme="andy"] .rank-num.top{background:var(--amber)}
+/* サイコロの目は白いままにする */
+html[data-theme="andy"] .die{background:#eef3f8;color:#1d2733}
+/* 色付きバッジ変種は白文字に戻す／淡色バッジ変種はダーク化する */
+html[data-theme="andy"] :is(.badge.badge-ins,.badge.badge-uranai,.badge.badge-mob,.badge.na,.badge.agency){color:#fff}
+html[data-theme="andy"] .badge.mid{background:#6b6557;color:#fff}
+html[data-theme="andy"] .badge.t1{background:rgba(255,82,82,.16);color:#ff9d94;border-color:rgba(255,82,82,.4)}
+html[data-theme="andy"] .badge.t2{background:#0d2a42;color:#d8f1f6;border-color:rgba(110,205,230,.32)}
+html[data-theme="andy"] .badge.t3{background:rgba(61,220,151,.14);color:#3ddc97;border-color:rgba(61,220,151,.4)}
+html[data-theme="andy"] .badges span.best-b{background:var(--amber);color:#03222e}
+</style>
 </head>
 <body>
-<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span class="sb-tool">携帯番号占い</span></div></div>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span class="sb-tool">携帯番号占い</span><div class="ido-theme-switch" role="group" aria-label="表示モード切替"><button type="button" data-ido-theme="kuma" aria-pressed="true">DEF</button><button type="button" data-ido-theme="andy" aria-pressed="false">HUD</button></div></div></div>
 
 <header>
   <div class="wrap">
@@ -250,6 +291,38 @@ telEl.addEventListener("change", calc);
 setEmpty();
 
 window.PHONE_DATA = { nums: NUMS, digitSumStr: digitSumStr, reduceTo36: reduceTo36 };
+})();
+</script>
+<script>
+(function(){
+  var btns=document.querySelectorAll("[data-ido-theme]");
+  function sync(){var cur=document.documentElement.dataset.theme||"kuma";btns.forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.idoTheme===cur));});}
+  btns.forEach(function(b){b.addEventListener("click",function(){document.documentElement.dataset.theme=b.dataset.idoTheme;try{localStorage.setItem("ido_theme_v1",b.dataset.idoTheme);}catch(e){}sync();});});
+  sync();
+})();
+</script>
+<script>
+(function(){
+  var btns=document.querySelectorAll("[data-ido-theme]");
+  function sync(){var cur=document.documentElement.dataset.theme||"kuma";btns.forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.idoTheme===cur));});}
+  btns.forEach(function(b){b.addEventListener("click",function(){document.documentElement.dataset.theme=b.dataset.idoTheme;try{localStorage.setItem("ido_theme_v1",b.dataset.idoTheme);}catch(e){}sync();});});
+  sync();
+})();
+</script>
+<script>
+(function(){
+  var btns=document.querySelectorAll("[data-ido-theme]");
+  function sync(){var cur=document.documentElement.dataset.theme||"kuma";btns.forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.idoTheme===cur));});}
+  btns.forEach(function(b){b.addEventListener("click",function(){document.documentElement.dataset.theme=b.dataset.idoTheme;try{localStorage.setItem("ido_theme_v1",b.dataset.idoTheme);}catch(e){}sync();});});
+  sync();
+})();
+</script>
+<script>
+(function(){
+  var btns=document.querySelectorAll("[data-ido-theme]");
+  function sync(){var cur=document.documentElement.dataset.theme||"kuma";btns.forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.idoTheme===cur));});}
+  btns.forEach(function(b){b.addEventListener("click",function(){document.documentElement.dataset.theme=b.dataset.idoTheme;try{localStorage.setItem("ido_theme_v1",b.dataset.idoTheme);}catch(e){}sync();});});
+  sync();
 })();
 </script>
 </body>
