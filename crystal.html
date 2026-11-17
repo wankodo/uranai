@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>水晶占い｜占いツール集</title>
+<meta name="description" content="水晶玉に映る今日の情景から運勢を読み解く無料の水晶占い。モチーフ15種×今日への一言を日替わりで表示します。">
+<style>
+:root{
+  --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1d2733; --mut:#68707c;
+  --line:#ddd6c8; --red:#b03a2e; --green:#1e7d46; --soft:#fdf6e0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:22px 16px 18px;border-bottom:4px solid var(--amber)}
+header .wrap{max-width:980px;margin:0 auto}
+header h1{margin:0;font-size:24px;letter-spacing:.04em}
+header h1 .accent{color:var(--amber)}
+header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
+.wrap{max-width:980px;margin:0 auto;padding:0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 1px 3px rgba(18,40,63,.06)}
+.card h2{margin:0 0 10px;font-size:17px;color:var(--navy);border-left:5px solid var(--amber);padding-left:9px}
+.note{font-size:12.5px;color:var(--mut)}
+label.flabel{display:block;font-size:12.5px;color:var(--mut);margin:10px 0 3px}
+input[type="date"],input[type="text"]{
+  width:100%;padding:9px 10px;border:1px solid #c9c2b2;border-radius:7px;font-size:15px;background:#fff;color:var(--ink);
+}
+input:focus{outline:2px solid var(--amber);outline-offset:0;border-color:var(--amber)}
+.btn{display:inline-block;background:var(--amber);border:none;border-radius:8px;padding:12px 26px;font-size:16px;font-weight:800;color:#231600;cursor:pointer;letter-spacing:.03em}
+.btn:hover{background:var(--amber-d)}
+.btn:disabled{opacity:.55;cursor:default}
+.stage{background:var(--navy);border-radius:10px;padding:22px 16px 18px;margin:14px 0;text-align:center;overflow:hidden}
+.ball{position:relative;width:220px;height:220px;border-radius:50%;margin:2px auto 0;
+  background:radial-gradient(circle at 35% 28%, rgba(255,255,255,.95), rgba(196,224,246,.55) 30%, rgba(96,146,204,.45) 62%, rgba(18,44,84,.78));
+  box-shadow:inset -18px -22px 44px rgba(7,24,39,.45), inset 10px 12px 30px rgba(255,255,255,.5), 0 14px 30px rgba(7,24,39,.35)}
+.ball .motif{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;
+  color:#fff;font-weight:800;font-size:19px;line-height:1.5;padding:24px;text-shadow:0 1px 10px rgba(7,24,39,.85);
+  opacity:0;transition:opacity 1.4s ease}
+.ball.on .motif{opacity:1}
+.ball .spark{position:absolute;color:#fff;pointer-events:none;animation:blink 2.6s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:.12}50%{opacity:.95}}
+.stand{width:140px;height:30px;margin:-6px auto 0;background:linear-gradient(180deg,var(--amber),var(--amber-d));
+  clip-path:polygon(18% 0,82% 0,100% 100%,0 100%);border-radius:4px}
+.stage .hint{color:#b9c8d8;font-size:12.5px;margin-top:12px}
+.result{background:var(--soft);border:1px solid #ecd27a;border-radius:10px;padding:14px 16px;margin:14px 0}
+.result .lab{font-size:12.5px;color:var(--mut)}
+.result .word{font-size:19px;font-weight:800;color:var(--navy)}
+.result .desc{font-size:13.5px;margin-top:4px}
+footer{margin:26px 0 40px}
+footer .card{font-size:12.5px;color:var(--mut)}
+.credit{text-align:center;color:var(--mut);font-size:12px;margin:10px 0 30px}
+a{color:var(--navy)}
+.sitebar{background:var(--navy2);border-bottom:2px solid var(--amber)}
+.sitebar .sb-in{max-width:980px;margin:0 auto;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sitebar a{color:#fff;text-decoration:none;font-size:13px}
+.sitebar a:hover{color:var(--amber)}
+.sitebar .sb-name{font-weight:700;letter-spacing:.03em}
+.sitebar .sb-tool{color:#b9c8d8;font-size:13px}
+</style>
+</head>
+<body>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span class="sb-tool">水晶占い</span></div></div>
+
+<header>
+  <div class="wrap">
+    <h1>水晶占い <span class="accent">クリスタルリーディング</span></h1>
+    <p>水晶玉をのぞくと、今日のあなたに向けた情景が浮かび上がります。映った景色から、今日の運勢を読み解きましょう。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>あなたの情報（任意）</h2>
+    <label class="flabel" for="dob">生年月日（入れると個人寄りの結果になります）</label>
+    <input type="date" id="dob" min="1900-01-01" max="2100-12-31">
+    <p class="note">生年月日を変えると、水晶に映る情景も変わります。未入力の場合は、今日の日付だけから結果を出します。</p>
+  </div>
+
+  <div class="stage">
+    <div class="ball" id="ball">
+      <div class="motif" id="ballMotif"></div>
+    </div>
+    <div class="stand"></div>
+    <p class="hint" id="stageHint">水晶はまだ曇っています</p>
+    <button type="button" class="btn" id="peekBtn">水晶をのぞく</button>
+  </div>
+
+  <div class="result" id="resultBox" style="display:none">
+    <div class="lab">水晶に映った情景</div>
+    <div class="word" id="resMotif">—</div>
+    <div class="desc" id="resDesc"></div>
+    <div class="lab" style="margin-top:12px">今日への一言</div>
+    <div class="word" id="resWord" style="font-size:16px">—</div>
+    <div class="desc" id="resWordDesc"></div>
+  </div>
+
+  <div class="card">
+    <h2>水晶占いについて</h2>
+    <p class="note" style="font-size:13px;color:var(--ink)">
+      水晶占いは、水晶玉に映るイメージを通して無意識からのメッセージを受け取る、古くからある占いの形です。
+      このツールでは、情景のモチーフ15種と「今日への一言」8種の組み合わせを、日付（と任意の生年月日）から決定的に選びます。
+      同じ日・同じ条件では、何度開いてものぞいても同じ情景が映ります。
+    </p>
+  </div>
+
+  <footer>
+    <div class="card">
+      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。
+    </div>
+    <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+// xmur3 string hash + mulberry32 PRNG: deterministic pick from a seed string.
+function xmur3(str){
+  var h = 1779033703 ^ str.length;
+  for(var i = 0; i < str.length; i++){
+    h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+    h = (h << 13) | (h >>> 19);
+  }
+  return function(){
+    h = Math.imul(h ^ (h >>> 16), 2246822507);
+    h = Math.imul(h ^ (h >>> 13), 3266489909);
+    return (h ^= h >>> 16) >>> 0;
+  };
+}
+function mulberry32(a){
+  return function(){
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    var t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function rngFrom(seedStr){ return mulberry32(xmur3(seedStr)()); }
+
+function todayStr(){
+  var d = new Date();
+  var m = d.getMonth() + 1, day = d.getDate();
+  return d.getFullYear() + "-" + (m < 10 ? "0" + m : m) + "-" + (day < 10 ? "0" + day : day);
+}
+
+var MOTIFS = [
+  {name:"朝日の昇る海", desc:"水平線から光が差し込む景色は、新しい始まりの予告です。滞っていたことにも光が当たり始める時期。今日の小さな決断が、明日の大きな流れを作ります。"},
+  {name:"静かな森と小道", desc:"静けさの中で、進むべき道が見えてくるサイン。急がず自分のペースで歩くことが正解の時期です。人の声より、自分の心の声を優先して。"},
+  {name:"高く舞う鳥", desc:"視点が高くなり、全体を見渡せるようになるサイン。細部にこだわりすぎず、大きな流れで判断すると良い時期です。自由な発想が運を呼びます。"},
+  {name:"流れる川と橋", desc:"向こう岸へ渡る準備が整いつつあるサイン。迷っていた決断も、流れに任せれば自然と進みます。橋を渡る勇気が、次の景色を連れてきます。"},
+  {name:"燃える焚き火", desc:"情熱と温もりのサイン。冷えていた気持ちや関係に、火が入り直す時期です。ただし燃えすぎは禁物。薪をくべるように、少しずつ温めていきましょう。"},
+  {name:"雨上がりの虹", desc:"つらい時期を越えた先の、希望のサイン。我慢してきたことが報われ始める時期です。空を見上げる余裕が、幸運の入り口になります。"},
+  {name:"雪原と足跡", desc:"誰も踏んでいない道を進むサイン。孤独に感じても、その一歩が道を作っています。静かな努力が評価される時期です。足跡は必ず誰かの目に留まります。"},
+  {name:"古い扉と鍵穴", desc:"開くのを待っている扉のサイン。鍵はすでに手の中にあるかもしれません。試すことを恐れず、小さな一歩で扉に手をかけてみる時期です。"},
+  {name:"揺れる灯台の光", desc:"暗い中でこそ光る、道しるべのサイン。迷っている誰かの支えになれる時期でもあります。自分の経験が、人の役に立つ場面がありそうです。"},
+  {name:"花畑と蝶", desc:"喜びと軽やかさのサイン。頑張りすぎを手放して、楽しむことが運を呼ぶ時期です。蝶のように、力まずふわりと動いてみましょう。"},
+  {name:"満月と湖面", desc:"感情が満ちて映し出されるサイン。心の奥の本音が静かに浮かび上がる時期です。湖面のように穏やかに、自分を見つめ直してみましょう。"},
+  {name:"山頂の旗", desc:"達成と到達のサイン。目指してきた場所が見えてきました。最後の一歩を踏み出す時期です。登った先の景色が、次の目標を教えてくれます。"},
+  {name:"渦巻く雲と晴れ間", desc:"混沌の中に光が見え始めるサイン。問題の渦中にいても、出口は近づいています。晴れ間を信じて、今できることを一つずつ進めましょう。"},
+  {name:"種が芽吹く土", desc:"小さな始まりのサイン。今日まいた種は、すぐには見えなくても確実に育ちます。焦らず水やりを続けることが大切な時期です。"},
+  {name:"風に揺れる風鈴", desc:"涼やかな変化の風のサイン。停滞していた空気が動き出します。耳を澄ますと、大切な知らせが聞こえてくるかもしれません。"}
+];
+
+var WORDS = [
+  {word:"今日は「始める」日", desc:"先延ばしにしていたことに、最初の一歩を踏み出してみて。"},
+  {word:"今日は「整える」日", desc:"身の回りと気持ちを整えると、運の通り道ができます。"},
+  {word:"今日は「信じる」日", desc:"根拠がなくても、自分と流れを信じてみる日です。"},
+  {word:"今日は「休む」日", desc:"止まることも前進のうち。休息が次の力を作ります。"},
+  {word:"今日は「伝える」日", desc:"言葉にすることで、滞っていた関係や物事が動きます。"},
+  {word:"今日は「手放す」日", desc:"握りしめたものを一つ放すと、両手が空いて新しいものが掴めます。"},
+  {word:"今日は「挑む」日", desc:"少し背伸びの要る選択が、今日は正解です。"},
+  {word:"今日は「味わう」日", desc:"結果より過程を楽しむと、思わぬ発見があります。"}
+];
+
+// Expose data for verification.
+window.CRYSTAL_DATA = { motifs: MOTIFS, words: WORDS };
+
+// Sparkles inside the ball.
+var ball = document.getElementById("ball");
+(function addSparks(){
+  var pos = [[22,26],[68,18],[52,40],[30,62],[74,58],[44,78],[60,84],[18,48]];
+  for(var i = 0; i < pos.length; i++){
+    var s = document.createElement("span");
+    s.className = "spark";
+    s.textContent = "✦";
+    s.style.left = pos[i][0] + "%";
+    s.style.top = pos[i][1] + "%";
+    s.style.fontSize = (10 + (i % 3) * 4) + "px";
+    s.style.animationDelay = (i * 0.37) + "s";
+    ball.appendChild(s);
+  }
+})();
+
+var dobEl = document.getElementById("dob");
+var peekBtn = document.getElementById("peekBtn");
+var resultBox = document.getElementById("resultBox");
+var peeked = false;
+
+function currentResult(){
+  var rng = rngFrom("crystal|" + todayStr() + "|" + (dobEl.value || ""));
+  var motif = MOTIFS[Math.floor(rng() * MOTIFS.length)];
+  var word = WORDS[Math.floor(rng() * WORDS.length)];
+  return { motif: motif, word: word };
+}
+
+function resetPeek(){
+  peeked = false;
+  ball.classList.remove("on");
+  document.getElementById("ballMotif").textContent = "";
+  resultBox.style.display = "none";
+  document.getElementById("stageHint").textContent = "水晶はまだ曇っています";
+  peekBtn.textContent = "水晶をのぞく";
+  peekBtn.disabled = false;
+}
+
+peekBtn.addEventListener("click", function(){
+  var r = currentResult();
+  document.getElementById("ballMotif").textContent = r.motif.name;
+  document.getElementById("resMotif").textContent = r.motif.name;
+  document.getElementById("resDesc").textContent = r.motif.desc;
+  document.getElementById("resWord").textContent = r.word.word;
+  document.getElementById("resWordDesc").textContent = r.word.desc;
+  ball.classList.add("on");
+  resultBox.style.display = "block";
+  document.getElementById("stageHint").textContent = "水晶に情景が映っています";
+  peekBtn.textContent = "もう一度のぞく";
+  peeked = true;
+});
+
+// Changing the birth date resets the vision so the new condition can be peeked.
+dobEl.addEventListener("input", function(){ if(peeked) resetPeek(); });
+dobEl.addEventListener("change", function(){ if(peeked) resetPeek(); });
+})();
+</script>
+</body>
+</html>

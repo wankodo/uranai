@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>エンジェルナンバー｜占いツール集</title>
+<meta name="description" content="今日のエンジェルナンバーを日替わりで表示する無料ツール。よく見る数字の意味も検索できます。ゾロ目・連番など32種の数字の意味を収録。">
+<style>
+:root{
+  --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1d2733; --mut:#68707c;
+  --line:#ddd6c8; --red:#b03a2e; --green:#1e7d46; --soft:#fdf6e0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:22px 16px 18px;border-bottom:4px solid var(--amber)}
+header .wrap{max-width:980px;margin:0 auto}
+header h1{margin:0;font-size:24px;letter-spacing:.04em}
+header h1 .accent{color:var(--amber)}
+header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
+.wrap{max-width:980px;margin:0 auto;padding:0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 1px 3px rgba(18,40,63,.06)}
+.card h2{margin:0 0 10px;font-size:17px;color:var(--navy);border-left:5px solid var(--amber);padding-left:9px}
+.note{font-size:12.5px;color:var(--mut)}
+label.flabel{display:block;font-size:12.5px;color:var(--mut);margin:10px 0 3px}
+input[type="date"],input[type="text"]{
+  width:100%;padding:9px 10px;border:1px solid #c9c2b2;border-radius:7px;font-size:15px;background:#fff;color:var(--ink);
+}
+input:focus{outline:2px solid var(--amber);outline-offset:0;border-color:var(--amber)}
+.bignum{background:var(--navy);color:#fff;border-radius:10px;padding:18px 16px;margin:14px 0;text-align:center}
+.bignum .lab{font-size:12.5px;color:#b9c8d8}
+.bignum .val{font-size:72px;font-weight:800;color:var(--amber);font-variant-numeric:tabular-nums;line-height:1.15;letter-spacing:.06em}
+.bignum .theme{font-size:18px;font-weight:800;margin-top:2px}
+.bignum .desc{font-size:13.5px;color:#e6edf4;margin-top:6px;line-height:1.65;text-align:left}
+.bignum .adv{font-size:13.5px;color:#ffe1a1;margin-top:8px;text-align:left;border-top:1px solid rgba(255,255,255,.22);padding-top:8px}
+.today{background:var(--soft);border:1px solid #ecd27a;border-radius:10px;padding:14px 16px;margin:14px 0}
+.today .lab{font-size:12.5px;color:var(--mut)}
+.today .word{font-size:19px;font-weight:800;color:var(--navy)}
+.today .desc{font-size:13.5px;margin-top:4px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 12px;font-size:13.5px;font-variant-numeric:tabular-nums;cursor:pointer;color:var(--navy)}
+.chip:hover{border-color:var(--amber);background:var(--soft)}
+footer{margin:26px 0 40px}
+footer .card{font-size:12.5px;color:var(--mut)}
+.credit{text-align:center;color:var(--mut);font-size:12px;margin:10px 0 30px}
+a{color:var(--navy)}
+.sitebar{background:var(--navy2);border-bottom:2px solid var(--amber)}
+.sitebar .sb-in{max-width:980px;margin:0 auto;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sitebar a{color:#fff;text-decoration:none;font-size:13px}
+.sitebar a:hover{color:var(--amber)}
+.sitebar .sb-name{font-weight:700;letter-spacing:.03em}
+.sitebar .sb-tool{color:#b9c8d8;font-size:13px}
+</style>
+</head>
+<body>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span class="sb-tool">エンジェルナンバー</span></div></div>
+
+<header>
+  <div class="wrap">
+    <h1>エンジェルナンバー <span class="accent">天使の数字</span></h1>
+    <p>時計やレシートでふと目にする、ゾロ目や連番の数字。それは天使からのメッセージと言われます。今日の数字と、気になる数字の意味を出します。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="bignum">
+    <div class="lab"><span id="todayDate">今日</span>のエンジェルナンバー</div>
+    <div class="val" id="todayNum">—</div>
+    <div class="theme" id="todayTheme">読み込み中</div>
+    <div class="desc" id="todayDesc"></div>
+    <div class="adv" id="todayAdv"></div>
+  </div>
+
+  <div class="card">
+    <h2>気になる数字を調べる</h2>
+    <p class="note">最近よく見る数字はありませんか？ 数字を入力すると、その数字の意味を表示します。</p>
+    <label class="flabel" for="q">気になる数字（半角数字）</label>
+    <input type="text" id="q" inputmode="numeric" placeholder="例：777">
+  </div>
+
+  <div class="today" id="searchBox" style="display:none">
+    <div class="lab" id="searchLab">検索結果</div>
+    <div class="word" id="searchWord">—</div>
+    <div class="desc" id="searchDesc"></div>
+    <div class="desc" id="searchAdv" style="margin-top:6px"></div>
+    <p class="note" id="searchNote" style="display:none;margin-top:8px">※ この数字は一覧に収録がないため、各桁の意味を組み合わせた簡易表示です。</p>
+  </div>
+
+  <div class="card">
+    <h2>数字の一覧</h2>
+    <p class="note">収録している32種の数字です。タップすると意味を表示します。</p>
+    <div class="chips" id="chipList"></div>
+  </div>
+
+  <div class="card">
+    <h2>エンジェルナンバーとは</h2>
+    <p class="note" style="font-size:13px;color:var(--ink)">
+      エンジェルナンバーは、ゾロ目や連番など印象的な数字の並びを「天使からのメッセージ」と捉える、現代のスピリチュアルな考え方です。
+      同じ数字を何度も目にしたら、それは意識を向けてほしいテーマがあるサインとも言われます。
+      今日の数字は日付から決定的に選ばれるため、その日のうちは何度開いても同じ数字が表示されます。
+    </p>
+  </div>
+
+  <footer>
+    <div class="card">
+      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。
+    </div>
+    <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+// xmur3 string hash + mulberry32 PRNG: deterministic pick from a seed string.
+function xmur3(str){
+  var h = 1779033703 ^ str.length;
+  for(var i = 0; i < str.length; i++){
+    h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+    h = (h << 13) | (h >>> 19);
+  }
+  return function(){
+    h = Math.imul(h ^ (h >>> 16), 2246822507);
+    h = Math.imul(h ^ (h >>> 13), 3266489909);
+    return (h ^= h >>> 16) >>> 0;
+  };
+}
+function mulberry32(a){
+  return function(){
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    var t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function rngFrom(seedStr){ return mulberry32(xmur3(seedStr)()); }
+
+function todayStr(){
+  var d = new Date();
+  var m = d.getMonth() + 1, day = d.getDate();
+  return d.getFullYear() + "-" + (m < 10 ? "0" + m : m) + "-" + (day < 10 ? "0" + day : day);
+}
+
+var NUMBERS = [
+  {n:"000", theme:"無限の可能性", meaning:"始まりの前にある、静かなゼロのエネルギー。何者でもないからこそ、何にでもなれる時期です。焦って形にしようとせず、まずは心を空っぽにして願いを思い描きましょう。", advice:"新しいノートやメモに、本当の願いを一つだけ書いてみて。"},
+  {n:"111", theme:"思考の現実化", meaning:"考えていることが現実になりやすい、強い始まりのサイン。願いと不安の両方が増幅されるので、意識を「こうなってほしい未来」に向けておくことが大切です。", advice:"口に出す言葉をポジティブに。愚痴より先に「ありがとう」を言ってみて。"},
+  {n:"222", theme:"信頼と調和", meaning:"物事は見えないところで整いつつあります。結果を急がず、流れを信じて待つ時期。人との関係では、自分の意見を押し通すより調和を選ぶと運が開けます。", advice:"身近な人に小さな親切を一つ。信頼の種まきが実を結びます。"},
+  {n:"333", theme:"守護と励まし", meaning:"目に見えない守りがそばにあるサイン。才能や表現力を伸ばす後押しも強い時期です。迷ったら、自分の感性を信じて一歩進んで大丈夫です。", advice:"好きなこと・得意なことに、今日は少し多めに時間を使ってみて。"},
+  {n:"444", theme:"見守られている安心", meaning:"しっかりとした守りに包まれているサイン。不安なときほど「大丈夫」と唱えて、地に足のついた行動を積み重ねましょう。土台作りに向いた時期です。", advice:"部屋やデスクの片付けを一つ。整った環境が安心感を育てます。"},
+  {n:"555", theme:"大きな変化の波", meaning:"人生の流れが大きく動く転機のサイン。変化は怖くても、古い形を手放した先に新しい景色があります。しがみつかず、波に乗る柔らかさが鍵です。", advice:"いつもと違う選択を一つ試してみて。小さな変化が大きな流れを呼びます。"},
+  {n:"666", theme:"バランスの見直し", meaning:"考えすぎや偏りに気づかせるサイン。不吉な数字ではなく「整え直して」という合図です。お金や物への執着、仕事と休息の配分を見直してみましょう。", advice:"深呼吸して、今日は早めに休む計画を。心の偏りをリセットして。"},
+  {n:"777", theme:"幸運と学びの実り", meaning:"努力が実を結び、幸運が近づいているサイン。学びや探求にも追い風が吹く時期です。直感が冴えるので、ピンと来たことは素直に試してみましょう。", advice:"気になっていた本や学びに手をつけて。知識が運を呼びます。"},
+  {n:"888", theme:"豊かさの流れ", meaning:"豊かさが循環し始めるサイン。仕事や金運の実りが期待できる時期ですが、受け取るだけでなく分かち合うことで、流れはさらに太くなります。", advice:"お世話になった人へのお礼や、ささやかな奢りを一つ。"},
+  {n:"999", theme:"完成と手放し", meaning:"一つの周期が満ちたサイン。終わらせるべきことを終わらせる時期です。手放した余白に、次の始まりが入り込んできます。未練より感謝で締めくくりましょう。", advice:"もう使わない物を一つ手放して。余白が新しい運を招きます。"},
+  {n:"123", theme:"一歩ずつ前進", meaning:"物事が順番どおりに進んでいくサイン。近道を探すより、一歩ずつの確実な前進が正解の時期です。小さな積み重ねが、気づけば大きな距離になっています。", advice:"やることを3つだけに絞って、順番に片付けてみて。"},
+  {n:"234", theme:"順調な積み上げ", meaning:"土台から順に積み上がっていく、安定した前進のサイン。地味な努力ほど評価される時期です。計画を見直しながら、着実に進みましょう。", advice:"作業の前に手順を書き出すと、今日は特にはかどります。"},
+  {n:"345", theme:"変化への後押し", meaning:"積み上げてきたものが、変化の力で動き出すサイン。安定と冒険のバランスが取れる時期です。怖がらず、変化の側に一歩寄ってみましょう。", advice:"予定に小さな「初めて」を一つ入れてみて。"},
+  {n:"456", theme:"努力の実り", meaning:"コツコツと続けてきたことが形になり始めるサイン。人との協力も実を結びやすい時期です。受け取る準備を整えて、成果を素直に喜びましょう。", advice:"頑張った自分への小さなご褒美を用意して。"},
+  {n:"567", theme:"成長の階段", meaning:"一歩ずつ階段を上るように成長していくサイン。学びと変化が連動する時期で、昨日の自分より少し前にいる実感が得られそうです。", advice:"できなかったことではなく、できるようになったことを数えてみて。"},
+  {n:"678", theme:"豊かさへの上昇", meaning:"流れが上向きに転じ、実りに近づくサイン。人間関係の調和が金運や仕事運を押し上げます。周りへの感謝を言葉にすると、さらに巡りが良くなります。", advice:"感謝のメッセージを一人に送ってみて。"},
+  {n:"789", theme:"完成間近の上昇", meaning:"ゴールが見えてきたサイン。あと少しの踏ん張りが実を結ぶ時期です。焦って近道を探すより、最後の詰めを丁寧に仕上げましょう。", advice:"仕上げ待ちの案件を一つ、今日中に区切りまで進めて。"},
+  {n:"1111", theme:"強い目覚めのサイン", meaning:"願いが現実に触れるほどの、強いエネルギーのサイン。考えていることが急速に形になりやすいので、望む未来を具体的に思い描くことが何より大切です。", advice:"願いを紙に書いて、目につく場所に置いてみて。"},
+  {n:"2222", theme:"信念を持ち続けて", meaning:"信じて待つ力が試されるサイン。芽はまだ見えなくても、根は確実に伸びています。人との調和と自分の軸、両方を大切に進みましょう。", advice:"結果が出なくても、今日やると決めたことを一つやり切って。"},
+  {n:"3333", theme:"大きな応援", meaning:"強い守りと励ましが注がれるサイン。表現や発信に追い風が吹く時期です。遠慮せず、自分の声を外に出していくことで道が開けます。", advice:"思いついたアイデアを、誰かに話してみて。"},
+  {n:"4444", theme:"固い守りと安定", meaning:"盤石な土台と守りを表すサイン。地道な努力が報われる時期で、焦りは禁物。暮らしの基盤を整えるほど、心にも余裕が生まれます。", advice:"家計や予定表など、土台の見直しを一つ進めて。"},
+  {n:"5555", theme:"人生の大きな転機", meaning:"大きな変化が重なる転機のサイン。古い環境や習慣が終わり、新しいステージが始まります。変化を敵ではなく味方と捉えることが鍵です。", advice:"変えたいと思っていた習慣を一つ、今日から変えてみて。"},
+  {n:"7777", theme:"最大級の幸運", meaning:"幸運が重なる、とても縁起の良いサイン。これまでの行いが実を結ぶ時期です。謙虚さを忘れず、巡ってきたチャンスは素直に掴みましょう。", advice:"先延ばしにしていた挑戦に、今日こそ申し込みや連絡を。"},
+  {n:"8888", theme:"豊かさの成就", meaning:"豊かさが大きく実るサイン。仕事・金運の集大成が期待できる時期です。受け取る豊かさを周りと分かち合うことで、次の実りの種になります。", advice:"お金を使うなら、人の笑顔につながる使い方を選んで。"},
+  {n:"9999", theme:"一つの周期の終わり", meaning:"長い周期が完全に満ちるサイン。卒業や区切りの時期です。終わりを惜しむより、ここまでの道のりに感謝して、身軽に次へ進みましょう。", advice:"クローゼットやデータの整理を一つ。終わらせる作業が吉です。"},
+  {n:"1010", theme:"新しい始まりの後押し", meaning:"終わりと始まりが重なるサイン。新しい方向へ進む準備が整いつつあります。前向きな気持ちを保つことで、良い流れに乗れる時期です。", advice:"新しいことを始める日を、カレンダーに一つ入れてみて。"},
+  {n:"1212", theme:"ポジティブな変化の途中", meaning:"変化の階段を上っている最中のサイン。思い描く未来に向けて、思考と行動が少しずつ揃ってきています。焦らず、今の一歩を大切に。", advice:"「理想の自分ならどうするか」を基準に、一つ選んでみて。"},
+  {n:"1122", theme:"パートナーシップの鍵", meaning:"自分の意志と、人との調和の両方が鍵になるサイン。大切な人との関係が深まる時期です。素直な気持ちを言葉にすると、絆が強くなります。", advice:"大切な人に、短くてもいいので本音の言葉を伝えて。"},
+  {n:"1221", theme:"望む未来を思い描く", meaning:"内側の思いが外側の現実に映し出されるサイン。鏡のように、気持ちが現実を作ります。望む未来の姿を、具体的にイメージしてみましょう。", advice:"未来の自分の一日を、ノートに短く描いてみて。"},
+  {n:"911", theme:"古いものを手放す時", meaning:"終わり（9）と始まり（11）が並ぶ、切り替えのサイン。役目を終えた関係や習慣を手放す時期です。新しい始まりは、その余白から生まれます。", advice:"「もう卒業でいい」と思うことを一つ決めて、区切りをつけて。"},
+  {n:"711", theme:"直感を信じて", meaning:"探求（7）と始まり（11）が重なるサイン。頭で考えるより、直感の声が正解に近い時期です。静かな時間の中で、答えが見えてきます。", advice:"一人の時間を15分作って、心の声をメモしてみて。"},
+  {n:"808", theme:"循環と豊かさ", meaning:"豊かさ（8）と可能性（0）が循環するサイン。お金やエネルギーは、止めずに巡らせるほど増えていく時期です。与えることが受け取る近道になります。", advice:"滞っている支払いや返事を一つ片付けて、流れを動かして。"}
+];
+
+var DIGIT_TEXT = {
+  "0":"無限の可能性と、始まりの前の静けさ",
+  "1":"始まり・意志・リーダーシップ",
+  "2":"調和・信頼・パートナーシップ",
+  "3":"創造・表現・喜び",
+  "4":"安定・土台・努力",
+  "5":"変化・自由・冒険",
+  "6":"愛情・責任・バランス",
+  "7":"探求・直感・学び",
+  "8":"豊かさ・実り・パワー",
+  "9":"完成・手放し・包容"
+};
+
+var BY_NUM = {};
+NUMBERS.forEach(function(e){ BY_NUM[e.n] = e; });
+
+// Expose data for verification.
+window.ANGEL_DATA = { numbers: NUMBERS, digits: DIGIT_TEXT };
+
+// ---- today's number ----
+var now = new Date();
+document.getElementById("todayDate").textContent =
+  now.getFullYear() + "年" + (now.getMonth() + 1) + "月" + now.getDate() + "日";
+var rng = rngFrom("angel|" + todayStr());
+var today = NUMBERS[Math.floor(rng() * NUMBERS.length)];
+document.getElementById("todayNum").textContent = today.n;
+document.getElementById("todayTheme").textContent = today.theme;
+document.getElementById("todayDesc").textContent = today.meaning;
+document.getElementById("todayAdv").textContent = "今日のアクション：" + today.advice;
+
+// ---- search ----
+var qEl = document.getElementById("q");
+var box = document.getElementById("searchBox");
+function doSearch(){
+  var v = qEl.value.replace(/[^0-9]/g, "");
+  if(!v){ box.style.display = "none"; return; }
+  box.style.display = "block";
+  var note = document.getElementById("searchNote");
+  if(BY_NUM[v]){
+    var e = BY_NUM[v];
+    document.getElementById("searchLab").textContent = "数字「" + v + "」の意味";
+    document.getElementById("searchWord").textContent = e.theme;
+    document.getElementById("searchDesc").textContent = e.meaning;
+    document.getElementById("searchAdv").textContent = "アドバイス：" + e.advice;
+    note.style.display = "none";
+  } else {
+    var parts = [];
+    for(var i = 0; i < v.length; i++){
+      parts.push(v.charAt(i) + "＝" + DIGIT_TEXT[v.charAt(i)]);
+    }
+    document.getElementById("searchLab").textContent = "数字「" + v + "」の意味（簡易）";
+    document.getElementById("searchWord").textContent = "桁ごとの意味の組み合わせ";
+    document.getElementById("searchDesc").textContent = parts.join("／");
+    document.getElementById("searchAdv").textContent = "左の桁ほど大きなテーマ、右の桁ほど日々の行動に近い意味と読むのがおすすめです。";
+    note.style.display = "block";
+  }
+}
+qEl.addEventListener("input", doSearch);
+qEl.addEventListener("change", doSearch);
+
+// ---- number chips ----
+var chipList = document.getElementById("chipList");
+NUMBERS.forEach(function(e){
+  var b = document.createElement("button");
+  b.type = "button";
+  b.className = "chip";
+  b.textContent = e.n;
+  b.addEventListener("click", function(){
+    qEl.value = e.n;
+    doSearch();
+    box.scrollIntoView({behavior:"smooth", block:"center"});
+  });
+  chipList.appendChild(b);
+});
+})();
+</script>
+</body>
+</html>

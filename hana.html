@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>花占い｜占いツール集</title>
+<meta name="description" content="花びらを1枚ずつちぎって「好き・嫌い」を数える、昔ながらの花占い。今日の花びらの枚数は日替わりです。">
+<style>
+:root{
+  --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1d2733; --mut:#68707c;
+  --line:#ddd6c8; --red:#b03a2e; --green:#1e7d46; --soft:#fdf6e0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:22px 16px 18px;border-bottom:4px solid var(--amber)}
+header .wrap{max-width:980px;margin:0 auto}
+header h1{margin:0;font-size:24px;letter-spacing:.04em}
+header h1 .accent{color:var(--amber)}
+header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
+.wrap{max-width:980px;margin:0 auto;padding:0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 1px 3px rgba(18,40,63,.06)}
+.card h2{margin:0 0 10px;font-size:17px;color:var(--navy);border-left:5px solid var(--amber);padding-left:9px}
+.note{font-size:12.5px;color:var(--mut)}
+label.flabel{display:block;font-size:12.5px;color:var(--mut);margin:10px 0 3px}
+input[type="date"],input[type="text"]{
+  width:100%;padding:9px 10px;border:1px solid #c9c2b2;border-radius:7px;font-size:15px;background:#fff;color:var(--ink);
+}
+input:focus{outline:2px solid var(--amber);outline-offset:0;border-color:var(--amber)}
+.btn{display:inline-block;background:var(--amber);border:none;border-radius:8px;padding:11px 24px;font-size:15px;font-weight:800;color:#231600;cursor:pointer;letter-spacing:.03em}
+.btn:hover{background:var(--amber-d)}
+.btn.ghost{background:#fff;border:1px solid var(--line);color:var(--navy)}
+.btn.ghost:hover{border-color:var(--amber);background:var(--soft)}
+.stage{background:var(--navy);border-radius:10px;padding:20px 16px;margin:14px 0;text-align:center}
+.flower{position:relative;width:280px;height:280px;margin:0 auto;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.flower.done{cursor:default}
+.petal{position:absolute;left:50%;top:50%;width:44px;height:76px;margin:-76px 0 0 -22px;
+  transform-origin:50% 100%;
+  border-radius:50% 50% 50% 50% / 58% 58% 42% 42%;
+  background:radial-gradient(ellipse at 50% 78%, #ffd9e4 0%, #f6a8c1 55%, #ec7ba2 100%);
+  box-shadow:inset 0 0 0 1px rgba(176,58,46,.12);
+  transition:opacity .5s ease, translate .5s ease}
+.petal.gone{opacity:0;translate:0 46px;pointer-events:none}
+.center{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;
+  background:radial-gradient(circle at 38% 32%, #ffe9a8, var(--amber) 58%, var(--amber-d));
+  box-shadow:0 2px 8px rgba(7,24,39,.35);display:flex;align-items:center;justify-content:center;
+  font-weight:800;color:#4a2c00;font-size:13px;z-index:2}
+.stage .count{color:#b9c8d8;font-size:13px;margin-top:10px}
+.nowword{min-height:56px;display:flex;align-items:center;justify-content:center}
+.nowword .w{font-size:34px;font-weight:800;color:#fff;letter-spacing:.14em}
+.nowword .w.suki{color:#ffb3c8}
+.nowword .w.kirai{color:#a9c6e8}
+.result{background:var(--soft);border:1px solid #ecd27a;border-radius:10px;padding:14px 16px;margin:14px 0}
+.result .lab{font-size:12.5px;color:var(--mut)}
+.result .word{font-size:22px;font-weight:800;color:var(--navy)}
+.result .desc{font-size:13.5px;margin-top:4px}
+footer{margin:26px 0 40px}
+footer .card{font-size:12.5px;color:var(--mut)}
+.credit{text-align:center;color:var(--mut);font-size:12px;margin:10px 0 30px}
+a{color:var(--navy)}
+.sitebar{background:var(--navy2);border-bottom:2px solid var(--amber)}
+.sitebar .sb-in{max-width:980px;margin:0 auto;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sitebar a{color:#fff;text-decoration:none;font-size:13px}
+.sitebar a:hover{color:var(--amber)}
+.sitebar .sb-name{font-weight:700;letter-spacing:.03em}
+.sitebar .sb-tool{color:#b9c8d8;font-size:13px}
+</style>
+</head>
+<body>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span class="sb-tool">花占い</span></div></div>
+
+<header>
+  <div class="wrap">
+    <h1>花占い <span class="accent">花びらリーディング</span></h1>
+    <p>占いたいことを心に思い浮かべて、花びらを1枚ずつちぎりましょう。「好き」「嫌い」を交互に数えて、最後の1枚が答えを教えてくれます。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>占いたいこと</h2>
+    <label class="flabel" for="question">心の中で唱えるだけでもOK。書いておくと結果に表示されます（任意）</label>
+    <input type="text" id="question" placeholder="例：あの人とはうまくいく？">
+    <p class="note">今日の花びらは <span id="totalInfo">—</span> 枚。枚数は日付から決まるので、その日のうちは変わりません。</p>
+  </div>
+
+  <div class="stage">
+    <div class="nowword"><span class="w" id="nowWord">タップして開始</span></div>
+    <div class="flower" id="flower" role="button" aria-label="花びらをちぎる">
+      <div class="center" id="centerLab">花占い</div>
+    </div>
+    <p class="count" id="countInfo">花びら あと — 枚</p>
+    <button type="button" class="btn" id="pluckBtn">花びらをちぎる</button>
+    <button type="button" class="btn ghost" id="resetBtn" style="margin-left:8px">最初からやり直す</button>
+  </div>
+
+  <div class="result" id="resultBox" style="display:none">
+    <div class="lab" id="resQuestion">結果</div>
+    <div class="word" id="resWord">—</div>
+    <div class="desc" id="resDesc"></div>
+  </div>
+
+  <div class="card">
+    <h2>花占いについて</h2>
+    <p class="note" style="font-size:13px;color:var(--ink)">
+      花占いは、花びらを1枚ずつちぎりながら「好き・嫌い」を交互に唱え、最後に残った言葉で気持ちや願いを占う、昔ながらの素朴な占いです。
+      このツールでは今日の花びらの枚数が日付から決定的に決まるため、その日の答えは一つだけ。
+      「嫌い」が出ても願いを諦める合図ではなく、今はタイミングを待つ時期という読み方がおすすめです。
+    </p>
+  </div>
+
+  <footer>
+    <div class="card">
+      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。
+    </div>
+    <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+// xmur3 string hash + mulberry32 PRNG: deterministic pick from a seed string.
+function xmur3(str){
+  var h = 1779033703 ^ str.length;
+  for(var i = 0; i < str.length; i++){
+    h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+    h = (h << 13) | (h >>> 19);
+  }
+  return function(){
+    h = Math.imul(h ^ (h >>> 16), 2246822507);
+    h = Math.imul(h ^ (h >>> 13), 3266489909);
+    return (h ^= h >>> 16) >>> 0;
+  };
+}
+function mulberry32(a){
+  return function(){
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    var t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function rngFrom(seedStr){ return mulberry32(xmur3(seedStr)()); }
+
+function todayStr(){
+  var d = new Date();
+  var m = d.getMonth() + 1, day = d.getDate();
+  return d.getFullYear() + "-" + (m < 10 ? "0" + m : m) + "-" + (day < 10 ? "0" + day : day);
+}
+
+var RESULT_TEXT = {
+  "好き":{desc:"最後の花びらは「好き」。思い浮かべた願いには追い風が吹いています。迷いを置いて、素直な気持ちで一歩進んでみましょう。今日の小さな行動が、良い流れを引き寄せます。"},
+  "嫌い":{desc:"最後の花びらは「嫌い」。願いそのものがダメなのではなく、今はタイミングが合っていないだけかもしれません。焦って結論を出さず、少し時間を置いてからもう一度考えてみましょう。"}
+};
+
+// Today's petal count: 10..20, fixed for the day.
+var rng = rngFrom("hana|" + todayStr());
+var TOTAL = 10 + Math.floor(rng() * 11);
+
+// Expose state for verification.
+window.HANA_DATA = { total: TOTAL, resultText: RESULT_TEXT };
+
+var flowerEl = document.getElementById("flower");
+var nowWordEl = document.getElementById("nowWord");
+var countEl = document.getElementById("countInfo");
+var resultBox = document.getElementById("resultBox");
+var petals = [];
+var plucked = 0;
+var busy = false;
+
+document.getElementById("totalInfo").textContent = TOTAL;
+
+function buildFlower(){
+  // Remove old petals.
+  for(var i = 0; i < petals.length; i++){
+    flowerEl.removeChild(petals[i]);
+  }
+  petals = [];
+  for(var j = 0; j < TOTAL; j++){
+    var p = document.createElement("div");
+    p.className = "petal";
+    p.style.transform = "rotate(" + (360 / TOTAL * j) + "deg)";
+    flowerEl.insertBefore(p, flowerEl.firstChild);
+    petals.push(p);
+  }
+  plucked = 0;
+  flowerEl.classList.remove("done");
+  nowWordEl.textContent = "タップして開始";
+  nowWordEl.className = "w";
+  countEl.textContent = "花びら あと " + TOTAL + " 枚";
+  resultBox.style.display = "none";
+}
+
+function pluck(){
+  if(busy || plucked >= TOTAL) return;
+  busy = true;
+  // Pluck the next remaining petal (from the last built one backwards).
+  var target = petals[TOTAL - 1 - plucked];
+  if(target) target.classList.add("gone");
+  plucked++;
+  var word = (plucked % 2 === 1) ? "好き" : "嫌い";
+  nowWordEl.textContent = word;
+  nowWordEl.className = "w " + (word === "好き" ? "suki" : "kirai");
+  var remain = TOTAL - plucked;
+  countEl.textContent = remain > 0 ? ("花びら あと " + remain + " 枚") : "花びらは全部ちぎれました";
+  if(remain === 0){
+    flowerEl.classList.add("done");
+    var q = document.getElementById("question").value.replace(/^\s+|\s+$/g, "");
+    document.getElementById("resQuestion").textContent = q ? ("「" + q + "」の答え") : "結果";
+    document.getElementById("resWord").textContent = word;
+    document.getElementById("resDesc").textContent = RESULT_TEXT[word].desc;
+    resultBox.style.display = "block";
+  }
+  setTimeout(function(){ busy = false; }, 180);
+}
+
+flowerEl.addEventListener("click", pluck);
+document.getElementById("pluckBtn").addEventListener("click", pluck);
+document.getElementById("resetBtn").addEventListener("click", buildFlower);
+
+buildFlower();
+})();
+</script>
+</body>
+</html>
