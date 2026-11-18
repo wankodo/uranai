@@ -4,15 +4,15 @@
 <script>try{var _t=localStorage.getItem("ido_theme_v1");if(_t==="andy"||_t==="kuma")document.documentElement.dataset.theme=_t;}catch(e){}</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>タロット占い（今日の1枚引き・ケルト十字）｜占いツール集</title>
+<title>タロット占い（1枚引き・3枚引き・ケルト十字）｜占いツール集</title>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="512x512" href="favicon.png">
 <link rel="apple-touch-icon" href="favicon.png">
-<meta name="description" content="大アルカナ22枚の無料タロット占い。日替わりの「今日の1枚引き」と、10枚でじっくり読む本格スプレッド「ケルト十字」を切り替えて使えます。">
+<meta name="description" content="大アルカナ22枚の無料タロット占い。日替わりの「今日の1枚引き」、過去・現在・未来の流れを読む「3枚引き」、10枚でじっくり読む本格スプレッド「ケルト十字」を切り替えて使えます。">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="占いツール集">
-<meta property="og:title" content="タロット占い（今日の1枚引き・ケルト十字）｜占いツール集">
-<meta property="og:description" content="大アルカナ22枚の無料タロット占い。日替わりの「今日の1枚引き」と、10枚でじっくり読む本格スプレッド「ケルト十字」を切り替えて使えます。">
+<meta property="og:title" content="タロット占い（1枚引き・3枚引き・ケルト十字）｜占いツール集">
+<meta property="og:description" content="大アルカナ22枚の無料タロット占い。日替わりの「今日の1枚引き」、過去・現在・未来の流れを読む「3枚引き」、10枚でじっくり読む本格スプレッド「ケルト十字」を切り替えて使えます。">
 <meta property="og:url" content="https://wankodo.github.io/uranai/tarot.html">
 <meta property="og:image" content="https://wankodo.github.io/uranai/ogp.png">
 <meta property="og:image:width" content="1200">
@@ -93,6 +93,18 @@ button.cast:disabled{opacity:.55;cursor:wait}
 .read-adv b{color:var(--amber-d)}
 .total{background:var(--soft);border:1px solid #ecd27a;border-radius:8px;padding:12px 14px;font-size:15px;margin:4px 0 0}
 .total b{color:var(--amber-d)}
+.trio{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.pos{flex:1 1 210px;max-width:300px;text-align:center}
+.pos-label{display:inline-block;background:var(--navy);color:#fff;border-radius:999px;padding:3px 18px;font-size:14px;font-weight:700;letter-spacing:.15em;margin-bottom:10px}
+.pos-label small{display:block;font-size:11px;font-weight:400;letter-spacing:.05em;color:#cfd9e4}
+.trio .tcard-wrap{margin:4px 0}
+.trio .tcard{width:168px;max-width:60vw;border-radius:12px;padding:14px 10px}
+.trio .tcard .roman{font-size:13px}
+.trio .tcard .symbol{font-size:56px}
+.trio .tcard .cname{font-size:17px}
+.pos-name{font-size:16px;font-weight:800;color:var(--navy);margin-top:6px}
+.pos-one{font-size:13.5px;background:var(--soft);border:1px solid #ecd27a;border-radius:8px;padding:8px 10px;margin:10px 0 0;text-align:left}
+.pos-mean{font-size:13.5px;color:var(--ink);text-align:left;margin:8px 0 0}
 </style>
 <style id="hud-theme-style">
 /* ===== DEF/HUD テーマ切替（共通） ===== */
@@ -140,8 +152,8 @@ html[data-theme="andy"] .badges span.best-b{background:var(--amber);color:#03222
 
 <header>
   <div class="wrap">
-    <h1>タロット <span class="accent">1枚引き＆ケルト十字</span></h1>
-    <p>大アルカナ22枚で占います。日替わりの「今日の1枚引き」と、10枚でじっくり読む「ケルト十字」を切り替えて使えます。</p>
+    <h1>タロット <span class="accent">1枚引き＆3枚引き＆ケルト十字</span></h1>
+    <p>大アルカナ22枚で占います。日替わりの「今日の1枚引き」、過去・現在・未来を読む「3枚引き」、10枚でじっくり読む「ケルト十字」を切り替えて使えます。</p>
   </div>
 </header>
 
@@ -151,9 +163,10 @@ html[data-theme="andy"] .badges span.best-b{background:var(--amber);color:#03222
     <h2>スプレッドを選ぶ</h2>
     <div class="seg">
       <button type="button" id="segOne" class="active">今日の1枚引き</button>
+      <button type="button" id="segThree">今日の3枚引き（過去・現在・未来）</button>
       <button type="button" id="segCeltic">ケルト十字（10枚）</button>
     </div>
-    <p class="note" style="margin-top:8px">1枚引きは、その日のあなたへの1枚を引く軽い占いです（結果は1日固定）。ケルト十字は10枚でじっくり読む本格スプレッドで、引くたびに結果が変わります。</p>
+    <p class="note" style="margin-top:8px">1枚引きと3枚引きは、その日のあなたへのカードを引く軽い占いです（結果は1日固定）。ケルト十字は10枚でじっくり読む本格スプレッドで、引くたびに結果が変わります。</p>
   </div>
 
   <div id="oneMode">
@@ -182,6 +195,26 @@ html[data-theme="andy"] .badges span.best-b{background:var(--amber);color:#03222
   </div>
   </div>
 
+  <div id="threeMode" hidden>
+  <div class="card">
+    <h2>あなたの今日の3枚</h2>
+    <p class="date-line" id="todayLine3"></p>
+    <label class="flabel" for="birth3">生年月日（任意）</label>
+    <input type="date" id="birth3" value="">
+    <p class="note">生年月日を入れると、あなた専用の今日の3枚になります。未入力の場合は、その日みんなに共通の3枚です。結果はその日1日固定です（何度開いても同じ結果になります）。</p>
+  </div>
+
+  <div class="card">
+    <div class="trio" id="trio"></div>
+  </div>
+
+  <div class="card">
+    <h2>3枚を通した総合メッセージ</h2>
+    <div class="total" id="totalMsg3"></div>
+    <p class="note" style="margin-top:10px">結果はその日1日固定です。明日になると、また新しい3枚が出ます。</p>
+  </div>
+  </div>
+
   <div id="celticMode" hidden>
     <div class="card">
       <h2>ケルト十字（10枚引き）</h2>
@@ -199,7 +232,7 @@ html[data-theme="andy"] .badges span.best-b{background:var(--amber);color:#03222
 
   <footer>
     <div class="card">
-      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。カードの意味は一般的なタロット解釈をもとにしたもので、1枚引きの結果は日付（と任意入力の生年月日）から自動で決まり、ケルト十字は引くたびの抽選で決まります。
+      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。カードの意味は一般的なタロット解釈をもとにしたもので、1枚引きと3枚引きの結果は日付（と任意入力の生年月日）から自動で決まり、ケルト十字は引くたびの抽選で決まります。
     </div>
     <p class="credit">著作権は andy に帰属します。無断転載を禁止します（リンクは自由です）。埋め込みリンクは動作を保証できないため禁止です。プログラムの複製・転用も禁止します。｜© 2026 andy（わんこ堂）</p>
     <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
@@ -365,17 +398,22 @@ render();
 
 // ---- spread switch ----
 var segOne = document.getElementById("segOne");
+var segThree = document.getElementById("segThree");
 var segCeltic = document.getElementById("segCeltic");
 var oneMode = document.getElementById("oneMode");
+var threeMode = document.getElementById("threeMode");
 var celticMode = document.getElementById("celticMode");
-function setMode(celtic){
-  segOne.classList.toggle("active", !celtic);
-  segCeltic.classList.toggle("active", celtic);
-  oneMode.hidden = celtic;
-  celticMode.hidden = !celtic;
+function setMode(mode){
+  segOne.classList.toggle("active", mode === "one");
+  segThree.classList.toggle("active", mode === "three");
+  segCeltic.classList.toggle("active", mode === "celtic");
+  oneMode.hidden = mode !== "one";
+  threeMode.hidden = mode !== "three";
+  celticMode.hidden = mode !== "celtic";
 }
-segOne.addEventListener("click", function(){ setMode(false); });
-segCeltic.addEventListener("click", function(){ setMode(true); });
+segOne.addEventListener("click", function(){ setMode("one"); });
+segThree.addEventListener("click", function(){ setMode("three"); });
+segCeltic.addEventListener("click", function(){ setMode("celtic"); });
 
 // ---- celtic cross ----
 var CPOS = [
@@ -500,6 +538,91 @@ function drawCeltic(){
 }
 celticBtn.addEventListener("click", drawCeltic);
 window.CELTIC_POSITIONS = CPOS;
+
+// ---- three cards (past / present / future), ported from the former tarot3 page ----
+// The seed string stays "tarot3|..." so daily results match what the standalone page produced.
+var POSITIONS = [
+  {label:"過去", sub:"これまでの流れ"},
+  {label:"現在", sub:"今のあなた"},
+  {label:"未来", sub:"これからの兆し"}
+];
+// one-line reading per position, keyed by orientation; {kw} and {name} are filled in
+var POS_ONE = [
+  { up:"これまでの流れは「{kw}」に象徴されます。積み重ねてきたことが、今のあなたの土台になっています。",
+    rv:"これまでの流れには「{kw}」のつまずきがありました。でも、その経験が今の判断材料になっています。" },
+  { up:"今のあなたは「{kw}」の力を発揮できる状態です。今日の主役はこのカードです。",
+    rv:"今のあなたは「{kw}」が少し裏目に出やすい状態です。無理に進めず、整えることを優先して。" },
+  { up:"この先は「{kw}」が追い風になる兆しです。今日の小さな一歩が、その流れを作ります。",
+    rv:"この先は「{kw}」に注意が必要な兆しです。慌てて決めず、備えをしておくと安心です。" }
+];
+var TOTALS = [
+  "「{past}」で築いた土台の上に、「{present}」の今日があります。その先に待つ「{future}」へ向けて、今日できる小さな一歩を大切にしてください。流れは、ちゃんとつながっています。",
+  "過去の「{past}」から現在の「{present}」へ、物語は静かに進んでいます。締めくくりは「{future}」。今日は結論を急がず、流れの変化を観察する日にすると良さそうです。",
+  "「{past}」→「{present}」→「{future}」と、3枚は一本の線でつながっています。特に今日意識したいのは真ん中の「{present}」。ここを丁寧に扱うことが、未来のカードを良い向きに変えていきます。",
+  "今日の鍵は「{future}」の示す方向です。「{past}」の経験と「{present}」の持ち札をどう使うかで、その未来の色は変わります。焦らず、でも止まらずに進んでください。"
+];
+
+var birth3El = document.getElementById("birth3");
+var todayLine3 = document.getElementById("todayLine3");
+var trioEl = document.getElementById("trio");
+var total3El = document.getElementById("totalMsg3");
+
+function esc(s){
+  return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+function renderThree(){
+  var t = todayStr();
+  var birth = birth3El.value || "";
+  var d = new Date();
+  todayLine3.textContent = d.getFullYear() + "年" + (d.getMonth()+1) + "月" + d.getDate() + "日の3枚" + (birth ? "（あなた専用）" : "（みんなの3枚）");
+  var rng = mulberry32(hashSeed("tarot3|" + t + "|" + birth));
+  // draw 3 distinct cards (partial Fisher-Yates)
+  var pool = CARDS.map(function(_, i){ return i; });
+  for(var k = 0; k < 3; k++){
+    var j = k + Math.floor(rng() * (pool.length - k));
+    var tmp = pool[k]; pool[k] = pool[j]; pool[j] = tmp;
+  }
+  var drawn = [];
+  trioEl.innerHTML = "";
+  for(var p = 0; p < 3; p++){
+    var c = CARDS[pool[p]];
+    var reversed = rng() < 0.3;
+    drawn.push({card: c, reversed: reversed});
+    var pos = POSITIONS[p];
+    var one = (reversed ? POS_ONE[p].rv : POS_ONE[p].up)
+      .replace("{kw}", c.kw[0]).replace("{name}", c.name);
+    var block = document.createElement("div");
+    block.className = "pos";
+    block.setAttribute("data-pos", pos.label);
+    block.innerHTML =
+      '<span class="pos-label">' + pos.label + '<small>' + pos.sub + '</small></span>' +
+      '<div class="tcard-wrap"><div class="tcard' + (reversed ? " rev" : "") + '">' +
+        '<div class="roman">' + esc(c.roman) + '</div>' +
+        '<div class="symbol">' + esc(c.sym) + '</div>' +
+        '<div class="cname">' + esc(c.name) + '</div>' +
+      '</div></div>' +
+      '<span class="badge ' + (reversed ? "rv" : "up") + '">' + (reversed ? "逆位置" : "正位置") + '</span>' +
+      '<div class="pos-name">' + esc(c.name) + '</div>' +
+      '<p class="pos-one">' + esc(one) + '</p>' +
+      '<p class="pos-mean">' + esc(reversed ? c.rv : c.up) + '</p>';
+    trioEl.appendChild(block);
+  }
+  var total = TOTALS[Math.floor(rng() * TOTALS.length)]
+    .replace("{past}", drawn[0].card.name)
+    .replace("{present}", drawn[1].card.name)
+    .replace("{future}", drawn[2].card.name);
+  var revCount = drawn.filter(function(x){ return x.reversed; }).length;
+  if(revCount === 3){
+    total += " 3枚すべて逆位置の日です。無理に前へ進むより、立て直しと休息に充てるのが吉と出ています。";
+  } else if(revCount === 0){
+    total += " 3枚すべて正位置の日です。流れは素直に前向き。迷ったら「進む方」を選んで大丈夫です。";
+  }
+  total3El.textContent = total;
+}
+birth3El.addEventListener("change", renderThree);
+birth3El.addEventListener("input", renderThree);
+renderThree();
 </script>
 <script>
 (function(){
