@@ -8,11 +8,11 @@
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="512x512" href="favicon.png">
 <link rel="apple-touch-icon" href="favicon.png">
-<meta name="description" content="12星座の今日の運勢ランキング。総合運の星、一言コメント、ラッキーカラーとラッキーナンバーが毎日0時に切り替わります。">
+<meta name="description" content="12星座の今日の運勢ランキング。その日の惑星の位置を天体計算で求め、星座との角度関係（アスペクト）から運勢を判定しています。一言コメント、ラッキーカラーとラッキーナンバーつき。">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="占いツール集">
 <meta property="og:title" content="星座占い｜占いツール集">
-<meta property="og:description" content="12星座の今日の運勢ランキング。総合運の星、一言コメント、ラッキーカラーとラッキーナンバーが毎日0時に切り替わります。">
+<meta property="og:description" content="12星座の今日の運勢ランキング。その日の惑星の位置を天体計算で求め、星座との角度関係（アスペクト）から運勢を判定しています。一言コメント、ラッキーカラーとラッキーナンバーつき。">
 <meta property="og:url" content="https://wankodo.github.io/uranai/zodiac.html">
 <meta property="og:image" content="https://wankodo.github.io/uranai/ogp.png">
 <meta property="og:image:width" content="1200">
@@ -44,7 +44,11 @@ header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
 .detail .d-rank{font-size:13px;color:var(--amber);font-weight:700;letter-spacing:.06em}
 .detail .d-name{font-size:26px;font-weight:800;margin:2px 0}
 .detail .d-period{font-size:12.5px;color:#b9c8d8}
-.detail .d-stars{font-size:22px;color:var(--amber);letter-spacing:.15em;margin:8px 0 4px}
+.detail .d-reasons{margin:10px 0 4px;font-size:13.5px;line-height:1.75}
+.detail .d-reasons .r-head{font-size:12px;color:#b9c8d8;letter-spacing:.05em;margin-bottom:2px}
+.detail .d-reasons .r-plus{color:#ffd97a}
+.detail .d-reasons .r-minus{color:#ff9d94}
+.detail .d-reasons .r-none{color:#b9c8d8}
 .detail .d-comment{font-size:15.5px;margin:6px 0 12px}
 .detail .d-lucky{display:flex;gap:10px;flex-wrap:wrap}
 .detail .d-lucky div{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:8px 12px;font-size:13px}
@@ -60,7 +64,6 @@ header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
 .rank-name .period{font-weight:400;font-size:12px;color:var(--mut);margin-left:6px}
 .rank-comment{font-size:13px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rank-side{text-align:right;flex:0 0 auto}
-.rank-stars{color:var(--amber-d);font-size:14px;letter-spacing:.08em}
 .rank-lucky{font-size:11.5px;color:var(--mut)}
 footer{margin:26px 0 40px}
 footer .card{font-size:12.5px;color:var(--mut)}
@@ -136,8 +139,11 @@ html[data-theme="andy"] .badges span.best-b{background:var(--amber);color:#03222
     <div class="d-rank" id="dRank"></div>
     <div class="d-name" id="dName"></div>
     <div class="d-period" id="dPeriod"></div>
-    <div class="d-stars" id="dStars"></div>
     <p class="d-comment" id="dComment"></p>
+    <div class="d-reasons">
+      <div class="r-head">惑星の配置から見た今日のポイント</div>
+      <div id="dReasons"></div>
+    </div>
     <div class="d-lucky">
       <div>ラッキーカラー<br><b id="dColor"></b></div>
       <div>ラッキーナンバー<br><b id="dNumber"></b></div>
@@ -147,12 +153,13 @@ html[data-theme="andy"] .badges span.best-b{background:var(--amber);color:#03222
   <div class="card">
     <h2>今日の運勢ランキング</h2>
     <div id="rankList"></div>
-    <p class="note">結果は毎日0時に切り替わります。その日であれば、何度開いても同じ結果です。</p>
+    <p class="note">順位は、その日の惑星の位置と各星座との角度関係（アスペクト）から計算した運勢スコアの順番です。結果は毎日0時に切り替わります。その日であれば、何度開いても同じ結果です。</p>
   </div>
 
   <footer>
     <div class="card">
-      <p>星座占いは、その日の日付をもとに結果が決まる日替わり占いです。順位・星の数・コメント・ラッキーカラー・ラッキーナンバーは日付から機械的に決まるため、その日は何度開いても同じ結果になります。</p>
+      <p>星座占いの順位は、その日の惑星の配置から計算しています。太陽・月・水星・金星・火星・木星・土星の実際の位置（黄経）を天体計算で求め、各星座との角度関係（アスペクト）や、その星座に惑星が滞在しているかどうかを点数化して、運勢スコアの順に並べています。惑星の位置は日本時間の正午時点のものです。星座を選ぶと、順位の根拠になった配置も表示されます。</p>
+      <p>一言コメント・ラッキーカラー・ラッキーナンバーは日替わりで、その日は何度開いても同じ結果になります。</p>
       <p>本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。</p>
     </div>
     <p class="credit">著作権は andy に帰属します。無断転載を禁止します（リンクは自由です）。埋め込みリンクは動作を保証できないため禁止です。プログラムの複製・転用も禁止します。｜© 2026 andy（わんこ堂）</p>
@@ -210,28 +217,142 @@ function dateStrOf(d){
   var m=("0"+(d.getMonth()+1)).slice(-2), day=("0"+d.getDate()).slice(-2);
   return d.getFullYear()+"-"+m+"-"+day;
 }
+// ===== 天体計算（外部API・外部ライブラリなし。ブラウザ内で計算） =====
+// 惑星（水星〜土星と太陽）：JPL近似ケプラー要素（1800〜2050年有効）から地心黄経を出す。
+// 月：Paul Schlyter の低精度計算法に主要摂動項を加えたもの。星座判定には十分な精度。
+var D2R=Math.PI/180;
+function norm360(x){ x%=360; return x<0?x+360:x; }
+// 日本時間の正午（= 03:00 UTC）のユリウス日
+function julianDayAtNoonJST(y,m,d){ return Date.UTC(y,m-1,d,3,0,0)/86400000+2440587.5; }
+var KEPLER={
+  mercury:[0.38709927,0.20563593,7.00497902,252.25032350,77.45779628,48.33076593,0.00000037,0.00001906,-0.00594749,149472.67411175,0.16047689,-0.12534081],
+  venus:[0.72333566,0.00677672,3.39467605,181.97909950,131.60246718,76.67984255,0.00000390,-0.00004107,-0.00078890,58517.81538729,0.00268329,-0.27769418],
+  earth:[1.00000261,0.01671123,-0.00001531,100.46457166,102.93768193,0,0.00000562,-0.00004392,-0.01294668,35999.37244981,0.32327364,0],
+  mars:[1.52371034,0.09339410,1.84969142,-4.55343205,-23.94362959,49.55953891,0.00001847,0.00007882,-0.00813131,19140.30268499,0.44441088,-0.29257343],
+  jupiter:[5.20288700,0.04838624,1.30439695,34.39644051,14.72847983,100.47390909,-0.00011607,-0.00013253,-0.00183714,3034.74612775,0.21252668,0.20469106],
+  saturn:[9.53667594,0.05386179,2.48599187,49.95424423,92.59887831,113.66242448,-0.00125060,-0.00050991,0.00193609,1222.49362201,-0.41897216,-0.28867794]
+};
+function helioXYZ(el,T){
+  var a=el[0]+el[6]*T, e=el[1]+el[7]*T, I=(el[2]+el[8]*T)*D2R,
+      L=norm360(el[3]+el[9]*T), lp=el[4]+el[10]*T, om=(el[5]+el[11]*T)*D2R;
+  var w=lp*D2R-om, M=norm360(L-lp)*D2R;
+  var E=M+e*Math.sin(M)*(1+e*Math.cos(M));
+  for(var i=0;i<8;i++){ E=E-(E-e*Math.sin(E)-M)/(1-e*Math.cos(E)); }
+  var xp=a*(Math.cos(E)-e), yp=a*Math.sqrt(1-e*e)*Math.sin(E);
+  var v=Math.atan2(yp,xp), r=Math.sqrt(xp*xp+yp*yp);
+  var cw=Math.cos(v+w), sw=Math.sin(v+w);
+  return [
+    r*(Math.cos(om)*cw-Math.sin(om)*sw*Math.cos(I)),
+    r*(Math.sin(om)*cw+Math.cos(om)*sw*Math.cos(I)),
+    r*(sw*Math.sin(I))
+  ];
+}
+function moonLongitude(jd){
+  var d=jd-2451543.5;
+  var N=norm360(125.1228-0.0529538083*d), inc=5.1454*D2R,
+      w=norm360(318.0634+0.1643573223*d), a=60.2666, e=0.054900,
+      M=norm360(115.3654+13.0649929509*d);
+  var Mr=M*D2R;
+  var E=Mr+e*Math.sin(Mr)*(1+e*Math.cos(Mr));
+  for(var i=0;i<8;i++){ E=E-(E-e*Math.sin(E)-Mr)/(1-e*Math.cos(E)); }
+  var xv=a*(Math.cos(E)-e), yv=a*Math.sqrt(1-e*e)*Math.sin(E);
+  var v=Math.atan2(yv,xv), r=Math.sqrt(xv*xv+yv*yv);
+  var Nr=N*D2R, vw=v+w*D2R;
+  var xh=r*(Math.cos(Nr)*Math.cos(vw)-Math.sin(Nr)*Math.sin(vw)*Math.cos(inc));
+  var yh=r*(Math.sin(Nr)*Math.cos(vw)+Math.cos(Nr)*Math.sin(vw)*Math.cos(inc));
+  var lon=Math.atan2(yh,xh)/D2R;
+  // 主要摂動項（Schlyter）。Ms=太陽の平均近点角、D=月と太陽の平均離角、F=月の引数緯度
+  var Ms=norm360(356.0470+0.9856002585*d);
+  var Ls=norm360(278.9874+0.9856473519*d);
+  var Lm=norm360(N+w+M);
+  var D=norm360(Lm-Ls), F=norm360(Lm-N);
+  function s(x){ return Math.sin(x*D2R); }
+  lon+=-1.274*s(M-2*D)+0.658*s(2*D)-0.186*s(Ms)-0.059*s(2*M-2*D)
+      -0.057*s(M-2*D+Ms)+0.053*s(M+2*D)+0.046*s(2*D-Ms)+0.041*s(M-Ms)
+      -0.035*s(D)-0.031*s(M+Ms)-0.015*s(2*F-2*D)+0.011*s(M-4*D);
+  return norm360(lon);
+}
+// 日付文字列 "YYYY-MM-DD"（日本時間の正午）における7天体の地心黄経（度）
+function positionsFor(ds){
+  var p=ds.split("-");
+  var jd=julianDayAtNoonJST(Number(p[0]),Number(p[1]),Number(p[2]));
+  var T=(jd-2451545.0)/36525;
+  var earth=helioXYZ(KEPLER.earth,T);
+  // JPL要素はJ2000分点基準のため、歳差を加えて当日の分点（トロピカル）基準に直す
+  var prec=(1.396971+0.0003087*T)*T;
+  var out={};
+  ["mercury","venus","mars","jupiter","saturn"].forEach(function(k){
+    var xyz=helioXYZ(KEPLER[k],T);
+    out[k]=norm360(Math.atan2(xyz[1]-earth[1],xyz[0]-earth[0])/D2R+prec);
+  });
+  out.sun=norm360(Math.atan2(-earth[1],-earth[0])/D2R+prec);
+  out.moon=moonLongitude(jd);
+  return out;
+}
+// ===== スコアリング =====
+var PLANET_NAMES={sun:"太陽",moon:"月",mercury:"水星",venus:"金星",mars:"火星",jupiter:"木星",saturn:"土星"};
+// その星座に惑星が滞在している場合の加点・減点
+var RESIDENCY={moon:30,sun:15,jupiter:10,venus:8,mercury:3,mars:-5,saturn:-8};
+var ASPECTS=[
+  {angle:0,   orb:8, label:"コンジャンクション", kind:"重なる配置"},
+  {angle:60,  orb:5, label:"セクスタイル",       kind:"調和の角度"},
+  {angle:90,  orb:6, label:"スクエア",           kind:"緊張の角度"},
+  {angle:120, orb:6, label:"トライン",           kind:"調和の角度"},
+  {angle:180, orb:7, label:"オポジション",       kind:"向かい合う角度"}
+];
+// 惑星×アスペクトの重み（正確な角度でこの値、オーブ端で0になるよう線形に減衰）
+var ASPECT_W={
+  venus:  {0:12, 60:7, 90:-3, 120:10, 180:-3},
+  jupiter:{0:14, 60:8, 90:-2, 120:12, 180:-3},
+  mars:   {0:-10,60:2, 90:-12,120:3,  180:-11},
+  saturn: {0:-12,60:1, 90:-13,120:2,  180:-12},
+  mercury:{0:4,  60:3, 90:-3, 120:4,  180:-3},
+  moon:   {0:0,  60:5, 90:-6, 120:6,  180:-5},
+  sun:    {0:0,  60:4, 90:-4, 120:5,  180:-4}
+};
+function angDiff(a,b){ var d=Math.abs(norm360(a-b)); return d>180?360-d:d; }
+function scoreSign(signIdx,pos){
+  var center=signIdx*30+15, score=0, factors=[];
+  Object.keys(PLANET_NAMES).forEach(function(k){
+    var lon=pos[k];
+    if(Math.floor(norm360(lon)/30)===signIdx){
+      var rp=RESIDENCY[k];
+      score+=rp;
+      factors.push({pts:rp, text:PLANET_NAMES[k]+"があなたの星座に滞在中"});
+    }
+    var dist=angDiff(lon,center);
+    ASPECTS.forEach(function(asp){
+      var dev=Math.abs(dist-asp.angle);
+      if(dev<=asp.orb){
+        var w=ASPECT_W[k][asp.angle];
+        if(!w) return;
+        var pts=w*(1-dev/asp.orb);
+        score+=pts;
+        if(Math.abs(pts)>=2.0){
+          factors.push({pts:pts, text:PLANET_NAMES[k]+"と"+asp.label+"（"+asp.kind+"）"});
+        }
+      }
+    });
+  });
+  factors.sort(function(a,b){ return Math.abs(b.pts)-Math.abs(a.pts); });
+  return {score:score, reasons:factors.slice(0,4)};
+}
+function scoresFor(ds){
+  var pos=positionsFor(ds);
+  var arr=[];
+  for(var i=0;i<12;i++){ var sc=scoreSign(i,pos); arr.push({sign:i, score:sc.score, reasons:sc.reasons}); }
+  return arr;
+}
 // Ranking for a date string "YYYY-MM-DD". Deterministic: same date, same result.
 function rankingFor(ds){
-  var rng=mulberry32(hashStr("zodiac-rank:"+ds));
-  var order=[];
-  for(var i=0;i<12;i++) order.push(i);
-  for(var j=order.length-1;j>0;j--){
-    var k=Math.floor(rng()*(j+1));
-    var tmp=order[j]; order[j]=order[k]; order[k]=tmp;
-  }
-  return order.map(function(signIdx,idx){
-    var r=mulberry32(hashStr("zodiac-sign:"+ds+":"+signIdx));
-    var stars=1+Math.floor(r()*5);
-    var comment=COMMENTS[signIdx][Math.floor(r()*COMMENTS[signIdx].length)];
+  var order=scoresFor(ds).slice().sort(function(a,b){ return (b.score-a.score)||(a.sign-b.sign); });
+  return order.map(function(e,idx){
+    var r=mulberry32(hashStr("zodiac-sign:"+ds+":"+e.sign));
+    var comment=COMMENTS[e.sign][Math.floor(r()*COMMENTS[e.sign].length)];
     var color=COLORS[Math.floor(r()*COLORS.length)];
     var number=1+Math.floor(r()*99);
-    return {rank:idx+1, sign:signIdx, stars:stars, comment:comment, color:color, number:number};
+    return {rank:idx+1, sign:e.sign, score:e.score, reasons:e.reasons, comment:comment, color:color, number:number};
   });
-}
-function starText(n){
-  var s="";
-  for(var i=0;i<5;i++) s+=(i<n?"★":"☆");
-  return s;
 }
 var today=new Date();
 var todayStr=dateStrOf(today);
@@ -240,7 +361,7 @@ var bySign={};
 ranking.forEach(function(e){ bySign[e.sign]=e; });
 var WDAY=["日","月","火","水","木","金","土"];
 document.getElementById("todayLine").textContent=
-  today.getFullYear()+"年"+(today.getMonth()+1)+"月"+today.getDate()+"日（"+WDAY[today.getDay()]+"）の12星座の運勢ランキングです。結果は毎日0時に切り替わります。";
+  today.getFullYear()+"年"+(today.getMonth()+1)+"月"+today.getDate()+"日（"+WDAY[today.getDay()]+"）の12星座の運勢ランキングです。その日の惑星の位置を計算し、星座との角度関係から順位を判定しています。結果は毎日0時に切り替わります。";
 var seg=document.getElementById("signSeg");
 var rankList=document.getElementById("rankList");
 var detailBox=document.getElementById("detailBox");
@@ -255,8 +376,22 @@ function selectSign(signIdx){
   document.getElementById("dRank").textContent="今日の運勢 第"+e.rank+"位";
   document.getElementById("dName").textContent=SIGNS[signIdx].name;
   document.getElementById("dPeriod").textContent=SIGNS[signIdx].period+"生まれ";
-  document.getElementById("dStars").textContent=starText(e.stars);
   document.getElementById("dComment").textContent=e.comment;
+  var rs=document.getElementById("dReasons");
+  rs.innerHTML="";
+  if(e.reasons.length===0){
+    var none=document.createElement("div");
+    none.className="r-none";
+    none.textContent="今日は目立った惑星の角度がなく、穏やかな配置です。";
+    rs.appendChild(none);
+  } else {
+    e.reasons.forEach(function(r){
+      var d=document.createElement("div");
+      d.className=r.pts>=0?"r-plus":"r-minus";
+      d.textContent=(r.pts>=0?"＋ ":"－ ")+r.text;
+      rs.appendChild(d);
+    });
+  }
   document.getElementById("dColor").textContent=e.color;
   document.getElementById("dNumber").textContent=e.number;
   detailBox.hidden=false;
@@ -283,15 +418,14 @@ ranking.forEach(function(e){
   var cm=document.createElement("div"); cm.className="rank-comment"; cm.textContent=e.comment;
   main.appendChild(nm); main.appendChild(cm);
   var side=document.createElement("div"); side.className="rank-side";
-  var st=document.createElement("div"); st.className="rank-stars"; st.textContent=starText(e.stars);
   var lk=document.createElement("div"); lk.className="rank-lucky";
   lk.textContent="色："+e.color+" ／ 数："+e.number;
-  side.appendChild(st); side.appendChild(lk);
+  side.appendChild(lk);
   row.appendChild(num); row.appendChild(main); row.appendChild(side);
   row.addEventListener("click", function(){ selectSign(e.sign); });
   rankList.appendChild(row);
 });
-window.Zodiac={ rankingFor: rankingFor, dateStrOf: dateStrOf };
+window.Zodiac={ rankingFor: rankingFor, dateStrOf: dateStrOf, positionsFor: positionsFor, scoresFor: scoresFor };
 })();
 </script>
 <script>
