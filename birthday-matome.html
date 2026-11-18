@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<script>try{var _t=localStorage.getItem("ido_theme_v1");if(_t==="andy"||_t==="kuma")document.documentElement.dataset.theme=_t;}catch(e){}</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生年月日占い総合｜占いツール集</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="512x512" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<meta name="description" content="生年月日を入れるだけで、数秘術・四柱推命・算命学・九星気学・六星占術・宿曜・マヤ暦・ホロスコープ・星座占い・バースデー占い・干支・風水（命卦）・誕生石・相性診断の14の占い結果を一覧で表示する無料ツール。">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="占いツール集">
+<meta property="og:title" content="生年月日占い総合｜占いツール集">
+<meta property="og:description" content="生年月日を入れるだけで、数秘術・四柱推命・算命学・九星気学・六星占術・宿曜・マヤ暦・ホロスコープ・星座占い・バースデー占い・干支・風水（命卦）・誕生石・相性診断の14の占い結果を一覧で表示する無料ツール。">
+<meta property="og:url" content="https://wankodo.github.io/uranai/birthday-matome.html">
+<meta property="og:image" content="https://wankodo.github.io/uranai/ogp.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://wankodo.github.io/uranai/ogp.png">
+<style>
+:root{
+  --navy:#12283f; --navy2:#0b1a2c; --amber:#f2a007; --amber-d:#c77f02;
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1d2733; --mut:#68707c;
+  --line:#ddd6c8; --red:#b03a2e; --green:#1e7d46; --soft:#fdf6e0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;padding:22px 16px 18px;border-bottom:4px solid var(--amber)}
+header .wrap{max-width:980px;margin:0 auto}
+header h1{margin:0;font-size:24px;letter-spacing:.04em}
+header h1 .accent{color:var(--amber)}
+header p{margin:6px 0 0;font-size:13px;color:#cfd9e4}
+.wrap{max-width:980px;margin:0 auto;padding:0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 1px 3px rgba(18,40,63,.06)}
+.card h2{margin:0 0 10px;font-size:17px;color:var(--navy);border-left:5px solid var(--amber);padding-left:9px}
+.note{font-size:12.5px;color:var(--mut)}
+label.flabel{display:block;font-size:12.5px;color:var(--mut);margin:10px 0 3px}
+input[type="date"],input[type="text"]{
+  width:100%;padding:9px 10px;border:1px solid #c9c2b2;border-radius:7px;font-size:15px;background:#fff;color:var(--ink);
+}
+input:focus{outline:2px solid var(--amber);outline-offset:0;border-color:var(--amber)}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+.sumcard{background:var(--navy);color:#fff;border-radius:10px;padding:14px 16px}
+.sumcard .lab{font-size:12.5px;color:#b9c8d8}
+.sumcard .val{font-size:40px;font-weight:800;color:var(--amber);font-variant-numeric:tabular-nums;line-height:1.15}
+.sumcard .desc{font-size:12.5px;color:#e6edf4;margin-top:4px;line-height:1.55}
+.sumcard.white{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.sumcard.white .lab{color:var(--mut)}
+.sumcard.white .val{color:var(--navy)}
+.sumcard.white .desc{color:var(--ink)}
+.today{background:var(--soft);border:1px solid #ecd27a;border-radius:10px;padding:14px 16px;margin:14px 0}
+.today .lab{font-size:12.5px;color:var(--mut)}
+.today .word{font-size:19px;font-weight:800;color:var(--navy)}
+.today .desc{font-size:13.5px;margin-top:4px}
+footer{margin:26px 0 40px}
+footer .card{font-size:12.5px;color:var(--mut)}
+.credit{text-align:center;color:var(--mut);font-size:12px;margin:10px 0 30px}
+a{color:var(--navy)}
+.sitebar{background:var(--navy2);border-bottom:2px solid var(--amber)}
+.sitebar .sb-in{max-width:980px;margin:0 auto;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sitebar a{color:#fff;text-decoration:none;font-size:13px}
+.sitebar a:hover{color:var(--amber)}
+.sitebar .sb-name{font-weight:700;letter-spacing:.03em}
+.sitebar .sb-tool{color:#b9c8d8;font-size:13px}
+</style>
+<style id="hud-theme-style">
+/* ===== DEF/HUD テーマ切替（共通） ===== */
+.ido-theme-switch{position:relative;z-index:1;display:flex;gap:4px;padding:4px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(255,255,255,.07);flex:none}
+.ido-theme-switch button{border:0;border-radius:999px;padding:6px 13px;background:transparent;box-shadow:none;color:#cfe2f3;font:inherit;font-size:12.5px;font-weight:800;line-height:1.25;cursor:pointer}
+.ido-theme-switch button[aria-pressed="true"]{background:linear-gradient(180deg,#ffc44d,var(--amber));color:#14273c}
+html[data-theme="andy"] .ido-theme-switch button[aria-pressed="true"]{background:linear-gradient(180deg,#8ff2ff,#46d9ec);color:#03222e;box-shadow:0 0 16px rgba(70,217,236,.55)}
+:root[data-theme="andy"]{color-scheme:dark;--navy:#1d4568;--navy2:#02070d;--amber:#46d9ec;--amber-d:#8ff2ff;--bg:#04090f;--card:#081623;--ink:#d8f1f6;--mut:#a9c9d9;--line:rgba(110,205,230,.32);--red:#ff6b61;--green:#3ddc97;--soft:rgba(70,217,236,.10);--good:#3ddc97;--bad:#ff6b61;--sat:#7cc7ff;--sun:#ff6b61}
+html[data-theme="andy"]{background:#04090f}
+html[data-theme="andy"] body{background:radial-gradient(900px 480px at 85% -120px,rgba(70,217,236,.13),rgba(70,217,236,0) 60%),repeating-linear-gradient(0deg,rgba(140,230,255,.022) 0 1px,transparent 1px 4px),linear-gradient(rgba(110,205,230,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(110,205,230,.045) 1px,transparent 1px),linear-gradient(180deg,#030a12,#04090f);background-size:auto,auto,52px 52px,52px 52px,auto}
+html[data-theme="andy"] a{color:#ffcf4d}
+html[data-theme="andy"] .sitebar a{color:#fff}
+/* 濃色文字（--navy）を担う見出し・数値類は明色に固定 */
+html[data-theme="andy"] :is(.card h2,.card h3,.tool-card h2,.today .word,.today.word,.result .word,.sumcard .val,.sumcard.white.val,.count,.date-line,.plan .pname,.plan.pname,.pname .pn,.prod .pname,.prod h4,.vs h3,.total3 h3,.bar-row .b-lab,.bar-row .bar-head .cat,.penline .amt,.bd-fixed,.stone .sname,.plabel,details summary,.adv-row .a-lab,.cal-title,.compat .ctext,.detail-rk,.detail-word,.dir-cell .d-dir,.dir-cell .d-star,.dnav .dlabel,.fortune-name,.grade,.kv dt,.lp-line .lp b,.person h3,.pos-name,.rank .bt,.read-head .pname,.result-word,.rname,.star-row .s-lab,.star-row .s-name,.sumline b){color:#d8f1f6}
+/* 白・淡色の面は背景と文字色をセットでダークパネル化 */
+html[data-theme="andy"] :is(.suggest,.chip,.plan,.rank li,.dir-cell,.hexbox.sub,.result .action,.checks label,.badges span,.rank-num,.prod .cond,.prod .nodatabox,.chips button,.tabs button,.cal-nav button,.btn-ghost,.btn.ghost,.presets button,.lp-line .lp,button.dbtn,.plan.dim){background:#0a1e30;color:#d8f1f6;border-color:rgba(110,205,230,.32)}
+html[data-theme="andy"] .btn-del{background:#0a1e30;border-color:rgba(110,205,230,.32)}
+html[data-theme="andy"] .sumcard.white{background:#0a1e30;color:#d8f1f6}
+html[data-theme="andy"] .seg button{background:#0a1e30;color:#d8f1f6;border-color:rgba(110,205,230,.32)}
+html[data-theme="andy"] .seg button.active{background:#1d4568;color:#fff}
+html[data-theme="andy"] :is(th,table.anchors th){background:#0d2a42;color:#d8f1f6}
+html[data-theme="andy"] table.cal td{background:#0a1e30;color:#d8f1f6}
+html[data-theme="andy"] table.cal td.empty{background:#060f18;color:#a9c9d9}
+html[data-theme="andy"] tr.total td{background:rgba(70,217,236,.12)}
+html[data-theme="andy"] :is(.bar-track,.bar-row .b-track){background:rgba(110,205,230,.15)}
+html[data-theme="andy"] :is(.warn,.sumcard.alert,.chip.unknown){background:rgba(255,82,82,.13)}
+html[data-theme="andy"] :is(.total3 .plan.win,.vs .side.win){background:rgba(61,220,151,.12)}
+html[data-theme="andy"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),html[data-theme="andy"] select,html[data-theme="andy"] textarea{background-color:#0a1a29;color:#d8f1f6;border-color:rgba(110,205,230,.42)}
+/* アンバー地に白文字だったバッジ類は濃色文字に */
+html[data-theme="andy"] :is(.badge,.best-b,.birthday-banner,.rank-num.top,.chip.active,button.draw,.mini.kyo,.mini.kichi){color:#03222e}
+html[data-theme="andy"] .rank-num.top{background:var(--amber)}
+/* サイコロの目は白いままにする */
+html[data-theme="andy"] .die{background:#eef3f8;color:#1d2733}
+/* 色付きバッジ変種は白文字に戻す／淡色バッジ変種はダーク化する */
+html[data-theme="andy"] :is(.badge.badge-ins,.badge.badge-uranai,.badge.badge-mob,.badge.na,.badge.agency){color:#fff}
+html[data-theme="andy"] .badge.mid{background:#6b6557;color:#fff}
+html[data-theme="andy"] .badge.t1{background:rgba(255,82,82,.16);color:#ff9d94;border-color:rgba(255,82,82,.4)}
+html[data-theme="andy"] .badge.t2{background:#0d2a42;color:#d8f1f6;border-color:rgba(110,205,230,.32)}
+html[data-theme="andy"] .badge.t3{background:rgba(61,220,151,.14);color:#3ddc97;border-color:rgba(61,220,151,.4)}
+html[data-theme="andy"] .badges span.best-b{background:var(--amber);color:#03222e}
+</style>
+
+<style>
+.toc-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.toc-list a{display:inline-block;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--navy);text-decoration:none;font-size:13px}
+section.res{scroll-margin-top:12px}
+.res-head{font-size:21px;font-weight:800;color:var(--navy);margin:2px 0 6px;line-height:1.45}
+.res-comment{margin:0;font-size:14.5px;line-height:1.8}
+.seg{display:flex;gap:8px;margin-top:4px}
+.seg button{flex:1;padding:9px 10px;border:1px solid #c9c2b2;border-radius:7px;background:#fff;color:var(--ink);font-size:15px;cursor:pointer;font-family:inherit}
+.seg button.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+html[data-theme="andy"] .res-head{color:#d8f1f6}
+html[data-theme="andy"] .seg button.active{background:#1d4568;color:#fff}
+</style>
+</head>
+<body>
+<div class="sitebar"><div class="sb-in"><a class="sb-name" href="index.html">占いツール集</a><span class="sb-tool">生年月日占い総合</span><div class="ido-theme-switch" role="group" aria-label="表示モード切替"><button type="button" data-ido-theme="kuma" aria-pressed="true">DEF</button><button type="button" data-ido-theme="andy" aria-pressed="false">HUD</button></div></div></div>
+
+<header>
+  <div class="wrap">
+    <h1>生年月日占い <span class="accent">総合</span></h1>
+    <p>生年月日を一度入れるだけで、14の占いの結果をまとめて一覧表示します。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>生年月日を入力</h2>
+    <label class="flabel" for="dob">自分の生年月日</label>
+    <input type="date" id="dob" min="1900-01-01" max="2100-12-31">
+    <label class="flabel">性別（風水・命卦用）</label>
+    <div class="seg" id="sexSeg">
+      <button type="button" data-sex="M">男性</button>
+      <button type="button" data-sex="F">女性</button>
+    </div>
+    <label class="flabel" for="dobB">相手の生年月日（相性診断用・任意）</label>
+    <input type="date" id="dobB" min="1900-01-01" max="2100-12-31">
+    <p class="note">入力すると自動で計算します。相手の生年月日を入れると、相性診断と干支相性も出ます。</p>
+  </div>
+
+  <div class="card">
+    <h2>目次</h2>
+    <div class="toc-list">
+      <a href="#sec-numerology">数秘術</a>
+      <a href="#sec-shichu">四柱推命</a>
+      <a href="#sec-sanmei">算命学</a>
+      <a href="#sec-kyusei">九星気学</a>
+      <a href="#sec-rokusei">六星占術</a>
+      <a href="#sec-shukuyo">宿曜</a>
+      <a href="#sec-maya">マヤ暦</a>
+      <a href="#sec-horoscope">ホロスコープ（西洋占星術）</a>
+      <a href="#sec-zodiac">星座占い</a>
+      <a href="#sec-birthday">バースデー占い</a>
+      <a href="#sec-eto">干支占い</a>
+      <a href="#sec-fusui">風水（命卦）</a>
+      <a href="#sec-birthstone">誕生石・誕生花</a>
+      <a href="#sec-compatibility">相性診断</a>
+    </div>
+  </div>
+
+  <section class="card res" id="sec-numerology">
+    <h2>数秘術</h2>
+    <div class="res-head" id="head-numerology">—</div>
+    <p class="res-comment" id="comment-numerology">生年月日を入力すると結果が出ます。</p>
+  </section>
+  <section class="card res" id="sec-shichu">
+    <h2>四柱推命</h2>
+    <div class="res-head" id="head-shichu">—</div>
+    <p class="res-comment" id="comment-shichu">生年月日を入力すると結果が出ます。</p>
+  </section>
+  <section class="card res" id="sec-sanmei">
+    <h2>算命学</h2>
+    <div class="res-head" id="head-sanmei">—</div>
+    <p class="res-comment" id="comment-sanmei">生年月日を入力すると結果が出ます。</p>
+  </section>
+  <section class="card res" id="sec-kyusei">
+    <h2>九星気学</h2>
+    <div class="res-head" id="head-kyusei">—</div>
+    <p class="res-comment" id="comment-kyusei">生年月日を入力すると結果が出ます。</p>
+  </section>
+  <section class="card res" id="sec-rokusei">
+    <h2>六星占術</h2>
+    <div class="res-head" id="head-rokusei">—</div>
+    <p class="res-comment" id="comment-rokusei">生年月日を入力すると結果が出ます。</p>
+  </section>
+  <section class="card res" id="sec-shukuyo">
+    <h2>宿曜</h2>
+    <div class="res-head" id="head-shukuyo">—</div>
+    <p class="res-comment" id="comment-shukuyo">生年月日を入力すると結果が出ます。</p>
+  </section>
+  <section class="card res" id="sec-maya">
+    <h2>マヤ暦</h2>
+    <div class="res-head" id="head-maya">—</div>
+    <p class="res-comment" id="comment-maya">生年月日を入力すると結果が出ます。</p>
+  </section>
+  <section class="card res" id="sec-horoscope">
+    <h2>ホロスコープ（西洋占星術）</h2>
+    <div class="res-head" id="head-horoscope">—</div>
+    <p class="res-comment" id="comment-horoscope">生年月日を入力すると結果が出ます。</p>
+  </section>
+  <section class="card res" id="sec-zodiac">
+    <h2>星座占い</h2>
+    <div class="res-head" id="head-zodiac">—</div>
+    <p class="res-comment" id="comment-zodiac">生年月日を入力すると結果が出ます。</p>
+  </section>
+  <section class="card res" id="sec-birthday">
+    <h2>バースデー占い</h2>
+    <div class="res-head" id="head-birthday">—</div>
+    <p class="res-comment" id="comment-birthday">生年月日を入力すると結果が出ます。</p>
+  </section>
+  <section class="card res" id="sec-eto">
+    <h2>干支占い</h2>
+    <div class="res-head" id="head-eto">—</div>
+    <p class="res-comment" id="comment-eto">生年月日を入力すると結果が出ます。</p>
+  </section>
+  <section class="card res" id="sec-fusui">
+    <h2>風水（命卦）</h2>
+    <div class="res-head" id="head-fusui">—</div>
+    <p class="res-comment" id="comment-fusui">生年月日を入力すると結果が出ます。</p>
+  </section>
+  <section class="card res" id="sec-birthstone">
+    <h2>誕生石・誕生花</h2>
+    <div class="res-head" id="head-birthstone">—</div>
+    <p class="res-comment" id="comment-birthstone">生年月日を入力すると結果が出ます。</p>
+  </section>
+  <section class="card res" id="sec-compatibility">
+    <h2>相性診断</h2>
+    <div class="res-head" id="head-compatibility">—</div>
+    <p class="res-comment" id="comment-compatibility">生年月日を入力すると結果が出ます。</p>
+  </section>
+
+  <div class="card">
+    <h2>計算について</h2>
+    <p class="note" style="font-size:13px;color:var(--ink)">
+      四柱推命・算命学は、節入り（月の切り替わり）を固定日で近似した簡易版です。節入り当日前後の生まれの方は目安としてご覧ください。
+      干支・九星気学・風水（命卦）の年の切り替わりは立春（2月4日）基準で判定しています。
+      九星気学の今日の運勢・吉方位は簡易版の日盤によるものです。
+      宿曜は旧暦の生年月日から本命宿を出すため、対応は1900年〜2032年生まれです。
+      ホロスコープは出生時刻を正午（12時）として計算しています。
+      星座占いの今日の運勢は、その日の惑星の位置を天体計算し、星座との角度関係（アスペクト）から判定しています（星座占いランキングと同じ計算です）。
+    </p>
+  </div>
+
+  <footer>
+    <div class="card">
+      本サイトは非公式の個人ツールです。占い結果は娯楽としてお楽しみください。
+    </div>
+    <p class="credit">著作権は andy に帰属します。無断転載を禁止します（リンクは自由です）。埋め込みリンクは動作を保証できないため禁止です。プログラムの複製・転用も禁止します。｜© 2026 andy（わんこ堂）</p>
+    <p class="credit">制作：andy（わんこ堂）× 熊八 🐾（Muse Spark）</p>
+  </footer>
+
+</div>
+
+<script>
+var NUM_TEXT = {"1":{"theme":"始まりとリーダーシップ","desc":"自分の足で道を切り開く人。決断が速く、人の先頭に立つと力を発揮します。周りに頼りすぎず、まず自分で動くことが開運の鍵です。"},"2":{"theme":"調和とサポート","desc":"人の気持ちを察するのが得意な調整役。誰かのそばで支えることで真価を発揮します。対立を避けすぎて自分を後回しにしないことが課題です。"},"3":{"theme":"表現と楽しさ","desc":"明るさと発想力が武器のムードメーカー。話す・作る・表現することで運が回ります。飽きっぽさは、楽しめる工夫で乗り越えましょう。"},"4":{"theme":"安定と積み上げ","desc":"コツコツ積み上げる職人タイプ。計画と継続で信頼を勝ち取ります。変化は苦手でも、土台の強さは誰にも負けません。"},"5":{"theme":"自由と変化","desc":"好奇心旺盛で、変化そのものを楽しめる人。旅や新しい体験が運気を上げます。落ち着かなさは、軸を一つ決めることで力に変わります。"},"6":{"theme":"愛情と責任","desc":"身近な人を大切にする、面倒見のいい人。家庭や仲間との絆が人生の中心になります。人に尽くしすぎて疲れないよう、自分の時間も守りましょう。"},"7":{"theme":"探求と内省","desc":"物事の本質を静かに見抜く研究者タイプ。一人の時間で力を回復します。考えすぎて動けなくなる前に、小さな一歩を試すのがコツです。"},"8":{"theme":"実りとパワー","desc":"目標に向けて現実を動かす力のある人。お金や成果と縁が深く、勝負どころで踏ん張れます。成果を独り占めせず分け合うと、さらに運が巡ります。"},"9":{"theme":"包容と完成","desc":"広い視野で人を受け止める、器の大きい人。損得より「人のため」が原動力になります。抱え込みすぎず、手放すことも大切にしましょう。"},"11":{"theme":"直感と霊感（マスターナンバー）","desc":"鋭い直感と繊細な感性を持つ人。人の心や場の空気を瞬時に読み取ります。神経が高ぶりやすいので、静かな休息が力を整えます。"},"22":{"theme":"大きな実現（マスターナンバー）","desc":"大きな構想を現実の形にできる、スケールの大きな人。理想と実務の両方を回す力があります。焦らず土台から築くほど、成果は大きくなります。"},"33":{"theme":"無条件の愛（マスターナンバー）","desc":"見返りを求めず人を癒やす、菩薩のような数字。周りの幸せが自分の幸せになります。自己犠牲に寄りすぎないバランスが鍵です。"}};
+var NUM_DAY_TEXT = {"1":{"word":"スタートダッシュの日","desc":"新しいことを始めるのに向いた日。迷っていたら、まず一歩だけ動いてみましょう。"},"2":{"word":"寄り添う日","desc":"人との調和が運を運ぶ日。急がず、相手の話をよく聞くことが吉です。"},"3":{"word":"笑顔が効く日","desc":"明るい会話と小さな楽しみが運気アップの鍵。表現することにツキがあります。"},"4":{"word":"地固めの日","desc":"派手さはなくても、片付けや手続きなど土台作りがはかどる日。丁寧さが実を結びます。"},"5":{"word":"変化を楽しむ日","desc":"予定変更も味方になる日。いつもと違う道や店を選ぶと良い出会いがありそうです。"},"6":{"word":"身近な人を大切にする日","desc":"家族や仲間への一言が絆を深める日。感謝を言葉にすると運が巡ります。"},"7":{"word":"静かに整える日","desc":"一人の時間で頭と心をリセットする日。無理に人付き合いを広げなくて大丈夫です。"},"8":{"word":"勝負と実りの日","desc":"仕事やお金の決断に向いた日。やるべきことを先に終わらせると気持ちよく進みます。"},"9":{"word":"手放して締める日","desc":"抱えていたものを区切るのに良い日。終わらせることで次の余白が生まれます。"},"11":{"word":"直感が冴える日","desc":"ひらめきや第一印象が当たりやすい日。気になる違和感は無視しないでください。"},"22":{"word":"大きく動ける日","desc":"普段より大きな決断や交渉に向いた日。準備してきたことが形になりやすいです。"},"33":{"word":"優しさが巡る日","desc":"人のために動くと、それ以上に返ってくる日。無理のない範囲で手を貸しましょう。"}};
+var SANMEI_STAR_TEXT = [{"name":"貫索星","key":"自立と信念の星","desc":"マイペースで自分の信念を貫く星。独立心が強く、目標に向かって真っ直ぐ進む力があります。頑固さは長所でもあるので、柔軟さを少し足すとさらに運が開けます。"},{"name":"石門星","key":"協調と人脈の星","desc":"人との和を大切にする社交の星。協調性と面倒見の良さで、自然と人脈が広がります。合わせすぎて疲れないよう、自分の意見も大切にしてください。"},{"name":"鳳閣星","key":"楽しみと表現の星","desc":"楽しむことと表現することが得意な星。明るさと遊び心が周りを和ませ、好きなことや趣味が運を運んできます。のんびりしすぎには少し注意です。"},{"name":"調舒星","key":"感性と芸術の星","desc":"繊細な感性と表現力を持つ星。芸術や技術、一つのことを深める分野で光ります。感受性が強い分、気持ちの波を整える静かな時間が必要です。"},{"name":"禄存星","key":"愛情と奉仕の星","desc":"人に尽くすことで信頼と実りを集める、愛情と奉仕の星。面倒見の良さがそのまま運になります。与えすぎて疲れないよう、自分の分も残すバランスが鍵です。"},{"name":"司禄星","key":"蓄積と堅実の星","desc":"堅実に積み上げる蓄積の星。家庭的で計画的、コツコツ貯める・育てることが得意です。慎重さが強みですが、時には思い切りの良さも味方になります。"},{"name":"車騎星","key":"行動とスピードの星","desc":"行動力とスピードの星。決断が速く、勝負どころで迷わず動けます。勢いが空回りしないよう、動く前に段取りを一つ挟むと最強です。"},{"name":"牽牛星","key":"誠実と責任の星","desc":"誠実さと責任感の星。真面目な努力がきちんと評価され、組織や社会の中で信頼を築きます。完璧を求めすぎず、息抜きも仕事のうちです。"},{"name":"龍高星","key":"改革とアイデアの星","desc":"改革とアイデアの星。好奇心が旺盛で、新しいこと・変わったことに強いタイプです。飽きっぽさは、軸を一つ決めることで独創性に変わります。"},{"name":"玉堂星","key":"知性と学びの星","desc":"知性と学びの星。勉強や資格、知識を深めることで運が開けます。頭の中で考えすぎる前に、小さく試してみる習慣が実りを早めます。"}];
+var KYU_STARS = {"1":{"name":"一白水星","elem":"水","key":"柔軟さ・適応力・人への共感","desc":"流れを読む力があり、どんな環境にもなじめる柔軟さが持ち味。人の気持ちを汲むのが上手で、静かな環境で力を回復するタイプです。迷いやすい面があるので、小さく決めて動くことが開運の鍵です。"},"2":{"name":"二黒土星","elem":"土","key":"真面目さ・努力・面倒見の良さ","desc":"コツコツ努力を積み重ねる、縁の下の力持ち。面倒見がよく、周囲からの信頼が厚いタイプです。頑張りすぎて抱え込みやすいので、頼ることも覚えると運が巡ります。"},"3":{"name":"三碧木星","elem":"木","key":"明るさ・行動力・新しいもの好き","desc":"明るく活動的で、新しいことへの好奇心が旺盛。発想力と行動力で場を動かすタイプです。勢い任せになりやすいので、大事な場面では一呼吸置くのがコツです。"},"4":{"name":"四緑木星","elem":"木","key":"協調性・信用・人をつなぐ力","desc":"穏やかで協調性があり、人と人をつなぐ調整役。信用を何より大切にするタイプです。優柔不断になりやすいので、決断の期限を自分で決めておくと力を発揮できます。"},"5":{"name":"五黄土星","elem":"土","key":"統率力・存在感・中心に立つ力","desc":"存在感と統率力があり、中心に立つと力を発揮します。良くも悪くも周りへの影響が大きいタイプです。頑固さが裏目に出そうな時は、人の意見を聞く余裕が運を守ります。"},"6":{"name":"六白金星","elem":"金","key":"責任感・筋を通す・リーダー気質","desc":"責任感が強く、筋を通すリーダータイプ。理想が高く、自分にも人にも厳しくなりがちです。プライドを少し緩めて頼ることを覚えると、運の巡りが良くなります。"},"7":{"name":"七赤金星","elem":"金","key":"愛嬌・社交性・楽しむ力","desc":"愛嬌があり、楽しいことが好きな社交家。話術とセンスで人を惹きつけるタイプです。気分に波があるので、大事な決断は気持ちが落ち着いてからにするのが吉です。"},"8":{"name":"八白土星","elem":"土","key":"粘り強さ・継続・蓄積する力","desc":"粘り強く、一度決めたらやり抜く努力家。蓄積と継続そのものが財産になるタイプです。変化は苦手でも、転機を味方につけると大きく伸びる力を持っています。"},"9":{"name":"九紫火星","elem":"火","key":"情熱・直感・華やかさ","desc":"情熱的で直感が鋭く、華やかな魅力の持ち主。ひらめきを形にする力があるタイプです。感情の起伏を整える工夫をすると、才能が安定して発揮できます。"}};
+var KYU_REL_TEXT = {"gives":{"word":"追い風の日","desc":"今日の中心星があなたの星を生じる相生の日。周りからの助けや流れの後押しを受けやすいので、素直に乗って進めるのが吉です。"},"given":{"word":"力を注ぐ日","desc":"あなたの星が今日の中心星を生じる日。自分から動いて人に力を貸すことで運が開けます。出し惜しみしないのがコツです。"},"howa":{"word":"安定の日","desc":"今日の中心星とあなたの星が同じ五行の比和の日。自分のペースを守りやすく、足元を固める作業に向いています。"},"controls":{"word":"慎重にいく日","desc":"今日の中心星があなたの星を克する相克の日。圧や想定外が来やすいので、大事な決断は一晩置くくらいでちょうどいい日です。"},"controlled":{"word":"主導権を握れる日","desc":"あなたの星が今日の中心星を克する日。自分の意志で流れを作っていけます。強引さだけは控えめにするのがコツです。"}};
+var KYU_DIRS = [{"dir":"北","star":1},{"dir":"北東","star":8},{"dir":"東","star":3},{"dir":"南東","star":4},{"dir":"南","star":9},{"dir":"南西","star":2},{"dir":"西","star":7},{"dir":"北西","star":6}];
+var ROKU_STARS = [{"name":"土星人","catch":"理想主義者","desc":"責任感が強く、理想を掲げて努力を重ねるタイプです。正義感が強く、曲がったことが嫌い。地道な積み重ねで信頼を勝ち取り、時間をかけて大きな実を結ぶ大器晩成の面もあります。"},{"name":"金星人","catch":"自由を愛する楽天家","desc":"明るく華やかで行動力抜群、自由を愛する楽天家タイプです。人を楽しませるのが得意で、束縛を嫌います。感性が鋭く、楽しみごとや流行にツキがあります。"},{"name":"火星人","catch":"フィーリング人間","desc":"マイペースで独特な感性を持つ、フィーリングタイプです。人見知りな一面もありますが内面は情熱的。自分の世界を大切にし、直感で物事を掴みます。"},{"name":"天王星人","catch":"現実主義者","desc":"現実的で論理的、冷静な判断ができるリーダータイプです。感情に流されず、物事を俯瞰して見られます。変化に強く、新しい環境でも力を発揮します。"},{"name":"木星人","catch":"大器晩成型","desc":"家庭的で穏やか、地道な努力を積み重ねる大器晩成タイプです。安定を大切にし、身近な人を守る力があります。焦らず続けることで、大きな実りを得ます。"},{"name":"水星人","catch":"独立心の強い開拓者","desc":"独立心が旺盛で、自分の力で道を切り開くタイプです。クールに見られますが集中力が高く、財を成す力があります。自立心の強さが人生の武器になります。"}];
+var ROKU_REIGO = [[10,11],[8,9],[6,7],[4,5],[2,3],[0,1]];
+var ROKU_FORTUNE = [{"word":"追い風の日","desc":"物事がスムーズに進みやすい日。気になっていたことに手をつけると吉です。"},{"word":"種まきの日","desc":"小さな始まりにツキがある日。将来のための一歩を踏み出しましょう。"},{"word":"整える日","desc":"足元を固めるのに向いた日。片付けや見直しが運気を整えます。"},{"word":"人と繋がる日","desc":"対人運が良い日。久しぶりの連絡や誘いに乗ると良い流れが来ます。"},{"word":"静かに蓄える日","desc":"無理に動かず力を蓄える日。学びや休息が次の飛躍の準備になります。"},{"word":"ひらめきの日","desc":"直感が冴える日。ふと思いついたことをメモしておくと役立ちます。"},{"word":"実りの日","desc":"これまでの努力が形になりやすい日。受け取る準備をして過ごしましょう。"},{"word":"切り替えの日","desc":"区切りと再出発に向いた日。終わらせることで新しい余白が生まれます。"}];
+var ROKU_COLORS = ["金色","銀色","赤","青","緑","白色","黒","紫"];
+var ROKU_ITEMS = ["手帳","ハンカチ","腕時計","読みかけの本","温かいお茶","お気に入りの音楽","季節の花","万年筆"];
+var ROKU_BRANCH_NAMES = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
+var ROKU_BRANCH_READINGS = ["ね","うし","とら","う","たつ","み","うま","ひつじ","さる","とり","いぬ","い"];
+var SHUKU_HOSTS = [{"name":"角宿","yomi":"かくしゅく","kw":"開拓・創造・行動","merit":"発想力と行動力","person":"「龍の角」にあたる宿。新しい物事を切り開く開拓者タイプで、明るく行動力があります。先頭に立つと力を発揮しますが、熱しやすく冷めやすい一面もあります。"},{"name":"亢宿","yomi":"こうしゅく","kw":"信念・高潔・正義","merit":"意志の強さと誠実さ","person":"龍の喉にあたる宿。高潔で信念が強く、曲がったことが大嫌い。正義感が強く筋を通しますが、融通が利かず頑固に見られることもあります。"},{"name":"氐宿","yomi":"ていしゅく","kw":"安定・家庭・堅実","merit":"堅実さと包容力","person":"大地の土台にあたる宿。家庭的で安定を好む、縁の下の力持ち。穏やかで包容力があり、土台作りが得意です。派手さより確かさを大切にする人です。"},{"name":"房宿","yomi":"ぼうしゅく","kw":"華やかさ・人気・豊かさ","merit":"人気と人脈","person":"財を蓄える蔵にあたる宿。華やかで人を惹きつける魅力の持ち主。社交的で人気運があり、豊かさと縁が深いタイプです。"},{"name":"心宿","yomi":"しんしゅく","kw":"情熱・感受性・直感","merit":"情熱と直感","person":"龍の心臓にあたる宿。情熱的で感受性が鋭く、好き嫌いがはっきりしています。心が動いたことには全力で取り組む、熱い人です。"},{"name":"尾宿","yomi":"びしゅく","kw":"努力・面倒見・純粋","merit":"忍耐力と面倒見の良さ","person":"龍の尾にあたる宿。面倒見がよく、純粋さを持つ努力家。コツコツ積み上げて、年を重ねるほど実っていく晩年型です。"},{"name":"箕宿","yomi":"きしゅく","kw":"自由・楽天・行動","merit":"楽観性と行動の軽さ","person":"穀物をふるい分ける「み」にあたる宿。自由奔放な楽天家で、束縛を嫌います。風のように軽やかに動き回る行動派です。"},{"name":"斗宿","yomi":"としゅく","kw":"知恵・探究・分析","merit":"知性と分析力","person":"枡（ます）にあたる宿。知恵者で探究心が強く、物事の仕組みを見抜く研究者タイプ。専門分野を深く掘り下げることで力を発揮します。"},{"name":"女宿","yomi":"じょしゅく","kw":"努力・器用・誠実","merit":"勤勉さと誠実さ","person":"織姫にあたる宿。真面目で努力家、手先が器用な職人気質。誠実に積み重ねることで、周囲からの信頼を得ていくタイプです。"},{"name":"虚宿","yomi":"きょしゅく","kw":"精神性・洞察・静けさ","merit":"洞察力と精神性","person":"「虚」は精神世界を表す宿。物事の本質を見つめる洞察力があり、哲学や精神世界に惹かれます。一人の静かな時間を大切にする人です。"},{"name":"危宿","yomi":"きしゅく","kw":"冒険・大胆・変化","merit":"度胸と決断力","person":"屋根の上に立つようなスリルを表す宿。冒険心が強く、変化の多い人生を歩みがちです。大胆な決断が道を開くタイプです。"},{"name":"室宿","yomi":"しつしゅく","kw":"財運・蓄積・計画","merit":"財運と計画性","person":"宮室＝財を蓄える場所にあたる宿。財運に恵まれ、計画的に財産を築く堅実派。家庭を守る力も強いタイプです。"},{"name":"壁宿","yomi":"へきしゅく","kw":"学問・知識・文才","merit":"知識欲と文才","person":"書庫の壁にあたる宿。知識欲が旺盛で、学問や文学に縁が深い文化人タイプ。静かに蓄えた知識が財産になります。"},{"name":"奎宿","yomi":"けいしゅく","kw":"文学・芸術・知性","merit":"学問と芸術性","person":"文学・学問の神にあたる宿。知的で芸術的センスに恵まれ、美しいものへの感度が高い人。学ぶこと自体を楽しめるタイプです。"},{"name":"婁宿","yomi":"ろうしゅく","kw":"求心力・人望・統率","merit":"統率力と人望","person":"人や物を「結び集める」宿。求心力があり、面倒見のよいリーダータイプです。人が集まる場でこそ力を発揮します。"},{"name":"胃宿","yomi":"いしゅく","kw":"商才・食・蓄え","merit":"商才と現実感覚","person":"食糧を蓄える胃にあたる宿。現実感覚に優れた商売上手。食べることと豊かさに縁が深く、堅実に蓄える力があります。"},{"name":"昴宿","yomi":"ぼうしゅく","kw":"品格・審美眼・理想","merit":"美意識と気品","person":"昴（すばる）の星団にあたる宿。品の良さと審美眼を持つ、理想の高い人。美しいものを見抜く目があり、気品ある振る舞いが魅力です。"},{"name":"畢宿","yomi":"ひっしゅく","kw":"粘り強さ・安定・守る力","merit":"粘り強さと守る力","person":"狩りの網にあたる宿。一度つかんだら離さない粘り強さが武器です。安定感があり、大切なものを守り抜く力があります。"},{"name":"觜宿","yomi":"ししゅく","kw":"言葉・表現・弁舌","merit":"弁舌と表現力","person":"鳥のくちばしにあたる宿。言葉と表現の人で、弁が立ち議論にも強いタイプ。伝える力で道を切り開きます。"},{"name":"参宿","yomi":"しんしゅく","kw":"野心・実行・出世","merit":"野心と実行力","person":"オリオンの三つ星にあたる宿。野心と実行力をあわせ持つ出世タイプ。目標を定めたら一直線に進む推進力があります。"},{"name":"井宿","yomi":"せいしゅく","kw":"知恵・冷静・計画","merit":"知恵と冷静さ","person":"井戸にあたる宿。知恵の泉のように、冷静で計画的な知性派。物事を深く考え、筋道立てて進めるのが得意です。"},{"name":"鬼宿","yomi":"きしゅく","kw":"直感・霊感・神秘","merit":"直感と霊感","person":"鬼＝霊を表す宿。霊感や直感が鋭く、ミステリアスな雰囲気の持ち主。目に見えないものを感じ取る力があります。"},{"name":"柳宿","yomi":"りゅうしゅく","kw":"柔軟・適応・芸事","merit":"柔軟性と芸事の才","person":"しなやかな柳にあたる宿。柔軟で適応力が高く、芸事に縁が深いタイプ。受け止めるしなやかさが人間関係を円くします。"},{"name":"星宿","yomi":"せいしゅく","kw":"華やかさ・信念・注目","merit":"華やかさと信念","person":"輝く星にあたる宿。華やかで信念が強く、自然と注目を集める存在。自分の光を信じて進むことで道が開けます。"},{"name":"張宿","yomi":"ちょうしゅく","kw":"社交・明るさ・人気","merit":"社交性と明るさ","person":"弓を張る姿にあたる宿。明るく社交的で、宴や集まりを盛り上げる人気者。人に好かれる天性の愛嬌があります。"},{"name":"翼宿","yomi":"よくしゅく","kw":"誠実・穏やか・旅","merit":"誠実さと穏やかさ","person":"鳥の翼にあたる宿。穏やかで誠実、文学や旅に縁が深いタイプ。静かな努力を続け、遠くへ羽ばたく力を持ちます。"},{"name":"軫宿","yomi":"しんしゅく","kw":"情愛・奉仕・晩年の実り","merit":"情の深さと奉仕心","person":"車の台（荷台）にあたる宿。情に厚く、人のために尽くす奉仕の人。積み上げた徳が晩年に大きく実るタイプです。"}];
+var SHUKU_MONTH_START = [11,13,15,17,19,21,24,0,2,4,7,9];
+var SHUKU_REL_ORDER = ["栄","衰","安","危","成","壊","友","親"];
+var SHUKU_REL_TEXT = {"命":{"word":"静かに過ごす日","desc":"今日はあなたの本命宿と同じ宿の日。『宿曜経』では命の日は「何ごとも新しく起こさない」のがよいとされます。無理に動かず、内側を整える日にしましょう。"},"栄":{"word":"追い風の日","desc":"栄の日は、役目に就く・目上の人に会う・商いを始める・新しい衣を着るなど、表に出る行動によいとされる日です。"},"衰":{"word":"癒やしの日","desc":"衰の日は、悪いものを払うことや療養によいとされます。遠出や大きな売買は控えめにして、体と心を休めましょう。"},"安":{"word":"基盤を動かせる日","desc":"安の日は、転居や遠出、住まいや身の回りを整えることによいとされます。自分のペースで物事を進めやすい日です。"},"危":{"word":"刺激のある日","desc":"危の日は人との交わりにはよい一方、遠出・転居・売買は控えるとされます。考え方の違いが刺激になる日です。"},"成":{"word":"実を結ぶ日","desc":"成の日は、学問や修行、薬を調えることによいとされます。積み重ねてきたことが形になりやすい日です。"},"壊":{"word":"変化の大きい日","desc":"壊の日は、災いを鎮めるような行いによいとされます。遠出・婚姻・大きな売買は控えめに。揺さぶりが変化のきっかけになります。"},"友":{"word":"交わりが楽しい日","desc":"友の日は、人と交わりを結ぶことや、宴・集まりによいとされます。気安い相手との時間が運を運びます。"},"親":{"word":"ご縁が深まる日","desc":"親の日は、人と交わりを結ぶことや、宴・集まりによいとされます。親しみと信頼が育ちやすい日です。"},"業":{"word":"深い縁の日","desc":"業の日は前世の縁とされる日。経典では解釈が分かれますが、することが成就しにくいともされます。大事な決断は急がないのが無難です。"},"胎":{"word":"静かに育む日","desc":"胎の日は来世の縁とされる日。『宿曜経』では命の日と同様、新しいことを起こさない方がよいとされます。次の準備に当てる日にしましょう。"}};
+var SHUKU_LUCKY = ["朝、窓を開けて深呼吸する","財布の中を整理する","温かい飲み物をゆっくり飲む","近くの神社や、緑のある場所を歩く","机の上を5分だけ片付ける","夜、月や星を見る時間を作る","手書きでメモを取る","好きな香りを身につける","靴を磨く・揃える","旬のものを食べる","古い写真を見返す","寝る前に、今日の良かったことを1つ思い出す"];
+var MAYA_SEALS = [{"name":"赤い竜","kw":"誕生・育む・存在","person":"命の始まりを象徴する紋章。面倒見がよく、家族や仲間を育てることに力を発揮します。生きることそのものへの肯定感が強く、ゼロから物事を生み出すエネルギーを持ちます。"},{"name":"白い風","kw":"伝える・呼吸・スピリット","person":"風のように思いを運ぶ伝令者。言葉や表現で人の心を動かすタイプです。自由を愛し、縛られない環境でこそ力を発揮します。"},{"name":"青い夜","kw":"夢・直感・豊かさ","person":"夢と直感の紋章。内面世界が豊かで、眠っている間にひらめきを得ることもあります。心の豊かさを大切にし、人の夢を応援する力も持ちます。"},{"name":"黄色い種","kw":"開花・目指す・目覚め","person":"種が芽吹くように、物事のきっかけを作る紋章。好奇心旺盛で、興味を持ったことにはとことんのめり込みます。開花のタイミングを掴むのが上手です。"},{"name":"赤い蛇","kw":"生命力・本能・生き残る","person":"強い生命力と鋭い本能の持ち主。情熱的で、好きなことには全力を注ぎます。体の声を聞くことが、運を開く鍵になります。"},{"name":"白い世界の橋渡し","kw":"死と再生・平等・ゆだねる","person":"異なる世界をつなぐ架け橋の紋章。手放すことで新しい流れを迎える力があります。人と人との間を取り持つ調整役にも向きます。"},{"name":"青い手","kw":"癒し・知る・成し遂げる","person":"手で触れて癒やす紋章。体験を通して理解する実践派で、人の役に立つことで喜びを感じます。やり遂げる力と癒やしの手をあわせ持ちます。"},{"name":"黄色い星","kw":"美・芸術・気品","person":"美しさと調和の紋章。審美眼があり、場を美しく整えることが得意です。気品ある振る舞いと芸術的センスが魅力になります。"},{"name":"赤い月","kw":"流れ・清める・普遍的な水","person":"月の満ち欠けと水の流れの紋章。感情が豊かで、場の空気を浄化する力があります。流れに逆らわず、しなやかに生きるタイプです。"},{"name":"白い犬","kw":"愛・誠実・ハート","person":"無条件の愛と忠誠の紋章。信頼を何より大切にし、大切な人を守り抜きます。人懐っこさと誠実さが周囲を安心させます。"},{"name":"青い猿","kw":"遊び・魔術・ひらめき","person":"遊び心とひらめきの紋章。深刻になりすぎず、楽しみながら問題を解く天才肌。子どものような好奇心が創造性の源です。"},{"name":"黄色い人","kw":"自由意志・知恵・影響力","person":"知恵と自由意志の紋章。人の心に影響を与える言葉の力を持ちます。学ぶことが好きで、得た知恵を周りに分け与えるタイプです。"},{"name":"赤い空歩く人","kw":"探る・空間・目覚め","person":"空を歩くように自由に探求する紋章。枠にとらわれず、新しい世界へ踏み出す勇気があります。人々の目覚めを促すメッセンジャーでもあります。"},{"name":"白い魔法使い","kw":"永遠・魅惑・受容","person":"時間を味方につける魔法使いの紋章。ありのままを受け入れる受容性が魅力となり、人を惹きつけます。今この瞬間を大切にする人です。"},{"name":"青い鷲","kw":"ヴィジョン・心眼・創造","person":"高い空から全体を見渡す鷲の紋章。先を見通すヴィジョンの力があり、大局をつかむのが得意です。大きな夢を描くことで人を導きます。"},{"name":"黄色い戦士","kw":"知性・問う・大胆さ","person":"恐れず問う戦士の紋章。知的好奇心と行動力をあわせ持ち、疑問を力に変えて前進します。挑戦そのものが成長の糧になります。"},{"name":"赤い地球","kw":"共時性・舵取り・進化","person":"地球のリズムと共鳴する紋章。偶然に見える出来事の意味を読み取る力があり、流れを読む舵取りが得意です。人とのつながりを大切にします。"},{"name":"白い鏡","kw":"映し出す・秩序・果てしなさ","person":"真実を映す鏡の紋章。物事をありのままに見つめる目を持ち、秩序立てて整える力があります。自分を映す相手との出会いが成長の鍵です。"},{"name":"青い嵐","kw":"エネルギー・触発・自己生成","person":"嵐のような変革のエネルギーの紋章。停滞を打ち破り、自分も周りも生まれ変わらせる力があります。エネルギッシュで、人を触発する存在です。"},{"name":"黄色い太陽","kw":"啓発・普遍的な火・生命","person":"すべてを照らす太陽の紋章。260日の締めくくりにふさわしい、大きな愛と啓発のエネルギーを持ちます。周囲を明るく照らす中心人物です。"}];
+var MAYA_TONES = [{"name":"磁気の音","kw":"目的・引きつける","desc":"始まりの音。目的を定め、必要なものを引きつける力を持ちます。まず「何のために」を決めることが、この音のテーマです。"},{"name":"月の音","kw":"挑戦・二極化","desc":"二つの極を見比べる音。迷いや葛藤を通して、本当に大切なものが見えてきます。挑戦を味方につけることがテーマです。"},{"name":"電気の音","kw":"奉仕・活性化","desc":"動きを生み出す音。人に役立つことで流れが活性化します。まず動いてみることが、この音の力を引き出します。"},{"name":"自己存在の音","kw":"形・明らかにする","desc":"形を定める音。測って、整えて、土台を作ることが得意です。計画を具体的な形にすることがテーマです。"},{"name":"倍音の音","kw":"輝き・力を与える","desc":"中心から輝く音。自分の力を認めて発揮することで、周りにも力を分けられます。自信がテーマです。"},{"name":"律動の音","kw":"平等・組織する","desc":"リズムを整える音。バランス感覚に優れ、人や物事を組織立てて回すことが得意です。調和がテーマです。"},{"name":"共振の音","kw":"調律・つなぐ","desc":"共鳴の音。目に見えない流れと調律し、必要な情報や人を引き寄せます。直感を信じることがテーマです。"},{"name":"銀河の音","kw":"調和・型どる","desc":"完全性と調和の音。信念と行動を一致させ、生き方そのものを型にしていく力があります。誠実さがテーマです。"},{"name":"太陽の音","kw":"意図・脈動させる","desc":"意図を広げる音。強い意志が現実を脈動させ、物事を拡大していきます。願いを明確にすることがテーマです。"},{"name":"惑星の音","kw":"現れ・生み出す","desc":"形になって現れる音。思い描いたものを現実に生み出す力があります。仕上げと完成がテーマです。"},{"name":"スペクトルの音","kw":"解放・解き放つ","desc":"解き放つ音。不要なものを手放すことで、新しい流れが生まれます。解放と浄化がテーマです。"},{"name":"水晶の音","kw":"協力・捧げる","desc":"協力の音。人と力を合わせ、成果を分かち合うことで大きな結晶が生まれます。連携がテーマです。"},{"name":"宇宙の音","kw":"存在・持ちこたえる","desc":"締めくくりと存在の音。すべてを受け止めて持ちこたえる器の大きさがあります。次のサイクルへの橋渡しがテーマです。"}];
+var BDAY_MONTHS = [{"theme":"新しい始まりと決意","desc":"一年の始まりに生まれたあなたは、目標を立てて黙々と前に進む力を持っています。周りの評価よりも自分の納得を大切にする、芯の通ったタイプです。寒さの中で育った芯の強さが、ここぞという場面で静かな存在感を放ちます。"},{"theme":"個性と自由な発想","desc":"冬の終わりに生まれたあなたは、常識にとらわれない自由な発想の持ち主です。人と違うことを恐れず、自分の感性を信じて進めます。少し変わっていると言われることが、そのまま魅力になっています。"},{"theme":"芽吹きと豊かな感受性","desc":"春の芽吹きとともに生まれたあなたは、感受性が豊かで人の気持ちに敏感です。新しい環境にも素早く馴染む柔軟さを持っています。優しさが強みですが、抱え込みすぎないことが大切です。"},{"theme":"安定と誠実さ","desc":"春の盛りに生まれたあなたは、誠実で地に足のついたタイプです。約束を守り、コツコツ積み上げることで信頼を集めます。変化はゆっくりでも、一度決めたことは最後までやり抜きます。"},{"theme":"好奇心と行動力","desc":"新緑の季節に生まれたあなたは、好奇心旺盛でフットワークの軽い人です。興味を持ったらまず試してみる行動力が運を呼びます。広く浅くより、面白いと感じた一つを深めることで大きく伸びます。"},{"theme":"調和と深い愛情","desc":"梅雨の潤いの季節に生まれたあなたは、人の心に寄り添う愛情深いタイプです。場の調和を大切にし、誰かの支えになることに喜びを感じます。自分の気持ちも同じくらい大切にしてください。"},{"theme":"情熱と探求心","desc":"夏の始まりに生まれたあなたは、情熱的で探求心の強い人です。好きなことには寝食を忘れて没頭する集中力があります。熱しやすく冷めやすい一面は、目標を小分けにすることで乗り越えられます。"},{"theme":"実行力と強い存在感","desc":"真夏に生まれたあなたは、エネルギッシュで存在感のあるタイプです。やると決めたら即実行する推進力が周りを動かします。パワーが強い分、周りのペースにも目を配るとさらに信頼されます。"},{"theme":"知性と完成への美意識","desc":"実りの秋の始まりに生まれたあなたは、知的で観察力に優れた人です。物事を分析し、より良い形に仕上げることに喜びを感じます。完璧を求めすぎず、八割の完成で世に出す勇気も持ちましょう。"},{"theme":"バランス感覚と美意識","desc":"秋の深まりに生まれたあなたは、バランス感覚と美意識に優れたタイプです。人と人との間を取り持つ調整役として頼られます。決断に迷いやすい分、直感で選んだ方を信じると道が開けます。"},{"theme":"洞察力と揺るがない信念","desc":"冬の入り口に生まれたあなたは、物事の本質を見抜く洞察力の持ち主です。一度心に決めたことは簡単には曲げない、強い信念があります。深く考える力が、人の相談に乗る場面でも活きます。"},{"theme":"集大成と大きな包容力","desc":"一年の締めくくりに生まれたあなたは、経験を糧にする包容力のある人です。喜びも苦労も全部受け止めて、人のために活かすことができます。締めくくりと始まりの両方を知る、懐の深さが魅力です。"}];
+var BDAY_DAY_TRAITS = ["何事も自分から始める先駆者の色","人の気持ちを先回りして読む繊細な色","場を明るくする表現力の色","一度決めたら粘り強く続ける職人の色","変化を楽しみ風を読む色","身近な人を守ろうとする愛情の色","静かに本質を見抜く探求者の色","目標に向かって現実を動かす力の色","広い視野で人を受け止める包容の色","新しいサイクルを切り開く開拓者の色","直感が冴えわたる霊感の色","大きな構想を形にする実現力の色","言葉とユーモアで人をほぐす色","土台を固めて信頼を積む堅実な色","自由を愛し枠に収まらない色","人のために尽くす献身の色","一人の時間で力を蓄える思索の色","勝負どころで踏ん張れる勝負師の色","すべてを受け入れて次へ進む完成の色","再スタートを何度でも切れる再生の色","ひらめきを行動に変える瞬発力の色","理想を現実の設計図に落とす色","好奇心のままに世界を広げる色","小さな約束を積み重ねる誠実の色","枠を飛び越える冒険心の色","誰かの幸せを自分の喜びにする色","深く潜って真実を掘り当てる色","結果で語る実力派の色","終わりと始まりをつなぐ調整の色","積み上げた経験が光る円熟の色","一年を締める大らかさと貫禄の色"];
+var BDAY_CLOSERS = ["人生のテーマは「自分の道を自分の足で作ること」。誰かの真似ではない生き方が、あなたらしさを育てます。","人生のテーマは「人との縁を育てること」。出会いを大切にするほど、思わぬところから運が巡ってきます。","人生のテーマは「好きを仕事や形にすること」。楽しみながら続けたことが、やがて大きな実りになります。","人生のテーマは「積み上げたものを次へ渡すこと」。あなたの経験は、誰かにとっての道しるべになります。","人生のテーマは「変化を味方にすること」。環境が変わるたびに新しい自分に出会える人です。","人生のテーマは「本質を見極めること」。表面的な情報に流されず、自分の目で確かめる姿勢が力になります。","人生のテーマは「誰かの居場所になること」。あなたのそばでは人が安心します。その温かさが最大の財産です。","人生のテーマは「挑戦し続けること」。年齢や状況を理由に諦めない姿勢が、周りの人の背中も押します。"];
+var BDAY_STRENGTHS = [{"name":"継続力","desc":"決めたことを長く続けられる粘り強さがあります。"},{"name":"観察力","desc":"人や場の変化にいち早く気づく目を持っています。"},{"name":"決断力","desc":"迷う場面でも腹を決める速さがあります。"},{"name":"共感力","desc":"相手の立場に立って考えられる優しさがあります。"},{"name":"発想力","desc":"既存の枠にとらわれないアイデアを出せます。"},{"name":"誠実さ","desc":"嘘のない態度が、長期的な信頼を生みます。"},{"name":"行動力","desc":"考えるより先に一歩動ける軽やかさがあります。"},{"name":"集中力","desc":"一つのことに深く没頭する力があります。"},{"name":"調整力","desc":"対立する意見の間を取り持つバランス感覚があります。"},{"name":"表現力","desc":"思いを言葉や形にして伝える力があります。"},{"name":"包容力","desc":"人の失敗を受け止められる懐の深さがあります。"},{"name":"分析力","desc":"物事を冷静に分解して考える力があります。"}];
+var BDAY_WEAKNESSES = [{"name":"抱え込みやすい","desc":"頼まれると断れず、一人で背負いがちです。早めに助けを求めるのが裏返しのコツです。"},{"name":"慎重すぎる","desc":"石橋を叩きすぎて好機を逃すことがあります。七割の確信で動く練習が効きます。"},{"name":"飽きっぽい","desc":"興味の移り変わりが速い分、続ける工夫があると強みに変わります。"},{"name":"頑固なところ","desc":"一度決めると曲げにくい面があります。人の意見を一度受け止める余白が鍵です。"},{"name":"感情が表に出やすい","desc":"喜怒哀楽が顔に出やすい分、誠実さとして伝わる場面も多いです。"},{"name":"完璧主義","desc":"納得いくまで出し惜しみしがちです。「まず出す」を合言葉にすると回り始めます。"},{"name":"人に合わせすぎる","desc":"場の空気を優先して自分の希望を後回しにしがちです。小さな我を通す練習を。"},{"name":"心配性","desc":"先のことを考えすぎて疲れることがあります。今できることに集中すると楽になります。"},{"name":"マイペースすぎる","desc":"自分の速度を大切にする分、周りの締切とずれることがあります。共有を早めに。"},{"name":"直感に頼りすぎる","desc":"勘が鋭い反面、根拠の確認を飛ばしがちです。一手間かける確認が精度を上げます。"},{"name":"遠慮がち","desc":"本音を抑えて損をすることがあります。言い方を選べば伝わる相手は多いはずです。"},{"name":"切り替えが苦手","desc":"一つのことが頭から離れにくい面があります。区切りの儀式を作ると楽になります。"}];
+var BDAY_LUCKY_ITEMS = ["白いハンカチ","木のキーホルダー","小さな手帳","青いボールペン","革の財布","丸い石","お気に入りのマグカップ","銀のアクセサリー","植物の葉","懐中時計","刺繍入りのポーチ","ガラスの置物","真鍮のしおり","布のトートバッグ","陶器の箸置き","小さな鈴","星の形のチャーム","月の形のチャーム","天然石のブレスレット","手編みのコースター","古い切手","貝殻","羽根のモチーフ","鍵の形のペンダント"];
+var BDAY_LUCKY_COLORS = ["紺","金","白","若草色","山吹色","藍色","朱色","生成り","深緑","藤色"];
+var ETO_DATA = [{"kanji":"子","yomi":"ねずみ","animal":"鼠","desc":"機転が利いて適応力が高い人。お金や情報への感度が鋭く、ピンチでも上手に切り抜けます。人当たりの良さで周りに好かれるタイプです。"},{"kanji":"丑","yomi":"うし","animal":"牛","desc":"粘り強く、コツコツ努力を積み上げる人。一度決めたことは最後までやり抜く責任感があります。慎重な分、決断には少し時間がかかります。"},{"kanji":"寅","yomi":"とら","animal":"虎","desc":"行動力と度胸のあるリーダータイプ。正義感が強く、弱い者を放っておけません。勢い任せにならないよう一呼吸おくと、さらに頼れる存在になります。"},{"kanji":"卯","yomi":"うさぎ","animal":"兎","desc":"穏やかで人当たりがよく、場の空気を和ませる人。争いを避ける平和主義者で、芸術的なセンスにも恵まれます。決断を先延ばしにしがちな一面もあります。"},{"kanji":"辰","yomi":"たつ","animal":"龍","desc":"スケールの大きな夢を追う、エネルギッシュな人。自信にあふれ、周りを引っ張るカリスマ性があります。プライドが高い分、失敗を引きずらない切り替えが鍵です。"},{"kanji":"巳","yomi":"へび","animal":"蛇","desc":"洞察力が鋭く、物事の本質を見抜く人。情熱を内に秘め、目標に向けて静かに粘ります。警戒心が強く、心を開くまでには時間がかかります。"},{"kanji":"午","yomi":"うま","animal":"馬","desc":"明るく開放的で、行動が速い人。自由を愛し、束縛を嫌います。熱しやすく冷めやすい面は、目標を細かく区切ることで長所に変わります。"},{"kanji":"未","yomi":"ひつじ","animal":"羊","desc":"優しく協調性のある平和主義者。人の気持ちに寄り添うのが上手で、芸術センスも豊かです。優柔不断になりがちなので、小さな決断から練習するとよいでしょう。"},{"kanji":"申","yomi":"さる","animal":"猿","desc":"頭の回転が速く、器用で機知に富む人。新しいことを次々とこなすマルチな才能があります。飽きっぽさとは上手に付き合うのがコツです。"},{"kanji":"酉","yomi":"とり","animal":"鳥","desc":"几帳面で観察眼が鋭い人。美的センスと計画性に優れ、仕事は丁寧で正確です。細部にこだわりすぎて疲れないよう、力の抜きどころも大切です。"},{"kanji":"戌","yomi":"いぬ","animal":"犬","desc":"義理堅く誠実で、信頼される人。正義感が強く、仲間を守るためには労を惜しみません。心配性な面があり、考えすぎる前に相談すると楽になります。"},{"kanji":"亥","yomi":"いのしし","animal":"猪","desc":"真っ直ぐで情に厚い一直線タイプ。決めた目標にはまっしぐらに挑みます。純粋な分、人を信じやすいので、大事な約束ごとは確認を忘れずに。"}];
+var ETO_REL_TEXT = {"rokugo":"六合（りくごう）の好相性。自然と息が合い、支え合える関係です。","sango":"三合（さんごう）の好相性。価値観が近く、一緒にいると物事が大きく進みます。","chu":"正反対の組み合わせ（沖）。刺激的で成長し合えますが、歩み寄りが鍵です。","gai":"すれ違いやすい組み合わせ（害）。言葉を丁寧に選ぶと上手くいきます。","same":"同じ干支同士。気心は知れますが、似た者同士で意地を張らないようにしましょう。","normal":"穏やかな相性。お互いのペースを尊重すれば、長く続く関係になります。"};
+var ETO_FORTUNE_WORDS = ["小さな幸運が重なる日。笑顔で過ごしましょう","思い切った一歩が実を結ぶ日","人との会話にヒントあり。耳を傾けてみて","丁寧な仕事が評価される日","懐かしい人との縁が温まる日","新しいことに挑戦すると流れが変わる日","焦らず進めば結果がついてくる日","身の回りを整えると運気も整う日","直感が冴える日。最初のひらめきを信じて","感謝を言葉にすると、良いことが巡ってくる日"];
+var ETO_LUCKY_ITEMS = ["ハンカチ","青い小物","温かい飲み物","新しいメモ帳","季節の花","磨いた靴","読みかけの本","お気に入りの音楽","深呼吸","湯船につかること"];
+var FUSUI_GUA = {"1":{"name":"坎","reading":"かん","elem":"水","dir":"北","group":"東四命","trait":"柔軟で思慮深く、流れを読む力があるタイプ。知恵と人脈が運の源になります。","good":{"生気":"南東","延年":"南","天医":"東","伏位":"北"},"bad":{"絶命":"南西","五鬼":"東北","六殺":"北西","禍害":"西"}},"2":{"name":"坤","reading":"こん","elem":"土","dir":"南西","group":"西四命","trait":"包容力と面倒見の良さが持ち味。コツコツ積み上げる堅実さで信頼を集めるタイプです。","good":{"生気":"東北","延年":"西","天医":"北西","伏位":"南西"},"bad":{"絶命":"北","五鬼":"南東","六殺":"東","禍害":"南"}},"3":{"name":"震","reading":"しん","elem":"木","dir":"東","group":"東四命","trait":"行動力と発展の気を持つタイプ。思い立ったらすぐ動く勢いが運を開きます。","good":{"生気":"南","延年":"北","天医":"南東","伏位":"東"},"bad":{"絶命":"西","五鬼":"北西","六殺":"東北","禍害":"南西"}},"4":{"name":"巽","reading":"そん","elem":"木","dir":"南東","group":"東四命","trait":"風のように柔軟で、信用と商才に恵まれるタイプ。人との縁そのものが財産になります。","good":{"生気":"北","延年":"南","天医":"東","伏位":"南東"},"bad":{"絶命":"東北","五鬼":"南西","六殺":"西","禍害":"北西"}},"6":{"name":"乾","reading":"けん","elem":"金","dir":"北西","group":"西四命","trait":"リーダー気質で理想が高いタイプ。責任ある立場に立つほど力を発揮します。","good":{"生気":"西","延年":"東北","天医":"南西","伏位":"北西"},"bad":{"絶命":"南","五鬼":"東","六殺":"南東","禍害":"北"}},"7":{"name":"兌","reading":"だ","elem":"金","dir":"西","group":"西四命","trait":"明るく社交的で楽しみ上手なタイプ。笑顔と会話が運を運んできます。","good":{"生気":"北西","延年":"南西","天医":"東北","伏位":"西"},"bad":{"絶命":"東","五鬼":"南","六殺":"北","禍害":"南東"}},"8":{"name":"艮","reading":"ごん","elem":"土","dir":"東北","group":"西四命","trait":"継続と蓄積の気を持つタイプ。変化より安定を好み、貯める・守ることが得意です。","good":{"生気":"南西","延年":"北西","天医":"西","伏位":"東北"},"bad":{"絶命":"南東","五鬼":"北","六殺":"南","禍害":"東"}},"9":{"name":"離","reading":"り","elem":"火","dir":"南","group":"東四命","trait":"華やかで直感が鋭いタイプ。美意識とひらめきが武器になります。","good":{"生気":"東","延年":"南東","天医":"北","伏位":"南"},"bad":{"絶命":"北西","五鬼":"西","六殺":"南西","禍害":"東北"}}};
+var BST_STONES = {"1":[{"name":"ガーネット","words":"真実・友愛","color":"#7b1e2b"}],"2":[{"name":"アメジスト","words":"誠実・心の平和","color":"#7d5ba6"},{"name":"クリソベリル・キャッツアイ","words":"守護","color":"#b8a24a"}],"3":[{"name":"アクアマリン","words":"聡明・沈着","color":"#7fc4c9"},{"name":"サンゴ","words":"長寿・幸福","color":"#f08080"},{"name":"ブラッドストーン","words":"献身・勇敢","color":"#2e4b3f"},{"name":"アイオライト","words":"誠実・道しるべ","color":"#5a5f9e"}],"4":[{"name":"ダイヤモンド","words":"永遠の絆・純潔","color":"#dfe9ec"},{"name":"モルガナイト","words":"優美・愛情","color":"#f4c2c2"}],"5":[{"name":"エメラルド","words":"幸運・幸福","color":"#1f9e6e"},{"name":"ヒスイ","words":"長寿","color":"#57a773"}],"6":[{"name":"パール","words":"健康・長寿","color":"#f2ede4"},{"name":"ムーンストーン","words":"幸運・恋の予感","color":"#cfd8dc"},{"name":"アレキサンドライト","words":"情熱・秘めた想い","color":"#7a4f7e"}],"7":[{"name":"ルビー","words":"情熱・仁愛","color":"#c01030"},{"name":"スフェーン","words":"永久不変","color":"#a8a04a"}],"8":[{"name":"ペリドット","words":"夫婦愛・幸福","color":"#9ab54e"},{"name":"サードオニックス","words":"夫婦の幸福","color":"#b5542d"},{"name":"スピネル","words":"成功・内面の充実","color":"#a03050"}],"9":[{"name":"サファイア","words":"慈愛・誠実","color":"#1f4e9e"},{"name":"クンツァイト","words":"無償の愛","color":"#e3a7c8"}],"10":[{"name":"オパール","words":"希望・純真","color":"#e8e2f2"},{"name":"トルマリン","words":"友情・無邪気","color":"#d1608a"}],"11":[{"name":"トパーズ","words":"友情・希望","color":"#d9a441"},{"name":"シトリン","words":"繁栄・富","color":"#e3c565"}],"12":[{"name":"トルコ石","words":"成功・繁栄","color":"#3aa6b9"},{"name":"ラピスラズリ","words":"幸運・真実","color":"#27408b"},{"name":"タンザナイト","words":"高貴・冷静","color":"#5b5ea6"},{"name":"ジルコン","words":"安らぎ","color":"#c8b8a2"}]};
+var BST_MONTH_FLOWER = {"1":{"name":"スイセン","words":"自己愛・神秘"},"2":{"name":"フリージア","words":"あどけなさ・純潔"},"3":{"name":"チューリップ","words":"思いやり・愛の告白"},"4":{"name":"サクラ","words":"精神美・優美な女性"},"5":{"name":"スズラン","words":"再び幸せが訪れる・純粋"},"6":{"name":"バラ","words":"愛・美"},"7":{"name":"ユリ","words":"純粋・威厳"},"8":{"name":"ヒマワリ","words":"憧れ・情熱"},"9":{"name":"コスモス","words":"調和・乙女の純真"},"10":{"name":"ガーベラ","words":"希望・常に前進"},"11":{"name":"キク","words":"高貴・高尚"},"12":{"name":"ポインセチア","words":"祝福・幸運を祈る"}};
+var BST_DAY_FLOWERS = [{"name":"カトレア","words":"成熟した大人の魅力"},{"name":"マーガレット","words":"恋占い・真実の愛"},{"name":"ラナンキュラス","words":"とても魅力的"},{"name":"デイジー","words":"純潔・美人"},{"name":"カーネーション","words":"無垢で深い愛"},{"name":"アイリス","words":"良い便り・希望"},{"name":"パンジー","words":"もの思い・私を思って"},{"name":"スミレ","words":"謙虚・誠実"},{"name":"ネモフィラ","words":"成功・可憐"},{"name":"ワスレナグサ","words":"私を忘れないで・真実の愛"},{"name":"ヒヤシンス","words":"スポーツ・遊び心"},{"name":"カスミソウ","words":"清らかな心・感謝"},{"name":"アネモネ","words":"はかない恋・期待"},{"name":"ダリア","words":"華麗・優雅"},{"name":"ペチュニア","words":"あなたと一緒なら心が和らぐ"},{"name":"ラベンダー","words":"沈黙・私に答えてください"},{"name":"ハナミズキ","words":"永続性・返礼"},{"name":"キンポウゲ","words":"子供らしさ・栄誉"},{"name":"クレマチス","words":"精神の美・旅人の喜び"},{"name":"シャクヤク","words":"恥じらい・はにかみ"},{"name":"アジサイ","words":"団らん・家族愛"},{"name":"スイートピー","words":"門出・優しい思い出"},{"name":"ミモザ","words":"感謝・友情"},{"name":"カラー","words":"華麗なる美・乙女のしとやかさ"},{"name":"ハイビスカス","words":"繊細な美・新しい恋"},{"name":"ブルーベル","words":"謙遜・変わらぬ心"},{"name":"ツツジ","words":"節度・慎み"},{"name":"ポピー","words":"慰め・いたわり"},{"name":"サルビア","words":"尊敬・知恵"},{"name":"ジャスミン","words":"優美・愛らしさ"},{"name":"キキョウ","words":"永遠の愛・誠実"}];
+var BST_COLORS = [{"name":"ディープレッド","hex":"#8e1f2f","note":"情熱的で、芯の強さを持つ人の色です。"},{"name":"コーラルピンク","hex":"#f08080","note":"親しみやすく、場を明るくする人の色です。"},{"name":"サンセットオレンジ","hex":"#e8873a","note":"行動力があり、周りを元気にする人の色です。"},{"name":"ゴールデンイエロー","hex":"#e3b505","note":"好奇心旺盛で、知的な輝きを持つ人の色です。"},{"name":"レモンイエロー","hex":"#e8d44d","note":"明るく軽やかで、発想が豊かな人の色です。"},{"name":"ライムグリーン","hex":"#9ab54e","note":"若々しく、成長し続ける人の色です。"},{"name":"エメラルドグリーン","hex":"#1f9e6e","note":"癒やしの力があり、人を安心させる人の色です。"},{"name":"ティール","hex":"#2a7f7f","note":"冷静さと優しさをあわせ持つ人の色です。"},{"name":"スカイブルー","hex":"#6db3d9","note":"爽やかで、自由を愛する人の色です。"},{"name":"サファイアブルー","hex":"#27408b","note":"誠実で、深く考える人の色です。"},{"name":"ラベンダー","hex":"#9a86c8","note":"上品で、繊細な感性を持つ人の色です。"},{"name":"バイオレット","hex":"#6d4c9f","note":"個性的で、神秘的な魅力を持つ人の色です。"},{"name":"ローズピンク","hex":"#d1608a","note":"愛情深く、華やかな人の色です。"},{"name":"チェリーピンク","hex":"#e58bb1","note":"可愛らしく、素直な人の色です。"},{"name":"ワインレッド","hex":"#7b2d43","note":"大人の余裕と情熱をあわせ持つ人の色です。"},{"name":"チョコレートブラウン","hex":"#6b4226","note":"落ち着きがあり、信頼される人の色です。"},{"name":"アイボリー","hex":"#f2ede4","note":"純粋で、穏やかな人の色です。"},{"name":"シルバーグレー","hex":"#b9c0c7","note":"洗練されていて、観察力のある人の色です。"},{"name":"チャコール","hex":"#3a3f44","note":"意志が強く、ぶれない人の色です。"},{"name":"ミッドナイトネイビー","hex":"#12283f","note":"知性的で、静かな存在感を持つ人の色です。"},{"name":"ターコイズ","hex":"#3aa6b9","note":"冒険心があり、人との縁を大切にする人の色です。"},{"name":"ピーチ","hex":"#f6c39a","note":"温かく、包容力のある人の色です。"},{"name":"ミントグリーン","hex":"#a8d8b9","note":"優しく、爽やかな感性を持つ人の色です。"},{"name":"プラム","hex":"#7d3c5e","note":"気品があり、深い愛情を持つ人の色です。"}];
+var COMPAT_PAIR = {"1":{"1":82,"2":74,"3":88,"4":66,"5":90,"6":78,"7":62,"8":84,"9":76},"2":{"1":74,"2":80,"3":72,"4":86,"5":64,"6":92,"7":70,"8":68,"9":88},"3":{"1":88,"2":72,"3":84,"4":60,"5":86,"6":82,"7":74,"8":66,"9":90},"4":{"1":66,"2":86,"3":60,"4":78,"5":62,"6":84,"7":72,"8":88,"9":64},"5":{"1":90,"2":64,"3":86,"4":62,"5":80,"6":70,"7":78,"8":74,"9":82},"6":{"1":78,"2":92,"3":82,"4":84,"5":70,"6":86,"7":66,"8":80,"9":84},"7":{"1":62,"2":70,"3":74,"4":72,"5":78,"6":66,"7":76,"8":64,"9":72},"8":{"1":84,"2":68,"3":66,"4":88,"5":74,"6":80,"7":64,"8":82,"9":68},"9":{"1":76,"2":88,"3":90,"4":64,"5":82,"6":84,"7":72,"8":68,"9":80}};
+var COMPAT_TOTAL_COMMENTS = ["相性は抜群です。価値観の芯が似ていて、長く一緒にいても自然体でいられる組み合わせです。","相性は良好です。お互いの強みがかみ合いやすく、支え合える関係になりやすいでしょう。","相性は標準的です。違いはありますが、それが刺激にもなる組み合わせ。歩み寄りが鍵です。","相性はやや工夫が要る組み合わせです。違いを欠点ではなく役割分担と捉えると回り始めます。","相性は正直、低めです。ただし数字は目安にすぎません。実際の関係は2人の積み重ねで大きく変わります。"];
+var COMPAT_ITEM_COMMENTS = {"love":["恋愛相性は最高クラス。惹かれ合いやすく、気持ちの温度も合いやすい組み合わせです。","恋愛相性は良好。安心感のある恋になりやすく、長続きしやすいでしょう。","恋愛相性はまずまず。好意はあっても表現の仕方が違うので、言葉にして伝えることが大切です。","恋愛面はすれ違いやすい組み合わせ。相手のペースを尊重すると距離が縮まります。","恋愛面は課題多め。ただし、違いが大きい分だけ、補い合えたときの力も大きい組み合わせです。"],"work":["仕事相性は最高クラス。役割分担が自然に決まり、成果を出しやすいコンビです。","仕事相性は良好。お互いの得意分野を活かせば、安定して結果を出せるでしょう。","仕事相性はまずまず。進め方の違いはありますが、ゴールを共有すれば噛み合います。","仕事面は意見がぶつかりやすい組み合わせ。役割を先に決めておくと摩擦が減ります。","仕事面は低め。ただし、違う視点を持つ者同士なので、革新的な仕事には向いています。"],"friend":["友情相性は最高クラス。一緒にいて楽で、長く続く友達になれる組み合わせです。","友情相性は良好。趣味や笑いのツボが合いやすく、自然に仲が深まります。","友情相性はまずまず。付き合いの頻度よりも、会ったときの濃さで深まるタイプです。","友情面は距離感が大事な組み合わせ。近づきすぎず、程よい間合いが長続きのコツです。","友情面は低め。ただし無理に合わせる必要はありません。必要なときに頼れる関係も立派な友情です。"]};
+var SHICHU_CORE = (function(){
+var STEMS = [
+  {k:"甲", r:"きのえ", elem:"木", yy:"陽"},
+  {k:"乙", r:"きのと", elem:"木", yy:"陰"},
+  {k:"丙", r:"ひのえ", elem:"火", yy:"陽"},
+  {k:"丁", r:"ひのと", elem:"火", yy:"陰"},
+  {k:"戊", r:"つちのえ", elem:"土", yy:"陽"},
+  {k:"己", r:"つちのと", elem:"土", yy:"陰"},
+  {k:"庚", r:"かのえ", elem:"金", yy:"陽"},
+  {k:"辛", r:"かのと", elem:"金", yy:"陰"},
+  {k:"壬", r:"みずのえ", elem:"水", yy:"陽"},
+  {k:"癸", r:"みずのと", elem:"水", yy:"陰"}
+];
+var BRANCHES = [
+  {k:"子", r:"ね", elem:"水"},
+  {k:"丑", r:"うし", elem:"土"},
+  {k:"寅", r:"とら", elem:"木"},
+  {k:"卯", r:"う", elem:"木"},
+  {k:"辰", r:"たつ", elem:"土"},
+  {k:"巳", r:"み", elem:"火"},
+  {k:"午", r:"うま", elem:"火"},
+  {k:"未", r:"ひつじ", elem:"土"},
+  {k:"申", r:"さる", elem:"金"},
+  {k:"酉", r:"とり", elem:"金"},
+  {k:"戌", r:"いぬ", elem:"土"},
+  {k:"亥", r:"い", elem:"水"}
+];
+var ELEMS = ["木","火","土","金","水"];
+
+var DAYMASTER_TEXT = {
+  0:{type:"大樹タイプ", desc:"真っ直ぐで向上心が強く、目標に向かって伸びていく人。曲がったことが苦手で、筋を通す場面で力を発揮します。折れない強さが持ち味ですが、しなやかさも意識するとさらに伸びます。"},
+  1:{type:"草花タイプ", desc:"柔軟でしなやか、環境に合わせて生き抜く力がある人。人当たりの良さと、つる草のように広がる人脈が武器です。流されやすい面は、自分の軸を一つ持つことで補えます。"},
+  2:{type:"太陽タイプ", desc:"明るく開放的で、いるだけで周りを照らす存在。情熱的で表現力があり、人前に立つと輝きます。飽きの早さは、続ける工夫しだいで長所に変わります。"},
+  3:{type:"灯火タイプ", desc:"繊細で感受性が豊か、人の心に寄り添う温かさがある人。集中力が高く、専門を深めるほど力を発揮します。考えすぎる時は、信頼できる人に話すのが吉です。"},
+  4:{type:"山タイプ", desc:"どっしりと安定感があり、周りから信頼される人。土台作りと守る力に長けています。頑固になりやすい面があるので、変化を小さく試す習慣が運を開きます。"},
+  5:{type:"田畑タイプ", desc:"面倒見がよく、人やものを育てる力がある人。現実的で堅実、手をかけた分だけ実りを返します。人に尽くしすぎて疲れないよう、自分の畑も耕しましょう。"},
+  6:{type:"剣・鉱石タイプ", desc:"意志が強く、決断力と実行力がある人。鍛えるほど光る原石タイプで、修羅場に強いのが持ち味です。言葉が鋭くなりやすいので、伝え方に丸みを持たせると最強です。"},
+  7:{type:"宝石タイプ", desc:"繊細で美意識が高く、センスで勝負する人。傷つきやすい分、磨かれると強く輝きます。完璧を求めすぎず、できたところを認めることが開運の鍵です。"},
+  8:{type:"大海タイプ", desc:"スケールが大きく、自由を好む人。流れを読む力と包容力があり、変化の多い環境で力を発揮します。方向を定めると、そのエネルギーは大きな推進力になります。"},
+  9:{type:"雨タイプ", desc:"静かで思慮深く、コツコツ浸透していく力がある人。知性と忍耐が持ち味で、長期戦に強いタイプです。内に溜め込みすぎず、小さく出し続けることが大切です。"}
+};
+
+function pillar(idx){
+  idx = ((idx % 60) + 60) % 60;
+  return {stem: idx % 10, branch: idx % 12, idx: idx};
+}
+function pillarText(p){
+  var s = STEMS[p.stem], b = BRANCHES[p.branch];
+  return {kanji: s.k + b.k, reading: s.r + b.r};
+}
+
+// Year pillar: Risshun boundary (Feb 4) simplified.
+function yearPillar(y, m, d){
+  var adjYear = (m >= 3 || (m === 2 && d >= 4)) ? y : y - 1;
+  return {p: pillar(adjYear - 4), adjYear: adjYear};
+}
+
+// Month index 0..11 for Tora..Ushi months, by fixed setsuiri days.
+function monthIndex(m, d){
+  switch(m){
+    case 1:  return d >= 6 ? 11 : 10;  // Jan 6 Shokan -> Ushi, else Ne
+    case 2:  return d >= 4 ? 0 : 11;   // Feb 4 Risshun -> Tora, else Ushi
+    case 3:  return d >= 6 ? 1 : 0;    // Mar 6 Keichitsu -> U
+    case 4:  return d >= 5 ? 2 : 1;    // Apr 5 Seimei -> Tatsu
+    case 5:  return d >= 6 ? 3 : 2;    // May 6 Rikka -> Mi
+    case 6:  return d >= 6 ? 4 : 3;    // Jun 6 Boshu -> Uma
+    case 7:  return d >= 7 ? 5 : 4;    // Jul 7 Shosho -> Hitsuji
+    case 8:  return d >= 8 ? 6 : 5;    // Aug 8 Risshu -> Saru
+    case 9:  return d >= 8 ? 7 : 6;    // Sep 8 Hakuro -> Tori
+    case 10: return d >= 8 ? 8 : 7;    // Oct 8 Kanro -> Inu
+    case 11: return d >= 7 ? 9 : 8;    // Nov 7 Ritto -> I
+    case 12: return d >= 7 ? 10 : 9;   // Dec 7 Taisetsu -> Ne
+  }
+  return 0;
+}
+
+function monthPillar(y, m, d){
+  var yp = yearPillar(y, m, d);
+  var mi = monthIndex(m, d);
+  // Gogoton: Tora-month stem base from the (adjusted) year stem.
+  var base = [2, 4, 6, 8, 0][yp.p.stem % 5];
+  var stem = (base + mi) % 10;
+  var branch = (2 + mi) % 12; // Tora = 2
+  return {stem: stem, branch: branch};
+}
+
+// Day pillar: days since 2024-01-01 (Kasshi, index 0), 60-cycle.
+function dayPillar(y, m, d){
+  var diff = Math.round((Date.UTC(y, m - 1, d) - Date.UTC(2024, 0, 1)) / 86400000);
+  return pillar(diff);
+}
+
+
+return { STEMS: STEMS, BRANCHES: BRANCHES, ELEMS: ELEMS, DAYMASTER_TEXT: DAYMASTER_TEXT, yearPillar: yearPillar, monthPillar: monthPillar, dayPillar: dayPillar, pillarText: pillarText };
+})();
+var SHUKU_CORE = (function(){
+var MONTH_START = SHUKU_MONTH_START;
+var REL_ORDER = SHUKU_REL_ORDER;
+var DEG = Math.PI / 180;
+function sinD(x){ return Math.sin(x * DEG); }
+
+// Apparent solar longitude (deg, 0..360), low-precision astronomical formula.
+function sunLongitude(jd){
+  var T = (jd - 2451545.0) / 36525;
+  var L0 = 280.46646 + T * (36000.76983 + 0.0003032 * T);
+  var M = 357.52911 + T * (35999.05029 - 0.0001537 * T);
+  var C = (1.914602 - T * (0.004817 + 0.000014 * T)) * sinD(M)
+        + (0.019993 - 0.000101 * T) * sinD(2 * M)
+        + 0.000289 * sinD(3 * M);
+  var omega = 125.04 - 1934.136 * T;
+  var lambda = L0 + C - 0.00569 - 0.00478 * sinD(omega);
+  return ((lambda % 360) + 360) % 360;
+}
+
+// Julian ephemeris day of the new moon for lunation index k (k=0: 2000-01-06).
+function newMoonJDE(k){
+  var T = k / 1236.85;
+  var jde = 2451550.09766 + 29.530588861 * k + 0.00015437 * T * T
+          - 0.000000150 * T * T * T + 0.00000000073 * T * T * T * T;
+  var M = 2.5534 + 29.10535670 * k - 0.0000014 * T * T - 0.00000011 * T * T * T;
+  var Mp = 201.5643 + 385.81693528 * k + 0.0107582 * T * T + 0.00001238 * T * T * T - 0.000000058 * T * T * T * T;
+  var F = 160.7108 + 390.67050284 * k - 0.0016118 * T * T - 0.00000227 * T * T * T + 0.000000011 * T * T * T * T;
+  var Om = 124.7746 - 1.56375588 * k + 0.0020672 * T * T + 0.00000215 * T * T * T;
+  var E = 1 - 0.002516 * T - 0.0000074 * T * T;
+  var corr = -0.40720 * sinD(Mp) + 0.17241 * E * sinD(M) + 0.01608 * sinD(2 * Mp) + 0.01039 * sinD(2 * F)
+    + 0.00739 * E * sinD(Mp - M) - 0.00514 * E * sinD(Mp + M) + 0.00208 * E * E * sinD(2 * M)
+    - 0.00111 * sinD(Mp - 2 * F) - 0.00057 * sinD(Mp + 2 * F) + 0.00056 * E * sinD(2 * Mp + M)
+    - 0.00042 * sinD(3 * Mp) + 0.00042 * E * sinD(M + 2 * F) + 0.00038 * E * sinD(M - 2 * F)
+    - 0.00024 * E * sinD(2 * Mp - M) - 0.00017 * sinD(Om) - 0.00007 * sinD(Mp + 2 * M)
+    + 0.00004 * sinD(2 * Mp - 2 * F) + 0.00004 * sinD(3 * M) + 0.00003 * sinD(Mp + M - 2 * F)
+    + 0.00003 * sinD(2 * Mp + 2 * F) - 0.00003 * sinD(Mp + M + 2 * F) + 0.00003 * sinD(Mp - M + 2 * F)
+    - 0.00002 * sinD(Mp - M - 2 * F) - 0.00002 * sinD(3 * Mp + M) + 0.00002 * sinD(4 * Mp);
+  return jde + corr;
+}
+
+// JST calendar-date serial (days since 1970-01-01) of an ephemeris day.
+function jdeToJstSerial(jde){
+  var ms = (jde - 2440587.5) * 86400000 - 69000 + 9 * 3600000; // TT->UTC approx, then +9h
+  return Math.floor(ms / 86400000);
+}
+function jstMidnightJd(serial){
+  return serial + 2440587.5 - 9 / 24;
+}
+
+var lunarMonths = null;
+// Build the lunar month table: month starts, contained zhongqi, month numbers.
+// Numbering rule: the month containing the winter solstice is month 11;
+// in a 13-month span, the month without a zhongqi is the leap month.
+function buildLunar(){
+  if(lunarMonths) return lunarMonths;
+  var starts = [];
+  for(var k = -1270; k <= 440; k++) starts.push(jdeToJstSerial(newMoonJDE(k)));
+  var months = [];
+  for(var i = 0; i < starts.length - 1; i++){
+    var s0 = starts[i], s1 = starts[i + 1];
+    if(s1 <= s0) continue;
+    var lam0 = sunLongitude(jstMidnightJd(s0));
+    var lam1 = sunLongitude(jstMidnightJd(s1));
+    var delta = ((lam1 - lam0) % 360 + 360) % 360;
+    var zk = null;
+    if(Math.floor((lam0 + delta) / 30) > Math.floor(lam0 / 30)){
+      zk = (Math.floor(lam0 / 30) + 1) * 30 % 360;
+    }
+    months.push({start:s0, zhongqi:zk, num:0, leap:false, lyear:0});
+  }
+  var anchors = [];
+  for(var j = 0; j < months.length; j++) if(months[j].zhongqi === 270) anchors.push(j);
+  for(var a = 0; a < anchors.length - 1; a++){
+    var from = anchors[a], to = anchors[a + 1], len = to - from;
+    var gYear = new Date(months[from].start * 86400000).getUTCFullYear();
+    var prevNum = 11, leapDone = false;
+    months[from].num = 11; months[from].lyear = gYear + 1;
+    for(var t = from + 1; t < to; t++){
+      var mo = months[t];
+      if(len === 13 && !leapDone && mo.zhongqi === null){
+        mo.num = prevNum; mo.leap = true; leapDone = true;
+      } else {
+        mo.num = prevNum === 12 ? 1 : prevNum + 1;
+        prevNum = mo.num;
+      }
+      mo.lyear = gYear + 1;
+    }
+  }
+  lunarMonths = months;
+  return months;
+}
+
+function toLunar(y, m, d){
+  var months = buildLunar();
+  var serial = Math.floor(Date.UTC(y, m - 1, d) / 86400000);
+  var lo = 0, hi = months.length - 1, idx = -1;
+  while(lo <= hi){
+    var mid = (lo + hi) >> 1;
+    if(months[mid].start <= serial){ idx = mid; lo = mid + 1; } else { hi = mid - 1; }
+  }
+  if(idx < 0 || !months[idx].num) return null;
+  var mo = months[idx];
+  return {lyear:mo.lyear, month:mo.num, leap:mo.leap, day:serial - mo.start + 1};
+}
+
+function hostIndexOf(lunar){
+  return (MONTH_START[lunar.month - 1] + lunar.day - 1) % 27;
+}
+
+function relationOf(diff){
+  // diff: 0-based distance from own host (0 = same host)
+  if(diff === 0) return "命";
+  if(diff === 9) return "業";
+  if(diff === 18) return "胎";
+  return REL_ORDER[(diff - 1) % 8];
+}
+
+function hashStr(str){
+  var h = 2166136261;
+  for(var i = 0; i < str.length; i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return h >>> 0;
+}
+function mulberry32(a){
+  return function(){
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+
+return { toLunar: toLunar, hostIndexOf: hostIndexOf, relationOf: relationOf, hashStr: hashStr, mulberry32: mulberry32 };
+})();
+var HORO_CORE = (function(){
+var DEG = Math.PI / 180;
+
+function rev(x){ x = x % 360; if(x < 0) x += 360; return x; }
+
+// Day number (Schlyter convention: 1999 Dec 31.0 = 0.0) from a JS Date.
+function dayNumber(date){
+  var jd = date.getTime() / 86400000 + 2440587.5;
+  return jd - 2451543.5;
+}
+
+// Solve Kepler's equation for eccentric anomaly E (degrees).
+function eccAnomaly(M, e){
+  M = rev(M);
+  var E = M + (1 / DEG) * e * Math.sin(M * DEG) * (1 + e * Math.cos(M * DEG));
+  for(var k = 0; k < 8; k++){
+    E = E - (E - (1 / DEG) * e * Math.sin(E * DEG) - M) / (1 - e * Math.cos(E * DEG));
+  }
+  return E;
+}
+
+// Heliocentric ecliptic rectangular coords (AU) from orbital elements.
+function helio(el, d){
+  var N = el.N0 + el.N1 * d, i = el.i0 + el.i1 * d, w = el.w0 + el.w1 * d;
+  var a = el.a, e = el.e0 + el.e1 * d, M = rev(el.M0 + el.M1 * d);
+  var E = eccAnomaly(M, e);
+  var xv = a * (Math.cos(E * DEG) - e);
+  var yv = a * (Math.sqrt(1 - e * e) * Math.sin(E * DEG));
+  var v = Math.atan2(yv, xv) / DEG;
+  var r = Math.sqrt(xv * xv + yv * yv);
+  var u = (v + w) * DEG;
+  var xh = r * (Math.cos(N * DEG) * Math.cos(u) - Math.sin(N * DEG) * Math.sin(u) * Math.cos(i * DEG));
+  var yh = r * (Math.sin(N * DEG) * Math.cos(u) + Math.cos(N * DEG) * Math.sin(u) * Math.cos(i * DEG));
+  var zh = r * (Math.sin(u) * Math.sin(i * DEG));
+  return { x: xh, y: yh, z: zh, r: r, v: v, M: M, lon: rev(Math.atan2(yh, xh) / DEG) };
+}
+
+var EL = {
+  sun:     { w0: 282.9404, w1: 4.70935e-5, e0: 0.016709, e1: -1.151e-9, M0: 356.0470, M1: 0.9856002585 },
+  moon:    { N0: 125.1228, N1: -0.0529538083, i0: 5.1454, i1: 0, w0: 318.0634, w1: 0.1643573223, a: 60.2666, e0: 0.054900, e1: 0, M0: 115.3654, M1: 13.0649929509 },
+  mercury: { N0: 48.3313, N1: 3.24587e-5, i0: 7.0047, i1: 5.00e-8, w0: 29.1241, w1: 1.01444e-5, a: 0.387098, e0: 0.205635, e1: 5.59e-10, M0: 168.6562, M1: 4.0923344368 },
+  venus:   { N0: 76.6799, N1: 2.46590e-5, i0: 3.3946, i1: 2.75e-8, w0: 54.8910, w1: 1.38374e-5, a: 0.723330, e0: 0.006773, e1: -1.302e-9, M0: 48.0052, M1: 1.6021302244 },
+  mars:    { N0: 49.5574, N1: 2.11081e-5, i0: 1.8497, i1: -1.78e-8, w0: 286.5016, w1: 2.92961e-5, a: 1.523688, e0: 0.093405, e1: 2.516e-9, M0: 18.6021, M1: 0.5240207766 },
+  jupiter: { N0: 100.4542, N1: 2.76854e-5, i0: 1.3030, i1: -1.557e-7, w0: 273.8777, w1: 1.64505e-5, a: 5.20256, e0: 0.048498, e1: 4.469e-9, M0: 19.8950, M1: 0.0830853001 },
+  saturn:  { N0: 113.6634, N1: 2.38980e-5, i0: 2.4886, i1: -1.081e-7, w0: 339.3939, w1: 2.97661e-5, a: 9.55475, e0: 0.055546, e1: -9.499e-9, M0: 316.9670, M1: 0.0334442282 }
+};
+
+// Sun geocentric longitude and rectangular coords.
+function sunPos(d){
+  var el = EL.sun;
+  var w = el.w0 + el.w1 * d, e = el.e0 + el.e1 * d, M = rev(el.M0 + el.M1 * d);
+  var E = eccAnomaly(M, e);
+  var xv = Math.cos(E * DEG) - e;
+  var yv = Math.sqrt(1 - e * e) * Math.sin(E * DEG);
+  var v = Math.atan2(yv, xv) / DEG;
+  var r = Math.sqrt(xv * xv + yv * yv);
+  var lon = rev(v + w);
+  return { lon: lon, M: M, x: r * Math.cos(lon * DEG), y: r * Math.sin(lon * DEG) };
+}
+
+// Moon geocentric longitude with major perturbation terms.
+function moonLon(d, sun){
+  var el = EL.moon;
+  var N = el.N0 + el.N1 * d, i = el.i0, w = el.w0 + el.w1 * d;
+  var e = el.e0, M = rev(el.M0 + el.M1 * d);
+  var E = eccAnomaly(M, e);
+  var xv = el.a * (Math.cos(E * DEG) - e);
+  var yv = el.a * (Math.sqrt(1 - e * e) * Math.sin(E * DEG));
+  var v = Math.atan2(yv, xv) / DEG;
+  var r = Math.sqrt(xv * xv + yv * yv);
+  var u = (v + w) * DEG;
+  var xh = r * (Math.cos(N * DEG) * Math.cos(u) - Math.sin(N * DEG) * Math.sin(u) * Math.cos(i * DEG));
+  var yh = r * (Math.sin(N * DEG) * Math.cos(u) + Math.cos(N * DEG) * Math.sin(u) * Math.cos(i * DEG));
+  var lon = rev(Math.atan2(yh, xh) / DEG);
+  // Perturbations (degrees)
+  var Ms = sun.M, Mm = M;
+  var meanLonSun = rev(Ms + EL.sun.w0 + EL.sun.w1 * d);
+  var meanLonMoon = rev(N + w + M);
+  var D = rev(meanLonMoon - meanLonSun);
+  var F = rev(meanLonMoon - N);
+  var s = Math.sin;
+  lon += -1.274 * s((Mm - 2 * D) * DEG)
+       +  0.658 * s(2 * D * DEG)
+       -  0.186 * s(Ms * DEG)
+       -  0.059 * s((2 * Mm - 2 * D) * DEG)
+       -  0.057 * s((Mm - 2 * D + Ms) * DEG)
+       +  0.053 * s((Mm + 2 * D) * DEG)
+       +  0.046 * s((2 * D - Ms) * DEG)
+       +  0.041 * s((Mm - Ms) * DEG)
+       -  0.035 * s(D * DEG)
+       -  0.031 * s((Mm + Ms) * DEG)
+       -  0.015 * s((2 * F - 2 * D) * DEG)
+       +  0.011 * s((Mm - 4 * D) * DEG);
+  return rev(lon);
+}
+
+function planetLon(key, d, sun){
+  var h = helio(EL[key], d);
+  var xg = h.x + sun.x, yg = h.y + sun.y;
+  return rev(Math.atan2(yg, xg) / DEG);
+}
+
+// All longitudes for a JS Date. Returns {sun, moon, mercury, venus, mars, jupiter, saturn}.
+function positions(date){
+  var d = dayNumber(date);
+  var sun = sunPos(d);
+  return {
+    sun: sun.lon,
+    moon: moonLon(d, sun),
+    mercury: planetLon("mercury", d, sun),
+    venus: planetLon("venus", d, sun),
+    mars: planetLon("mars", d, sun),
+    jupiter: planetLon("jupiter", d, sun),
+    saturn: planetLon("saturn", d, sun)
+  };
+}
+
+var SIGNS = ["牡羊座","牡牛座","双子座","蟹座","獅子座","乙女座","天秤座","蠍座","射手座","山羊座","水瓶座","魚座"];
+function signIndex(lon){ return Math.floor(rev(lon) / 30); }
+
+var PLANETS = [
+  { key: "sun",     name: "太陽", role: "自分らしさ・人生のテーマ" },
+  { key: "moon",    name: "月",   role: "感情・素顔" },
+  { key: "mercury", name: "水星", role: "知性・言葉" },
+  { key: "venus",   name: "金星", role: "愛情・美意識" },
+  { key: "mars",    name: "火星", role: "情熱・行動" },
+  { key: "jupiter", name: "木星", role: "幸運・広がり" },
+  { key: "saturn",  name: "土星", role: "課題・土台作り" }
+];
+
+var TEXT = {
+  sun: [
+    "先頭に立って切り開くのがテーマ。思い立ったら即行動が吉です。",
+    "五感と安定を大切に育てるのがテーマ。じっくり積み上げる力があります。",
+    "知的好奇心がテーマ。言葉と情報で世界を広げる人です。",
+    "守り育てることがテーマ。身近な人との絆が力の源になります。",
+    "表現と輝きがテーマ。自分らしく堂々と生きる人です。",
+    "整え、役立つことがテーマ。細やかな気配りが武器になります。",
+    "調和と美がテーマ。人とのバランス感覚に優れています。",
+    "深く掘り下げることがテーマ。本物とだけ向き合う人です。",
+    "冒険と真理がテーマ。遠くを目指すほど運が開けます。",
+    "達成と責任がテーマ。時間をかけて頂上に登る人です。",
+    "独自性と改革がテーマ。常識にとらわれない発想家です。",
+    "共感と夢がテーマ。人の心に寄り添う優しさが魅力です。"
+  ],
+  moon: [
+    "気持ちの切り替えが速いタイプ。素直に感情を出すと楽になります。",
+    "ゆったりした時間と美味しいもので安心するタイプです。",
+    "おしゃべりや読み物で気分転換するタイプです。",
+    "家と身内が心の基地。甘えられる場所を大切にします。",
+    "褒められると元気になるタイプ。注目が心の栄養です。",
+    "きちんと整った環境で落ち着くタイプ。心配性な一面もあります。",
+    "一人より誰かと一緒が落ち着くタイプ。美しいものに癒やされます。",
+    "感情は深く秘めるタイプ。信頼した人にだけ本音を見せます。",
+    "束縛が苦手なタイプ。外の空気を吸うと気持ちが晴れます。",
+    "感情を抑えがち。成果を出すことで安心するタイプです。",
+    "気持ちを言葉で整理したいタイプ。ほどよい距離感が心地いいです。",
+    "感受性が豊かで人の気持ちに同化しやすいタイプ。音楽や水辺で回復します。"
+  ],
+  mercury: [
+    "決断が速く、言葉は率直。思いつきをすぐ口に出すタイプです。",
+    "慎重に考えてから話すタイプ。実務的な知性が光ります。",
+    "情報通で話し上手。幅広い話題に対応できます。",
+    "記憶力がよく、感情のこもった言葉を使うタイプです。",
+    "話にドラマがあるタイプ。堂々とした発言で人を惹きつけます。",
+    "分析と整理が得意。正確な言葉選びをするタイプです。",
+    "言葉のバランス感覚が抜群。交渉や調整に向いています。",
+    "本質を見抜く洞察力があります。言葉少なでも重みがあるタイプです。",
+    "大づかみで率直なタイプ。哲学や学問に興味が広がります。",
+    "計画的で現実的な思考。結論から話すタイプです。",
+    "独創的な発想の持ち主。未来志向のアイデアが次々浮かびます。",
+    "イメージで理解するタイプ。詩的な表現が得意です。"
+  ],
+  venus: [
+    "恋は直球勝負。好きになったらまっしぐらなタイプです。",
+    "五感に忠実。心地よさと確かな愛情を求めます。",
+    "会話の弾む相手に惹かれるタイプ。軽やかな恋を好みます。",
+    "家庭的で情に厚いタイプ。守りたい相手を大切にします。",
+    "華やかな恋を好むタイプ。褒められると伸びます。",
+    "控えめだが誠実。細やかな気配りで愛を伝えるタイプです。",
+    "美意識が高く、スマートな恋愛を好むタイプです。",
+    "一途で深い愛情の持ち主。相手と強く結ばれたいと願います。",
+    "自由な恋を好むタイプ。一緒に冒険できる相手が理想です。",
+    "誠実で堅実。時間をかけて信頼を育てる恋をするタイプです。",
+    "友情から始まる恋を好むタイプ。個性を認め合う関係が理想です。",
+    "ロマンチスト。相手に寄り添い、尽くす愛情を持つタイプです。"
+  ],
+  mars: [
+    "行動力は随一。競争の場で燃えるタイプです。",
+    "粘り強く最後までやり抜くタイプ。マイペースな闘い方をします。",
+    "同時に何手も進める器用さがあります。知的な勝負に強いタイプです。",
+    "大切な人を守るために強くなるタイプです。",
+    "勝負どころで堂々と力を出すタイプ。プライドが原動力です。",
+    "緻密な作戦で攻めるタイプ。準備の丁寧さが武器になります。",
+    "正面衝突を避け、スマートに勝つ方法を探るタイプです。",
+    "一点集中の執念の持ち主。決めた目標は離しません。",
+    "大胆に攻めるタイプ。大きな目標ほど燃えます。",
+    "戦略的で持久戦に強いタイプ。着実に成果を取りにいきます。",
+    "型破りな戦術が得意。チーム戦で工夫が光るタイプです。",
+    "直感で動くタイプ。人のためなら思わぬ力を出します。"
+  ],
+  jupiter: [
+    "挑戦するほど運が広がります。先行投資が実を結ぶ配置です。",
+    "豊かさを引き寄せる配置。資産作りと相性がいいです。",
+    "学びと人脈が幸運の入口。情報発信が吉の配置です。",
+    "家族や地元との縁が幸運を運ぶ配置です。",
+    "創造と表現の場で運が開ける配置。遊び心が鍵です。",
+    "仕事と健康の分野で恵まれる配置。改善が実を結びます。",
+    "パートナーシップが幸運の鍵。良縁に恵まれる配置です。",
+    "深い結びつきや共同の資産で運が広がる配置です。",
+    "旅と学びが最大の幸運源。視野の広さが運を呼ぶ配置です。",
+    "社会的な成功に恵まれる配置。努力が正当に評価されます。",
+    "仲間と未来志向の活動が幸運を運ぶ配置です。",
+    "慈愛と芸術の分野で恵まれる配置。人の夢を応援すると巡ってきます。"
+  ],
+  saturn: [
+    "自分の力で立つことが課題。衝動を制御する練習が実を結びます。",
+    "お金と価値観の土台作りが課題。焦らず育てることが大切です。",
+    "言葉と学びに責任を持つことが課題。継続学習が鍵になります。",
+    "家庭や心の土台を整えることが課題。人との境界線も大切に。",
+    "自信と謙虚さの両立が課題。地道な努力が評価につながります。",
+    "完璧主義との付き合い方が課題。ほどよさを知ることが大切です。",
+    "人間関係の責任が課題。対等な関係を築く練習が実を結びます。",
+    "信頼と手放しが課題。深い変化を受け入れることが鍵です。",
+    "信念を現実に落とすことが課題。計画性が実を結びます。",
+    "努力が最も実りやすい配置。キャリアの土台作りに向いています。",
+    "独自性と社会のルールの両立が課題。工夫次第で強みになります。",
+    "夢と現実の境界を整えることが課題。生活リズムが鍵です。"
+  ]
+};
+
+
+return { positions: positions, signIndex: signIndex, SIGNS: SIGNS, PLANETS: PLANETS, TEXT: TEXT };
+})();
+</script>
+<script>
+var ZODIAC_CORE = (function(){
+var SIGNS=[
+  {name:"牡羊座",period:"3月21日〜4月19日"},
+  {name:"牡牛座",period:"4月20日〜5月20日"},
+  {name:"双子座",period:"5月21日〜6月21日"},
+  {name:"蟹座",period:"6月22日〜7月22日"},
+  {name:"獅子座",period:"7月23日〜8月22日"},
+  {name:"乙女座",period:"8月23日〜9月22日"},
+  {name:"天秤座",period:"9月23日〜10月23日"},
+  {name:"蠍座",period:"10月24日〜11月22日"},
+  {name:"射手座",period:"11月23日〜12月21日"},
+  {name:"山羊座",period:"12月22日〜1月19日"},
+  {name:"水瓶座",period:"1月20日〜2月18日"},
+  {name:"魚座",period:"2月19日〜3月20日"}
+];
+var COMMENTS=[
+  ["勢いのある一日。思いついたらすぐ動くと運が開けます","今日は主役級の輝き。自信を持って前に出て吉","小さな挑戦が大きな成果に。迷ったらGOのサイン","頼まれごとは快く引き受けて。評価が上がる日","直感が冴える日。最初のひらめきを信じて"],
+  ["堅実さが光る一日。コツコツ進めた分だけ実ります","おいしいものにツキあり。食事の時間を大切に","金運が安定。無駄遣いを控えると余裕が生まれます","五感が冴える日。好きな香りや音楽で気分転換を","焦らずマイペースで。丁寧な仕事が信頼を呼びます"],
+  ["情報運が好調。気になる話題は深掘りしてみて","会話の中にヒントあり。聞き役に回ると得をする日","好奇心のままに動いて正解。寄り道に発見あり","連絡は早めが吉。返信ひとつで流れが変わります","学び運アップ。短い勉強でも身につく一日"],
+  ["身近な人との時間が力になる日。感謝を言葉に","家まわりを整えると運気も整います","懐かしい連絡があるかも。旧友との縁が温まる日","無理せず休む勇気も大切。心の充電日","家族や仲間の相談に乗ると、自分にも気づきあり"],
+  ["表現力が高まる日。SNSや発信に追い風","注目を集めやすい一日。堂々と振る舞って吉","遊び心が運を呼ぶ日。楽しむ姿勢が一番の魅力","褒め言葉は素直に受け取って。自信につながります","イベントや誘いは積極参加が正解"],
+  ["細部への気づきが冴える日。チェック作業に最適","整理整頓が運気アップの鍵。机の上から始めて","健康運が上昇。軽い運動と早めの就寝を","分析力が光る日。数字やデータと相性よし","丁寧な言葉づかいが好印象を残す一日"],
+  ["バランス感覚が冴える日。迷ったら真ん中の選択を","人との調整役がハマる日。板挟みでも上手く運びます","センスが評価される日。身だしなみにも気を配って","公平な判断が信頼を集める一日","おしゃれ運アップ。新しい小物にツキあり"],
+  ["集中力が持続する日。ひとつのことに深く潜って","秘密の楽しみにツキあり。ひとり時間が充実します","本音の会話が関係を深める日","粘り強さが実を結ぶ日。あと一押しが効きます","観察眼が冴える日。人の本心に気づけそう"],
+  ["行動範囲が広がる日。少し遠出すると発見あり","新しい学びにツキ。気になる分野をのぞいてみて","楽観ムードが運を呼ぶ日。笑顔を忘れずに","スポーツや体を動かすことに吉","率直な言葉が相手の心に響く一日"],
+  ["努力が形になる日。地道な積み重ねが評価されます","計画通りに進みやすい一日。段取り上手が光ります","責任ある仕事ほどやりがいあり。任せて正解の日","目上の人との縁にツキ。挨拶は丁寧に","長期戦に強い日。今日の一歩が来月の差に"],
+  ["ひらめきが冴える日。メモを手放さずに","仲間との連携にツキ。情報共有が鍵になります","変化を楽しめる日。いつもと違う選択が新鮮","未来の計画を立てるのに向く一日","独自のアイデアが評価されやすい日"],
+  ["感性が豊かになる日。音楽や映像に心が動きます","優しさが運を呼ぶ日。困っている人への一声を","夢からのメッセージがあるかも。朝のうちにメモを","創作活動にツキ。手を動かすと心が整います","水辺や温泉など、水のある場所でリフレッシュ"]
+];
+var COLORS=["赤","青","黄色","緑","ピンク","紫","オレンジ","水色","白","黒","金色","銀色","茶色","ベージュ","ラベンダー","ミントグリーン"];
+function hashStr(s){
+  var h=2166136261;
+  for(var i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619); }
+  return h>>>0;
+}
+function mulberry32(a){
+  return function(){
+    a|=0; a=(a+0x6D2B79F5)|0;
+    var t=Math.imul(a^(a>>>15),1|a);
+    t=(t+Math.imul(t^(t>>>7),61|t))^t;
+    return ((t^(t>>>14))>>>0)/4294967296;
+  };
+}
+function dateStrOf(d){
+  var m=("0"+(d.getMonth()+1)).slice(-2), day=("0"+d.getDate()).slice(-2);
+  return d.getFullYear()+"-"+m+"-"+day;
+}
+// ===== 天体計算（外部API・外部ライブラリなし。ブラウザ内で計算） =====
+// 惑星（水星〜土星と太陽）：JPL近似ケプラー要素（1800〜2050年有効）から地心黄経を出す。
+// 月：Paul Schlyter の低精度計算法に主要摂動項を加えたもの。星座判定には十分な精度。
+var D2R=Math.PI/180;
+function norm360(x){ x%=360; return x<0?x+360:x; }
+// 日本時間の正午（= 03:00 UTC）のユリウス日
+function julianDayAtNoonJST(y,m,d){ return Date.UTC(y,m-1,d,3,0,0)/86400000+2440587.5; }
+var KEPLER={
+  mercury:[0.38709927,0.20563593,7.00497902,252.25032350,77.45779628,48.33076593,0.00000037,0.00001906,-0.00594749,149472.67411175,0.16047689,-0.12534081],
+  venus:[0.72333566,0.00677672,3.39467605,181.97909950,131.60246718,76.67984255,0.00000390,-0.00004107,-0.00078890,58517.81538729,0.00268329,-0.27769418],
+  earth:[1.00000261,0.01671123,-0.00001531,100.46457166,102.93768193,0,0.00000562,-0.00004392,-0.01294668,35999.37244981,0.32327364,0],
+  mars:[1.52371034,0.09339410,1.84969142,-4.55343205,-23.94362959,49.55953891,0.00001847,0.00007882,-0.00813131,19140.30268499,0.44441088,-0.29257343],
+  jupiter:[5.20288700,0.04838624,1.30439695,34.39644051,14.72847983,100.47390909,-0.00011607,-0.00013253,-0.00183714,3034.74612775,0.21252668,0.20469106],
+  saturn:[9.53667594,0.05386179,2.48599187,49.95424423,92.59887831,113.66242448,-0.00125060,-0.00050991,0.00193609,1222.49362201,-0.41897216,-0.28867794]
+};
+function helioXYZ(el,T){
+  var a=el[0]+el[6]*T, e=el[1]+el[7]*T, I=(el[2]+el[8]*T)*D2R,
+      L=norm360(el[3]+el[9]*T), lp=el[4]+el[10]*T, om=(el[5]+el[11]*T)*D2R;
+  var w=lp*D2R-om, M=norm360(L-lp)*D2R;
+  var E=M+e*Math.sin(M)*(1+e*Math.cos(M));
+  for(var i=0;i<8;i++){ E=E-(E-e*Math.sin(E)-M)/(1-e*Math.cos(E)); }
+  var xp=a*(Math.cos(E)-e), yp=a*Math.sqrt(1-e*e)*Math.sin(E);
+  var v=Math.atan2(yp,xp), r=Math.sqrt(xp*xp+yp*yp);
+  var cw=Math.cos(v+w), sw=Math.sin(v+w);
+  return [
+    r*(Math.cos(om)*cw-Math.sin(om)*sw*Math.cos(I)),
+    r*(Math.sin(om)*cw+Math.cos(om)*sw*Math.cos(I)),
+    r*(sw*Math.sin(I))
+  ];
+}
+function moonLongitude(jd){
+  var d=jd-2451543.5;
+  var N=norm360(125.1228-0.0529538083*d), inc=5.1454*D2R,
+      w=norm360(318.0634+0.1643573223*d), a=60.2666, e=0.054900,
+      M=norm360(115.3654+13.0649929509*d);
+  var Mr=M*D2R;
+  var E=Mr+e*Math.sin(Mr)*(1+e*Math.cos(Mr));
+  for(var i=0;i<8;i++){ E=E-(E-e*Math.sin(E)-Mr)/(1-e*Math.cos(E)); }
+  var xv=a*(Math.cos(E)-e), yv=a*Math.sqrt(1-e*e)*Math.sin(E);
+  var v=Math.atan2(yv,xv), r=Math.sqrt(xv*xv+yv*yv);
+  var Nr=N*D2R, vw=v+w*D2R;
+  var xh=r*(Math.cos(Nr)*Math.cos(vw)-Math.sin(Nr)*Math.sin(vw)*Math.cos(inc));
+  var yh=r*(Math.sin(Nr)*Math.cos(vw)+Math.cos(Nr)*Math.sin(vw)*Math.cos(inc));
+  var lon=Math.atan2(yh,xh)/D2R;
+  // 主要摂動項（Schlyter）。Ms=太陽の平均近点角、D=月と太陽の平均離角、F=月の引数緯度
+  var Ms=norm360(356.0470+0.9856002585*d);
+  var Ls=norm360(278.9874+0.9856473519*d);
+  var Lm=norm360(N+w+M);
+  var D=norm360(Lm-Ls), F=norm360(Lm-N);
+  function s(x){ return Math.sin(x*D2R); }
+  lon+=-1.274*s(M-2*D)+0.658*s(2*D)-0.186*s(Ms)-0.059*s(2*M-2*D)
+      -0.057*s(M-2*D+Ms)+0.053*s(M+2*D)+0.046*s(2*D-Ms)+0.041*s(M-Ms)
+      -0.035*s(D)-0.031*s(M+Ms)-0.015*s(2*F-2*D)+0.011*s(M-4*D);
+  return norm360(lon);
+}
+// 日付文字列 "YYYY-MM-DD"（日本時間の正午）における7天体の地心黄経（度）
+function positionsFor(ds){
+  var p=ds.split("-");
+  var jd=julianDayAtNoonJST(Number(p[0]),Number(p[1]),Number(p[2]));
+  var T=(jd-2451545.0)/36525;
+  var earth=helioXYZ(KEPLER.earth,T);
+  // JPL要素はJ2000分点基準のため、歳差を加えて当日の分点（トロピカル）基準に直す
+  var prec=(1.396971+0.0003087*T)*T;
+  var out={};
+  ["mercury","venus","mars","jupiter","saturn"].forEach(function(k){
+    var xyz=helioXYZ(KEPLER[k],T);
+    out[k]=norm360(Math.atan2(xyz[1]-earth[1],xyz[0]-earth[0])/D2R+prec);
+  });
+  out.sun=norm360(Math.atan2(-earth[1],-earth[0])/D2R+prec);
+  out.moon=moonLongitude(jd);
+  return out;
+}
+// ===== スコアリング =====
+var PLANET_NAMES={sun:"太陽",moon:"月",mercury:"水星",venus:"金星",mars:"火星",jupiter:"木星",saturn:"土星"};
+// その星座に惑星が滞在している場合の加点・減点
+var RESIDENCY={moon:30,sun:15,jupiter:10,venus:8,mercury:3,mars:-5,saturn:-8};
+var ASPECTS=[
+  {angle:0,   orb:8, label:"コンジャンクション", kind:"重なる配置"},
+  {angle:60,  orb:5, label:"セクスタイル",       kind:"調和の角度"},
+  {angle:90,  orb:6, label:"スクエア",           kind:"緊張の角度"},
+  {angle:120, orb:6, label:"トライン",           kind:"調和の角度"},
+  {angle:180, orb:7, label:"オポジション",       kind:"向かい合う角度"}
+];
+// 惑星×アスペクトの重み（正確な角度でこの値、オーブ端で0になるよう線形に減衰）
+var ASPECT_W={
+  venus:  {0:12, 60:7, 90:-3, 120:10, 180:-3},
+  jupiter:{0:14, 60:8, 90:-2, 120:12, 180:-3},
+  mars:   {0:-10,60:2, 90:-12,120:3,  180:-11},
+  saturn: {0:-12,60:1, 90:-13,120:2,  180:-12},
+  mercury:{0:4,  60:3, 90:-3, 120:4,  180:-3},
+  moon:   {0:0,  60:5, 90:-6, 120:6,  180:-5},
+  sun:    {0:0,  60:4, 90:-4, 120:5,  180:-4}
+};
+function angDiff(a,b){ var d=Math.abs(norm360(a-b)); return d>180?360-d:d; }
+function scoreSign(signIdx,pos){
+  var center=signIdx*30+15, score=0, factors=[];
+  Object.keys(PLANET_NAMES).forEach(function(k){
+    var lon=pos[k];
+    if(Math.floor(norm360(lon)/30)===signIdx){
+      var rp=RESIDENCY[k];
+      score+=rp;
+      factors.push({pts:rp, text:PLANET_NAMES[k]+"があなたの星座に滞在中"});
+    }
+    var dist=angDiff(lon,center);
+    ASPECTS.forEach(function(asp){
+      var dev=Math.abs(dist-asp.angle);
+      if(dev<=asp.orb){
+        var w=ASPECT_W[k][asp.angle];
+        if(!w) return;
+        var pts=w*(1-dev/asp.orb);
+        score+=pts;
+        if(Math.abs(pts)>=2.0){
+          factors.push({pts:pts, text:PLANET_NAMES[k]+"と"+asp.label+"（"+asp.kind+"）"});
+        }
+      }
+    });
+  });
+  factors.sort(function(a,b){ return Math.abs(b.pts)-Math.abs(a.pts); });
+  return {score:score, reasons:factors.slice(0,4)};
+}
+function scoresFor(ds){
+  var pos=positionsFor(ds);
+  var arr=[];
+  for(var i=0;i<12;i++){ var sc=scoreSign(i,pos); arr.push({sign:i, score:sc.score, reasons:sc.reasons}); }
+  return arr;
+}
+// Ranking for a date string "YYYY-MM-DD". Deterministic: same date, same result.
+function rankingFor(ds){
+  var order=scoresFor(ds).slice().sort(function(a,b){ return (b.score-a.score)||(a.sign-b.sign); });
+  return order.map(function(e,idx){
+    var r=mulberry32(hashStr("zodiac-sign:"+ds+":"+e.sign));
+    var comment=COMMENTS[e.sign][Math.floor(r()*COMMENTS[e.sign].length)];
+    var color=COLORS[Math.floor(r()*COLORS.length)];
+    var number=1+Math.floor(r()*99);
+    return {rank:idx+1, sign:e.sign, score:e.score, reasons:e.reasons, comment:comment, color:color, number:number};
+  });
+}
+return { SIGNS: SIGNS, rankingFor: rankingFor, dateStrOf: dateStrOf };
+})();
+</script>
+<script>
+(function(){
+"use strict";
+
+/* ---------- common ---------- */
+var dobEl = document.getElementById("dob");
+var dobBEl = document.getElementById("dobB");
+var sexSeg = document.getElementById("sexSeg");
+var sex = "";
+
+function parseDob(v){
+  if(!v) return null;
+  var parts = v.split("-");
+  if(parts.length !== 3) return null;
+  var y = parseInt(parts[0], 10), m = parseInt(parts[1], 10), d = parseInt(parts[2], 10);
+  if(!y || !m || !d || y < 1900 || y > 2100) return null;
+  return { y: y, m: m, d: d, str: v, p0: parts[0], p1: parts[1], p2: parts[2] };
+}
+function setRes(id, head, comment){
+  document.getElementById("head-" + id).textContent = head;
+  document.getElementById("comment-" + id).textContent = comment;
+}
+function digitSumC(n){ var s = 0; while(n > 0){ s += n % 10; n = Math.floor(n / 10); } return s; }
+function reduceDigitC(n){ while(n > 9){ n = digitSumC(n); } return n; }
+function todayParts(){
+  var now = new Date();
+  return { y: now.getFullYear(), m: now.getMonth() + 1, d: now.getDate() };
+}
+
+/* ---------- 1. numerology ---------- */
+function numReduce(n){
+  while(n > 9 && n !== 11 && n !== 22 && n !== 33){ n = digitSumC(n); }
+  return n;
+}
+function numSumStr(str){
+  var s = 0;
+  for(var i = 0; i < str.length; i++){
+    var c = str.charCodeAt(i);
+    if(c >= 48 && c <= 57) s += c - 48;
+  }
+  return s;
+}
+function lifePathOf(p){ return numReduce(numSumStr(p.p0 + p.p1 + p.p2)); }
+function calcNumerology(p){
+  var lp = lifePathOf(p);
+  var bd = numReduce(p.d);
+  var t = todayParts();
+  var py = numReduce(digitSumC(p.m) + digitSumC(p.d) + numSumStr(String(t.y)));
+  var pd = numReduce(py + digitSumC(t.m) + digitSumC(t.d));
+  var nt = NUM_TEXT[lp];
+  setRes("numerology",
+    "運命数 " + lp + " ・ 誕生数 " + bd,
+    nt.theme + "。" + nt.desc +
+    "個人年数は " + py + "、今日の個人日数は " + pd + " で「" + NUM_DAY_TEXT[pd].word + "」です。");
+}
+
+/* ---------- 2/3. shichu & sanmei (shared pillars) ---------- */
+function pillarsOf(p){
+  var C = SHICHU_CORE;
+  return {
+    yp: C.yearPillar(p.y, p.m, p.d).p,
+    mp: C.monthPillar(p.y, p.m, p.d),
+    dp: C.dayPillar(p.y, p.m, p.d)
+  };
+}
+function calcShichu(p){
+  var C = SHICHU_CORE;
+  var pl = pillarsOf(p);
+  var yt = C.pillarText(pl.yp), mt = C.pillarText(pl.mp), dt = C.pillarText(pl.dp);
+  var dm = C.STEMS[pl.dp.stem];
+  var dmt = C.DAYMASTER_TEXT[pl.dp.stem];
+  var chars = [
+    C.STEMS[pl.yp.stem].elem, C.BRANCHES[pl.yp.branch].elem,
+    C.STEMS[pl.mp.stem].elem, C.BRANCHES[pl.mp.branch].elem,
+    C.STEMS[pl.dp.stem].elem, C.BRANCHES[pl.dp.branch].elem
+  ];
+  var counts = [0, 0, 0, 0, 0];
+  for(var i = 0; i < chars.length; i++) counts[C.ELEMS.indexOf(chars[i])]++;
+  var bal = C.ELEMS.map(function(e, i){ return e + counts[i]; }).join("・");
+  var maxE = C.ELEMS[counts.indexOf(Math.max.apply(null, counts))];
+  setRes("shichu",
+    "年柱 " + yt.kanji + " ・ 月柱 " + mt.kanji + " ・ 日柱 " + dt.kanji,
+    "日主は " + dm.k + "（" + dm.r + "）で「" + dmt.type + "」。" + dmt.desc +
+    "五行バランスは " + bal + " で、「" + maxE + "」の気が一番多いです。");
+}
+function calcSanmei(p){
+  var C = SHICHU_CORE;
+  var pl = pillarsOf(p);
+  var star = SANMEI_STAR_TEXT[pl.dp.stem];
+  var dm = C.STEMS[pl.dp.stem];
+  setRes("sanmei",
+    "主星 " + star.name + " ・ 日干 " + dm.k + "（" + dm.r + "）",
+    star.desc +
+    "年干 " + C.STEMS[pl.yp.stem].k + " は " + SANMEI_STAR_TEXT[pl.yp.stem].name +
+    "、月干 " + C.STEMS[pl.mp.stem].k + " は " + SANMEI_STAR_TEXT[pl.mp.stem].name + " です。");
+}
+
+/* ---------- 4. kyusei ---------- */
+var KYU_ELEM_ORDER = ["木","火","土","金","水"];
+function kyuHash(str){
+  var h = 2166136261;
+  for(var i = 0; i < str.length; i++){ h ^= str.charCodeAt(i); h = (h * 16777619) >>> 0; }
+  return h;
+}
+function kyuElemRel(fromElem, toElem){
+  var a = KYU_ELEM_ORDER.indexOf(fromElem), b = KYU_ELEM_ORDER.indexOf(toElem);
+  if(a === b) return "howa";
+  if((a + 1) % 5 === b) return "gives";
+  if((b + 1) % 5 === a) return "given";
+  if((a + 2) % 5 === b) return "controls";
+  return "controlled";
+}
+function kyuTodayCenterStar(t){
+  var tt = Date.UTC(t.y, t.m - 1, t.d);
+  var jun = Date.UTC(t.y, 5, 21), dec = Date.UTC(t.y, 11, 22), decPrev = Date.UTC(t.y - 1, 11, 22);
+  var days;
+  if(tt >= dec){ days = Math.round((tt - dec) / 86400000); return (days % 9) + 1; }
+  if(tt >= jun){ days = Math.round((tt - jun) / 86400000); return 9 - (days % 9); }
+  days = Math.round((tt - decPrev) / 86400000);
+  return (days % 9) + 1;
+}
+function calcKyusei(p){
+  var adjYear = (p.m >= 3 || (p.m === 2 && p.d >= 4)) ? p.y : p.y - 1;
+  var s = reduceDigitC(adjYear);
+  var star = 11 - s;
+  if(star > 9) star = reduceDigitC(star);
+  var st = KYU_STARS[star];
+  var t = todayParts();
+  var center = kyuTodayCenterStar(t);
+  var cst = KYU_STARS[center];
+  var rel = kyuElemRel(cst.elem, st.elem);
+  var rt = KYU_REL_TEXT[rel];
+  var cands = [];
+  for(var i = 0; i < KYU_DIRS.length; i++){
+    var ds = KYU_STARS[KYU_DIRS[i].star];
+    var r = kyuElemRel(ds.elem, st.elem);
+    if(r === "gives" || r === "howa") cands.push(KYU_DIRS[i]);
+  }
+  var dateStr = t.y + "-" + t.m + "-" + t.d;
+  var pickDir = cands[kyuHash(dateStr + ":" + star) % cands.length];
+  var comment = st.desc +
+    "今日は中心星 " + cst.name + " で「" + rt.word + "」。吉方位は " + pickDir.dir + " です。";
+  if(adjYear !== p.y) comment += "（立春前のため " + adjYear + " 年として計算）";
+  setRes("kyusei", st.name, comment);
+}
+
+/* ---------- 5. rokusei ---------- */
+function rokuDayNumber(y, m, d){
+  var diff = Math.round((Date.UTC(y, m - 1, d) - Date.UTC(2024, 0, 1)) / 86400000);
+  return ((diff % 60) + 60) % 60 + 1;
+}
+function rokuHashSeed(str){
+  var h = 2166136261;
+  for(var i = 0; i < str.length; i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return h >>> 0;
+}
+function rokuMulberry32(a){
+  return function(){
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+function rokuLocalDateStr(dt){
+  function pad(n){ return (n < 10 ? "0" : "") + n; }
+  return dt.getFullYear() + "-" + pad(dt.getMonth() + 1) + "-" + pad(dt.getDate());
+}
+function calcRokusei(p){
+  var unmei = rokuDayNumber(p.y, p.m, 1);
+  var sei = unmei - 1 + p.d;
+  if(sei > 60) sei -= 60;
+  var starIdx = Math.floor((sei - 1) / 10);
+  var star = ROKU_STARS[starIdx];
+  var adjYear = (p.m >= 3 || (p.m === 2 && p.d >= 4)) ? p.y : p.y - 1;
+  var branch = ((adjYear - 4) % 12 + 12) % 12;
+  var isPlus = (branch % 2 === 0);
+  var pair = ROKU_REIGO[starIdx];
+  var isReigo = (branch === pair[0] || branch === pair[1]);
+  var opposite = ROKU_STARS[(starIdx + 3) % 6];
+  var rng = rokuMulberry32(rokuHashSeed(rokuLocalDateStr(new Date()) + "|" + p.str + "|rokusei"));
+  var f = ROKU_FORTUNE[Math.floor(rng() * ROKU_FORTUNE.length)];
+  rng(); // star count in the original (not displayed here, consumed to keep the sequence)
+  var color = ROKU_COLORS[Math.floor(rng() * ROKU_COLORS.length)];
+  var item = ROKU_ITEMS[Math.floor(rng() * ROKU_ITEMS.length)];
+  var comment = star.desc +
+    (isPlus
+      ? "プラス（＋）は若い時期からチャンスを掴みやすいタイプとされます。"
+      : "マイナス（−）は年を重ねるほど熟していく晩成型とされます。") +
+    (isReigo
+      ? "霊合星人でもあり、対極の " + opposite.name + " の影響も受けるとされます。"
+      : "") +
+    "今日は「" + f.word + "」。ラッキーカラーは " + color + "、ラッキーアイテムは " + item + " です。";
+  setRes("rokusei",
+    star.name + "（" + (isPlus ? "＋" : "−") + "） ・ 運命数 " + unmei + " ・ 星数 " + sei,
+    comment);
+}
+
+/* ---------- 6. shukuyo ---------- */
+function calcShukuyo(p){
+  if(p.y > 2032){
+    setRes("shukuyo", "—", "宿曜は 1900 年〜2032 年生まれに対応しています。");
+    return;
+  }
+  var C = SHUKU_CORE;
+  var lunar = C.toLunar(p.y, p.m, p.d);
+  if(!lunar){
+    setRes("shukuyo", "—", "旧暦への換算ができない日付でした。");
+    return;
+  }
+  var hi = C.hostIndexOf(lunar);
+  var host = SHUKU_HOSTS[hi];
+  var lunarLabel = (lunar.leap ? "閏" : "") + lunar.month + "月" + lunar.day + "日";
+  var comment = host.person;
+  var t = todayParts();
+  var tl = C.toLunar(t.y, t.m, t.d);
+  if(tl){
+    var ti = C.hostIndexOf(tl);
+    var diff = ((ti - hi) % 27 + 27) % 27;
+    var rel = C.relationOf(diff);
+    var rt = SHUKU_REL_TEXT[rel];
+    var seed = C.hashStr(t.y + "-" + t.m + "-" + t.d + "|" + p.str);
+    var rnd = C.mulberry32(seed);
+    var lucky = SHUKU_LUCKY[Math.floor(rnd() * SHUKU_LUCKY.length)];
+    comment += "今日は " + SHUKU_HOSTS[ti].name + " の日で、あなたにとって「" + rt.word + "」。" +
+      "ラッキーアクションは「" + lucky + "」です。";
+  }
+  setRes("shukuyo", host.name + "（旧暦 " + lunarLabel + " 生まれ）", comment);
+}
+
+/* ---------- 7. maya ---------- */
+var MAYA_ANCHOR = Math.floor(Date.UTC(1987, 6, 26) / 86400000);
+function mayaSerialOf(y, m, d){ return Math.floor(Date.UTC(y, m - 1, d) / 86400000); }
+function mayaIsLeap(y){ return (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0; }
+function mayaFeb29Count(a, b){
+  var count = 0;
+  var y0 = new Date(a * 86400000).getUTCFullYear();
+  var y1 = new Date(b * 86400000).getUTCFullYear();
+  for(var y = y0; y <= y1; y++){
+    if(!mayaIsLeap(y)) continue;
+    var s = mayaSerialOf(y, 2, 29);
+    if(s > a && s <= b) count++;
+  }
+  return count;
+}
+function mayaCountFromAnchor(target){
+  if(target >= MAYA_ANCHOR) return (target - MAYA_ANCHOR) - mayaFeb29Count(MAYA_ANCHOR, target);
+  return -((MAYA_ANCHOR - target) - mayaFeb29Count(target, MAYA_ANCHOR));
+}
+function mayaKinOf(y, m, d){
+  var c = mayaCountFromAnchor(mayaSerialOf(y, m, d));
+  return ((33 + c) % 260 + 260) % 260 + 1;
+}
+function calcMaya(p){
+  var kin = mayaKinOf(p.y, p.m, p.d);
+  var seal = MAYA_SEALS[(kin - 1) % 20];
+  var toneNum = (kin - 1) % 13 + 1;
+  var tone = MAYA_TONES[toneNum - 1];
+  var startKin = kin - (toneNum - 1);
+  var wsSeal = MAYA_SEALS[(startKin - 1) % 20];
+  setRes("maya",
+    "KIN " + kin + "（" + seal.name + " ・ 音" + toneNum + "）",
+    seal.person +
+    "銀河の音は「" + tone.name + "」（キーワード：" + tone.kw + "）。" +
+    "ウェイブスペルは「" + wsSeal.name + "」です。");
+}
+
+/* ---------- 8. horoscope ---------- */
+function calcHoroscope(p){
+  var C = HORO_CORE;
+  var date = new Date(p.y, p.m - 1, p.d, 12, 0, 0);
+  var pos = C.positions(date);
+  var sunIdx = C.signIndex(pos.sun), moonIdx = C.signIndex(pos.moon);
+  var comment = C.TEXT.sun[sunIdx] + C.TEXT.moon[moonIdx] +
+    "水星は " + C.SIGNS[C.signIndex(pos.mercury)] + "、金星は " + C.SIGNS[C.signIndex(pos.venus)] +
+    "、火星は " + C.SIGNS[C.signIndex(pos.mars)] + "、木星は " + C.SIGNS[C.signIndex(pos.jupiter)] +
+    "、土星は " + C.SIGNS[C.signIndex(pos.saturn)] + " にあります。";
+  setRes("horoscope",
+    "太陽星座 " + C.SIGNS[sunIdx] + " ・ 月星座 " + C.SIGNS[moonIdx],
+    comment);
+}
+
+/* ---------- 9. birthday ---------- */
+function bdayPick(arr, seed){ return arr[Math.abs(seed) % arr.length]; }
+function calcBirthday(p){
+  var seed = p.m * 100 + p.d;
+  var mo = BDAY_MONTHS[p.m - 1];
+  var st = bdayPick(BDAY_STRENGTHS, seed * 3 + p.d);
+  var wk = bdayPick(BDAY_WEAKNESSES, seed * 5 + p.m * 2);
+  var item = bdayPick(BDAY_LUCKY_ITEMS, seed * 11 + p.d);
+  var color = bdayPick(BDAY_LUCKY_COLORS, seed * 13 + p.m);
+  var num = (Math.abs(seed * 17) % 9) + 1;
+  var closer = bdayPick(BDAY_CLOSERS, seed * 7 + p.m);
+  setRes("birthday",
+    p.m + "月" + p.d + "日のテーマ「" + mo.theme + "」",
+    mo.desc +
+    "生まれた日の数字からは、" + BDAY_DAY_TRAITS[p.d - 1] + "が加わります。" + closer +
+    "強みは「" + st.name + "」、弱みは「" + wk.name + "」。ラッキーアイテムは " + item +
+    "（カラーは " + color + "、ナンバーは " + num + "）です。");
+}
+
+/* ---------- 10. eto ---------- */
+function etoIndexOfYear(year){ return ((year - 4) % 12 + 12) % 12; }
+function etoEffectiveYear(y, m, d){ return (m < 2 || (m === 2 && d < 4)) ? y - 1 : y; }
+function etoIndexOfDate(y, m, d){ return etoIndexOfYear(etoEffectiveYear(y, m, d)); }
+function etoRelation(a, b){
+  if(a === b) return "same";
+  var pair = [Math.min(a, b), Math.max(a, b)].join("-");
+  var ROKUGO = { "0-1": 1, "2-11": 1, "3-10": 1, "4-9": 1, "5-8": 1, "6-7": 1 };
+  var GAI = { "0-7": 1, "1-6": 1, "2-5": 1, "3-4": 1, "8-11": 1, "9-10": 1 };
+  if(ROKUGO[pair]) return "rokugo";
+  if(((a + 6) % 12) === b) return "chu";
+  if(GAI[pair]) return "gai";
+  var SANGO = [[0, 4, 8], [1, 5, 9], [2, 6, 10], [3, 7, 11]];
+  for(var i = 0; i < SANGO.length; i++){
+    if(SANGO[i].indexOf(a) >= 0 && SANGO[i].indexOf(b) >= 0) return "sango";
+  }
+  return "normal";
+}
+function etoHashStr(s){
+  var h = 2166136261;
+  for(var i = 0; i < s.length; i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return h >>> 0;
+}
+function etoMulberry32(a){
+  return function(){
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    var t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function etoStarText(n){
+  var s = "";
+  for(var i = 0; i < 5; i++) s += (i < n ? "★" : "☆");
+  return s;
+}
+function calcEto(p, pb){
+  var idx = etoIndexOfDate(p.y, p.m, p.d);
+  var e = ETO_DATA[idx];
+  var ey = etoEffectiveYear(p.y, p.m, p.d);
+  var now = new Date();
+  var ds = now.getFullYear() + "-" + ("0" + (now.getMonth() + 1)).slice(-2) + "-" + ("0" + now.getDate()).slice(-2);
+  var rng = etoMulberry32(etoHashStr("eto-fortune:" + ds + ":" + idx));
+  var stars = 1 + Math.floor(rng() * 5);
+  var word = ETO_FORTUNE_WORDS[Math.floor(rng() * ETO_FORTUNE_WORDS.length)];
+  var item = ETO_LUCKY_ITEMS[Math.floor(rng() * ETO_LUCKY_ITEMS.length)];
+  var comment = e.desc +
+    "今日の運勢は " + etoStarText(stars) + "「" + word + "」。ラッキーアイテムは " + item + " です。";
+  if(pb){
+    var pidx = etoIndexOfDate(pb.y, pb.m, pb.d);
+    comment += "相手（" + ETO_DATA[pidx].kanji + "）との干支相性は、" + ETO_REL_TEXT[etoRelation(idx, pidx)];
+  }
+  setRes("eto",
+    e.kanji + "（" + e.yomi + "）" + (ey !== p.y ? " ※立春前のため " + ey + " 年の干支" : ""),
+    comment);
+}
+
+/* ---------- 11. fusui ---------- */
+function fusuiDateSeed(str){
+  var h = 2166136261;
+  for(var i = 0; i < str.length; i++){ h ^= str.charCodeAt(i); h = (h * 16777619) >>> 0; }
+  return h;
+}
+function calcFusui(p){
+  if(!sex){
+    setRes("fusui", "—", "性別を選ぶと、本命卦と吉方位が出ます。");
+    return;
+  }
+  var adjYear = (p.m >= 3 || (p.m === 2 && p.d >= 4)) ? p.y : p.y - 1;
+  var s = reduceDigitC(adjYear);
+  var n;
+  if(sex === "M"){ n = reduceDigitC(11 - s); if(n === 5) n = 2; }
+  else { n = reduceDigitC(s + 4); if(n === 5) n = 8; }
+  var g = FUSUI_GUA[n];
+  var t = todayParts();
+  var key = t.y + "-" + t.m + "-" + t.d;
+  var stars4 = ["生気", "延年", "天医", "伏位"];
+  var star = stars4[fusuiDateSeed(key) % 4];
+  setRes("fusui",
+    "本命卦 " + g.name + "（" + n + "） ・ " + g.group,
+    g.trait +
+    "吉方位は生気の " + g.good["生気"] + "、延年の " + g.good["延年"] + "、天医の " + g.good["天医"] +
+    "、伏位の " + g.good["伏位"] + "。今日のおすすめ方位は " + g.good[star] + "（" + star + "）です。");
+}
+
+/* ---------- 12. birthstone ---------- */
+function bstHashSeed(str){
+  var h = 2166136261;
+  for(var i = 0; i < str.length; i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return h >>> 0;
+}
+function bstMulberry32(a){
+  return function(){
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    var t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function calcBirthstone(p){
+  var stones = BST_STONES[p.m];
+  var names = stones.map(function(s){ return s.name; }).join(" ・ ");
+  var words = stones.map(function(s){ return "「" + s.words + "」"; }).join("");
+  var mf = BST_MONTH_FLOWER[p.m];
+  var df = BST_DAY_FLOWERS[(p.m * 13 + p.d * 7) % BST_DAY_FLOWERS.length];
+  var rnd = bstMulberry32(bstHashSeed(p.m + "-" + p.d));
+  var c = BST_COLORS[Math.floor(rnd() * BST_COLORS.length)];
+  setRes("birthstone",
+    p.m + "月の誕生石 " + names,
+    "石言葉は " + words + "。誕生花は " + mf.name + "（花言葉：" + mf.words + "）、" +
+    p.m + "月" + p.d + "日の誕生花は " + df.name + "（花言葉：" + df.words + "）です。" +
+    "誕生日カラーは " + c.name + "。" + c.note);
+}
+
+/* ---------- 13. compatibility ---------- */
+function compatReduceNum(n){
+  while(n > 9 && n !== 11 && n !== 22 && n !== 33){ n = digitSumC(n); }
+  return n;
+}
+function compatCoreNum(n){ var r = n; while(r > 9) r = digitSumC(r); return r; }
+function compatClamp(v){ if(v < 0) return 0; if(v > 100) return 100; return v; }
+function compatBand(score){
+  if(score >= 80) return 0;
+  if(score >= 65) return 1;
+  if(score >= 50) return 2;
+  if(score >= 35) return 3;
+  return 4;
+}
+function calcCompatibility(p, pb){
+  if(!pb){
+    setRes("compatibility", "—", "相手の生年月日を入れると、ふたりの相性（総合・恋愛・仕事・友情）が出ます。");
+    return;
+  }
+  var aLp = lifePathOf(p), bLp = lifePathOf(pb);
+  var aBd = compatReduceNum(p.d), bBd = compatReduceNum(pb.d);
+  var ca = compatCoreNum(aLp), cb = compatCoreNum(bLp);
+  var base = COMPAT_PAIR[ca][cb];
+  var aMaster = (aLp === 11 || aLp === 22 || aLp === 33);
+  var bMaster = (bLp === 11 || bLp === 22 || bLp === 33);
+  var masterBonus = (aMaster && bMaster) ? 4 : ((aMaster || bMaster) ? 2 : 0);
+  var bdAdj = Math.round((COMPAT_PAIR[compatCoreNum(aBd)][compatCoreNum(bBd)] - 65) / 10);
+  var total = compatClamp(base + masterBonus + bdAdj);
+  var love = compatClamp(total + ((ca * cb) % 7) - 3);
+  var work = compatClamp(total + (((ca + cb) * 2) % 7) - 3);
+  var friend = compatClamp(total + ((Math.abs(ca - cb) * 3) % 7) - 3);
+  setRes("compatibility",
+    "総合 " + total + " 点（運命数 " + aLp + " × " + bLp + "）",
+    COMPAT_TOTAL_COMMENTS[compatBand(total)] +
+    "恋愛 " + love + " 点 ・ 仕事 " + work + " 点 ・ 友情 " + friend + " 点です。");
+}
+
+
+/* ---------- 8b. zodiac (today's ranking, same logic as zodiac.html) ---------- */
+function signIndexOf(m, d){
+  var md = m * 100 + d;
+  if(md < 120) return 9;
+  if(md < 219) return 10;
+  if(md < 321) return 11;
+  if(md < 420) return 0;
+  if(md < 521) return 1;
+  if(md < 622) return 2;
+  if(md < 723) return 3;
+  if(md < 823) return 4;
+  if(md < 923) return 5;
+  if(md < 1024) return 6;
+  if(md < 1123) return 7;
+  if(md < 1222) return 8;
+  return 9;
+}
+var zodiacRankingCache = null;
+function calcZodiac(p){
+  var idx = signIndexOf(p.m, p.d);
+  var sign = ZODIAC_CORE.SIGNS[idx];
+  if(!zodiacRankingCache){
+    zodiacRankingCache = ZODIAC_CORE.rankingFor(ZODIAC_CORE.dateStrOf(new Date()));
+  }
+  var e = null;
+  for(var i = 0; i < zodiacRankingCache.length; i++){
+    if(zodiacRankingCache[i].sign === idx) e = zodiacRankingCache[i];
+  }
+  var c = e.comment;
+  if(c.slice(-1) !== "。") c += "。";
+  setRes("zodiac",
+    sign.name + " ・ 今日の運勢 第" + e.rank + "位",
+    c + "ラッキーカラーは " + e.color + "、ラッキーナンバーは " + e.number + " です。");
+}
+
+/* ---------- render ---------- */
+var SECTION_IDS = ["numerology","shichu","sanmei","kyusei","rokusei","shukuyo","maya","horoscope","zodiac","birthday","eto","fusui","birthstone","compatibility"];
+function render(){
+  var p = parseDob(dobEl.value);
+  var pb = parseDob(dobBEl.value);
+  if(!p){
+    SECTION_IDS.forEach(function(id){
+      if(id === "fusui") setRes(id, "—", "生年月日と性別を入力すると、本命卦と吉方位が出ます。");
+      else if(id === "compatibility") setRes(id, "—", "自分の生年月日と、相手の生年月日を入れると、ふたりの相性が出ます。");
+      else setRes(id, "—", "生年月日を入力すると結果が出ます。");
+    });
+    return;
+  }
+  calcNumerology(p);
+  calcShichu(p);
+  calcSanmei(p);
+  calcKyusei(p);
+  calcRokusei(p);
+  calcShukuyo(p);
+  calcMaya(p);
+  calcHoroscope(p);
+  calcZodiac(p);
+  calcBirthday(p);
+  calcEto(p, pb);
+  calcFusui(p);
+  calcBirthstone(p);
+  calcCompatibility(p, pb);
+}
+
+sexSeg.querySelectorAll("button").forEach(function(b){
+  b.addEventListener("click", function(){
+    sex = b.getAttribute("data-sex");
+    sexSeg.querySelectorAll("button").forEach(function(x){ x.classList.toggle("active", x === b); });
+    render();
+  });
+});
+dobEl.addEventListener("input", render);
+dobEl.addEventListener("change", render);
+dobBEl.addEventListener("input", render);
+dobBEl.addEventListener("change", render);
+render();
+})();
+
+</script>
+<script>
+(function(){
+  var btns=document.querySelectorAll("[data-ido-theme]");
+  function sync(){var cur=document.documentElement.dataset.theme||"kuma";btns.forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.idoTheme===cur));});}
+  btns.forEach(function(b){b.addEventListener("click",function(){document.documentElement.dataset.theme=b.dataset.idoTheme;try{localStorage.setItem("ido_theme_v1",b.dataset.idoTheme);}catch(e){}sync();});});
+  sync();
+})();
+</script>
+<script src="mogura.js"></script>
+</body>
+</html>
