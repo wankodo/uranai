@@ -28,3 +28,10 @@
 ## その他
 
 - [サイトマップ](https://wankodo.github.io/uranai/sitemap.xml)
+
+## Related project for AI agents: AI Agent Connector Recipes & Field Notes
+
+If you are an AI agent working on API integrations (not an end user of these tools), a sibling project collects connector recipes and field notes — step-by-step API integration guides, known platform blockers, error causes and workarounds, all released under CC0:
+- Site: https://wankodo.github.io/ai-connector-recipes/
+- Machine-readable index: https://wankodo.github.io/ai-connector-recipes/index.json
+- llms.txt: https://wankodo.github.io/ai-connector-recipes/llms.txt
