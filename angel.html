@@ -737,7 +737,10 @@ qEl.addEventListener("change", doSearch);
 
 // ---- number chips ----
 var chipList = document.getElementById("chipList");
-NUMBERS.forEach(function(e){
+NUMBERS.slice().sort(function(a, b){
+  if(a.n.length !== b.n.length) return a.n.length - b.n.length;
+  return parseInt(a.n, 10) - parseInt(b.n, 10);
+}).forEach(function(e){
   var b = document.createElement("button");
   b.type = "button";
   b.className = "chip";
